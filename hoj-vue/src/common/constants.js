@@ -140,25 +140,51 @@ export const JUDGE_STATUS_RESERVE={
 export const PROBLEM_LEVEL={
   '0':{
     name:{
-      'zh-CN':'简单',
-      'en-US':'Easy',
+      'zh-CN':'入门',
     },
     color:'#19be6b'
   },
   '1':{
     name:{
-      'zh-CN':'中等',
-      'en-US':'Mid',
+      'zh-CN':'普及-',
     },
     color:'#2d8cf0'
   },
   '2':{
     name:{
-      'zh-CN':'困难',
-      'en-US':'Hard',
+      'zh-CN':'普及/提高-',
+      
     },
     color:'#ed3f14'
-  }
+  },
+   '3':{
+    name:{
+      'zh-CN':'普及+/提高-',
+     
+    },
+    color:'#ed3f14'
+  },
+  '4':{
+    name:{
+      'zh-CN':'提高+/省选-',
+     
+    },
+    color:'#ed3f14'
+  },
+   '5':{
+    name:{
+      'zh-CN':'省选/NOI-',
+     
+    },
+    color:'#ed3f14'
+  },
+   '6':{
+    name:{
+      'zh-CN':'NOI',
+    
+    },
+    color:'#ed3f14'
+  }  
 }
 
 
