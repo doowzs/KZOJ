@@ -142,13 +142,13 @@ export const PROBLEM_LEVEL={
     name:{
       'zh-CN':'入门',
     },
-    color:'#19be6b'
+    color:'#ffde7d'
   },
   '1':{
     name:{
       'zh-CN':'普及-',
     },
-    color:'#2d8cf0'
+    color:'#e0f9b5'
   },
   '2':{
     name:{
@@ -162,28 +162,28 @@ export const PROBLEM_LEVEL={
       'zh-CN':'普及+/提高-',
      
     },
-    color:'#ed3f14'
+    color:'#00b8a9'
   },
   '4':{
     name:{
       'zh-CN':'提高+/省选-',
      
     },
-    color:'#ed3f14'
+    color:'#88304e'
   },
    '5':{
     name:{
       'zh-CN':'省选/NOI-',
      
     },
-    color:'#ed3f14'
+    color:'#e23e57'
   },
    '6':{
     name:{
       'zh-CN':'NOI',
     
     },
-    color:'#ed3f14'
+    color:'#521262'
   }  
 }
 
