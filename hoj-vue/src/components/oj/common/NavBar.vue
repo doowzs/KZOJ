@@ -10,18 +10,11 @@
           text-color="#495060"
         >
           <div class="logo">
-            <el-tooltip
-              :content="$t('m.Click_To_Change_Web_Language')"
-              placement="bottom"
-              effect="dark"
-            >
-              <el-image
-                style="width: 139px; height: 50px"
-                :src="imgUrl"
-                fit="scale-down"
-                @click="changeWebLanguage"
-              ></el-image>
-            </el-tooltip>
+            <el-image
+              style="width: 139px; height: 50px"
+              :src="imgUrl"
+              fit="scale-down"
+            ></el-image>
           </div>
           <template v-if="mode == 'defalut'">
             <el-menu-item index="/home"
@@ -259,15 +252,9 @@
           <mu-button icon slot="left" @click="opendrawer = !opendrawer">
             <i class="el-icon-s-unfold"></i>
           </mu-button>
-          <el-tooltip
-            :content="$t('m.Click_To_Change_Web_Language')"
-            placement="bottom"
-            effect="dark"
-          >
-            <span @click="changeWebLanguage">
-              {{ websiteConfig.shortName ? websiteConfig.shortName : "OJ" }}
-            </span>
-          </el-tooltip>
+          <span>
+            {{ websiteConfig.shortName ? websiteConfig.shortName : "OJ" }}
+          </span>
           <mu-button
             flat
             slot="right"
