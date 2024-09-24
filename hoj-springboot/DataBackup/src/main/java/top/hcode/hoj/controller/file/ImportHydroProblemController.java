@@ -28,7 +28,7 @@ public class ImportHydroProblemController {
 
     /**
      * @param file
-     * @MethodName importQDOJProblem
+     * @MethodName importHydroProblem
      * @Description zip文件导入题目 仅超级管理员可操作
      * @Return
      * @Since 2022/10/16

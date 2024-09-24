@@ -111,8 +111,10 @@ public class ContestValidator {
                 throw new StatusForbiddenException("对不起，您并非团队内的成员无法参加该团队内的比赛！");
             }
 
-            // 如果是处于比赛正在进行阶段，需要判断该场比赛是否为私有赛，私有赛需要判断该用户是否已注册
-            if (contest.getAuth().intValue() == Constants.Contest.AUTH_PRIVATE.getCode()) {
+            // 如果是处于比赛正在进行阶段，需要判断该场比赛是否为私有赛和保护赛，私有赛和保护赛需要判断该用户是否已注册
+            if (contest.getAuth().intValue() == Constants.Contest.AUTH_PRIVATE.getCode() ||
+            contest.getAuth().intValue() == Constants.Contest.AUTH_PROTECT.getCode()
+            ) {
                 QueryWrapper<ContestRegister> registerQueryWrapper = new QueryWrapper<>();
                 registerQueryWrapper.eq("cid", contest.getId()).eq("uid", userRolesVo.getUid());
                 ContestRegister register = contestRegisterEntityService.getOne(registerQueryWrapper);

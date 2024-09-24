@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -36,8 +37,9 @@ public class AdminProblemController {
                                                        @RequestParam(value = "currentPage", required = false) Integer currentPage,
                                                        @RequestParam(value = "keyword", required = false) String keyword,
                                                        @RequestParam(value = "auth", required = false) Integer auth,
+                                                       @RequestParam(value = "type", required = false) Integer type,
                                                        @RequestParam(value = "oj", required = false) String oj) {
-        return adminProblemService.getProblemList(limit, currentPage, keyword, auth, oj);
+        return adminProblemService.getProblemList(limit, currentPage, keyword, auth, type, oj);
     }
 
     @GetMapping("")
@@ -104,5 +106,24 @@ public class AdminProblemController {
     public CommonResult<Void> changeProblemAuth(@RequestBody Problem problem) {
         return adminProblemService.changeProblemAuth(problem);
     }
+    @PutMapping("/change-problem-type")
+    @RequiresAuthentication
+    @RequiresRoles(value = {"root", "problem_admin", "admin"}, logical = Logical.OR)
+    public CommonResult<Void> changeProblemType(@RequestBody Problem problem) {
+        return adminProblemService.changeProblemType(problem);
+    }
 
+    @PutMapping("/change-problems-auth")
+    @RequiresAuthentication
+    @RequiresRoles(value = {"root", "problem_admin", "admin"}, logical = Logical.OR)
+    public CommonResult<Void> changeProblemsAuth(@RequestBody Map<String, Object> params) {
+        return adminProblemService.changeProblemsAuth((List<Long>) params.get("ids"), (Integer) params.get("ProblemAuth"));
+    }
+
+    @PutMapping("/change-problems-type")
+    @RequiresAuthentication
+    @RequiresRoles(value = {"root", "problem_admin", "admin"}, logical = Logical.OR)
+    public CommonResult<Void> changeProblemsType(@RequestBody Map<String, Object> params) {
+        return adminProblemService.changeProblemsType((List<Long>) params.get("ids"), (Integer) params.get("ProblemType"));
+    }
 }

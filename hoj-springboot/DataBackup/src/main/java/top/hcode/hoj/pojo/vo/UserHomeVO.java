@@ -68,4 +68,7 @@ public class UserHomeVO {
     @ApiModelProperty(value = "最近上线时间")
     private Date recentLoginTime;
 
+    @ApiModelProperty(value = "创建时间")
+    private Date gmtCreate;
+
 }

@@ -145,6 +145,11 @@ public class AdminTrainingManager {
         if (!isOk) {
             throw new StatusFailException("添加失败！");
         }
+        // 获取当前登录的用户
+        AccountProfile userRolesVo = (AccountProfile) SecurityUtils.getSubject().getPrincipal();
+        log.info("[{}],[{}],tid:[{}],tTitle:[{}],,operatorUid:[{}],operatorUsername:[{}]",
+                "Admin_Training", "Add",training.getId(), training.getTitle(),userRolesVo.getUid(), userRolesVo.getUsername());
+
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -204,6 +209,8 @@ public class AdminTrainingManager {
                 }
             }
         }
+        log.info("[{}],[{}],tid:[{}],tTitle:[{}],,operatorUid:[{}],operatorUsername:[{}]",
+                "Admin_Training", "Update",training.getId(), training.getTitle(),userRolesVo.getUid(), userRolesVo.getUsername());
 
     }
 

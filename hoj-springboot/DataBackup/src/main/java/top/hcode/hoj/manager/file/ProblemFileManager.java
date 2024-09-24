@@ -255,6 +255,8 @@ public class ProblemFileManager {
                 if (failedProblemIDSet.size() > 0) {
                     errMsg = errMsg + "<br/>未知失败的题目ID：" + failedProblemIDSet;
                 }
+                log.info("[{}],[{}],successCount:[{}],failedCount:[{}],operatorUid:[{}],operatorUsername:[{}]",
+                        "Import_Problem", "Insert", successCount, failedCount, userRolesVo.getUid(), userRolesVo.getUsername());
                 throw new StatusFailException(errMsg);
             }
         }
@@ -435,6 +437,11 @@ public class ProblemFileManager {
             // 清空临时文件
             FileUtil.del(workDir);
             FileUtil.del(Constants.File.FILE_DOWNLOAD_TMP_FOLDER.getPath() + File.separator + fileName);
+            // 获取当前登录的用户
+            AccountProfile userRolesVo = (AccountProfile) SecurityUtils.getSubject().getPrincipal();
+            log.info("[{}],[{}],pidList:[{}],operatorUid:[{}],operatorUsername:[{}]",
+                    "Export_Problem", "Download", pidList, userRolesVo.getUid(), userRolesVo.getUsername());
+
         }
     }
 

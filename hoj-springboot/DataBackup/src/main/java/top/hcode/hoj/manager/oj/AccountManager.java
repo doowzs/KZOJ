@@ -243,6 +243,10 @@ public class AccountManager {
         if (newPassword.length() < 6 || newPassword.length() > 20) {
             throw new StatusFailException("新密码长度应该为6~20位！");
         }
+        String PWD_REGEX = "^(?=.*\\d)(?=.*[a-zA-Z]).{6,20}$";
+        if (!newPassword.matches(PWD_REGEX)) {
+            throw new StatusFailException("密码强度太弱，密码长度为6~20位数字和字母！");
+        }
         // 获取当前登录的用户
         AccountProfile userRolesVo = (AccountProfile) SecurityUtils.getSubject().getPrincipal();
 
@@ -473,7 +477,7 @@ public class AccountManager {
         commonValidator.validateContentLength(userInfoVo.getBlog(), "博客", 255);
         commonValidator.validateContentLength(userInfoVo.getGithub(), "Github", 255);
         commonValidator.validateContentLength(userInfoVo.getSchool(), "学校", 100);
-        commonValidator.validateContentLength(userInfoVo.getNumber(), "学号", 200);
+        commonValidator.validateContentLength(userInfoVo.getNumber(), "年级", 200);
         commonValidator.validateContentLength(userInfoVo.getCfUsername(), "Codeforces用户名", 255);
 
         // 获取当前登录的用户

@@ -38,6 +38,10 @@ public class AdminTrainingCategoryManager {
         if (!isOk) {
             throw new StatusFailException("添加失败");
         }
+        AccountProfile userRolesVo = (AccountProfile) SecurityUtils.getSubject().getPrincipal();
+        log.info("[{}],[{}],categoryId:[{}],categoryName:[{}],operatorUid:[{}],operatorUsername:[{}]",
+                "Admin_Training", "Add_Category", trainingCategory.getGid(),trainingCategory.getName() ,userRolesVo.getUid(), userRolesVo.getUsername());
+
         return trainingCategory;
     }
 
@@ -46,6 +50,10 @@ public class AdminTrainingCategoryManager {
         if (!isOk) {
             throw new StatusFailException("更新失败！");
         }
+        AccountProfile userRolesVo = (AccountProfile) SecurityUtils.getSubject().getPrincipal();
+        log.info("[{}],[{}],categoryId:[{}],categoryName:[{}],operatorUid:[{}],operatorUsername:[{}]",
+                "Admin_Training", "Update_Category", trainingCategory.getGid(),trainingCategory.getName() ,userRolesVo.getUid(), userRolesVo.getUsername());
+
     }
 
     public void deleteTrainingCategory(Long cid) throws StatusFailException {

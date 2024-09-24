@@ -1,6 +1,7 @@
 package top.hcode.hoj.controller.oj;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,6 +31,7 @@ public class RankController {
      * @Return CommonResult
      * @Since 2020/10/27
      */
+    @RequiresAuthentication
     @GetMapping("/get-rank-list")
     public CommonResult<IPage> getRankList(@RequestParam(value = "limit", required = false) Integer limit,
                                            @RequestParam(value = "currentPage", required = false) Integer currentPage,

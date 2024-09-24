@@ -4,6 +4,7 @@ import cn.hutool.core.io.FileUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -44,6 +45,7 @@ import java.util.List;
  */
 @Component
 @RefreshScope
+@Slf4j(topic = "hoj")
 public class GroupProblemManager {
 
     @Autowired
@@ -145,7 +147,6 @@ public class GroupProblemManager {
         if (!groupValidator.isGroupRoot(userRolesVo.getUid(), gid) && !userRolesVo.getUsername().equals(problem.getAuthor()) && !isRoot) {
             throw new StatusForbiddenException("对不起，您无权限操作！");
         }
-
         return problem;
     }
 
@@ -204,6 +205,9 @@ public class GroupProblemManager {
         if (!isOk) {
             throw new StatusFailException("添加失败");
         }
+        log.info("[{}],[{}],Gid:[{}],Pid:[{}]operatorUid:[{}],operatorUsername:[{}]",
+                "Group_Problem", "Add", gid,problemDto.getProblem().getProblemId(), userRolesVo.getUid(), userRolesVo.getUsername());
+
     }
 
     public void updateProblem(ProblemDTO problemDto) throws StatusForbiddenException, StatusNotFoundException, StatusFailException {
@@ -283,6 +287,9 @@ public class GroupProblemManager {
         } else {
             throw new StatusFailException("修改失败");
         }
+        log.info("[{}],[{}],Gid:[{}],Pid:[{}]operatorUid:[{}],operatorUsername:[{}]",
+                "Group_Problem", "Update", gid,problemDto.getProblem().getProblemId(), userRolesVo.getUid(), userRolesVo.getUsername());
+
     }
 
     public void deleteProblem(Long pid) throws StatusForbiddenException, StatusNotFoundException, StatusFailException {
@@ -320,6 +327,8 @@ public class GroupProblemManager {
         } else {
             throw new StatusFailException("删除失败！");
         }
+        log.info("[{}],[{}],Gid:[{}],Pid:[{}]operatorUid:[{}],operatorUsername:[{}]",
+                "Group_Problem", "Delete", gid, pid, userRolesVo.getUid(), userRolesVo.getUsername());
     }
 
     public List<ProblemCase> getProblemCases(Long pid, Boolean isUpload) throws StatusForbiddenException, StatusNotFoundException, StatusFailException {
@@ -504,5 +513,7 @@ public class GroupProblemManager {
         if (!isOk) {
             throw new StatusFailException("修改失败");
         }
+        log.info("[{}],[{}],Gid:[{}],Pid:[{}]operatorUid:[{}],operatorUsername:[{}]",
+                "Group_Problem", "Apply_Public", gid, pid, userRolesVo.getUid(), userRolesVo.getUsername());
     }
 }

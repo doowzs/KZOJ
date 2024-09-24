@@ -49,6 +49,11 @@ public class AdminAnnouncementManager {
         if (!isOk) {
             throw new StatusFailException("添加失败");
         }
+        // 获取当前登录的用户
+        AccountProfile userRolesVo = (AccountProfile) SecurityUtils.getSubject().getPrincipal();
+        log.info("[{}],[{}],id:[{}],operatorUid:[{}],operatorUsername:[{}]",
+                "Admin_Announcement", "Add", announcement.getId(), userRolesVo.getUid(), userRolesVo.getUsername());
+
     }
 
     public void updateAnnouncement(Announcement announcement) throws StatusFailException {
@@ -56,5 +61,10 @@ public class AdminAnnouncementManager {
         if (!isOk) {
             throw new StatusFailException("修改失败");
         }
+        // 获取当前登录的用户
+        AccountProfile userRolesVo = (AccountProfile) SecurityUtils.getSubject().getPrincipal();
+        log.info("[{}],[{}],id:[{}],operatorUid:[{}],operatorUsername:[{}]",
+                "Admin_Announcement", "Update", announcement.getId(), userRolesVo.getUid(), userRolesVo.getUsername());
+
     }
 }

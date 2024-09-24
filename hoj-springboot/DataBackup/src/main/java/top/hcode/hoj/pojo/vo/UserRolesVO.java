@@ -38,7 +38,7 @@ public class UserRolesVO implements Serializable {
     @ApiModelProperty(value = "专业")
     private String course;
 
-    @ApiModelProperty(value = "学号")
+    @ApiModelProperty(value = "年级")
     private String number;
 
     @ApiModelProperty(value = "性别")
@@ -79,6 +79,15 @@ public class UserRolesVO implements Serializable {
 
     @ApiModelProperty(value = "修改时间")
     private Date gmtModified;
+
+    @ApiModelProperty(value = "最近上线时间")
+    private Date recentLoginTime;
+
+    @ApiModelProperty(value = "ip")
+    private String ip;
+
+    @ApiModelProperty(value = "userAgent")
+    private String userAgent;
 
     @ApiModelProperty(value = "角色列表")
     private List<Role> roles;

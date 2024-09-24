@@ -2,6 +2,7 @@ package top.hcode.hoj.manager.group.member;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -23,6 +24,7 @@ import top.hcode.hoj.validator.GroupValidator;
  * @Description:
  */
 @Component
+@Slf4j(topic = "hoj")
 public class GroupMemberManager {
 
     @Autowired
@@ -142,6 +144,8 @@ public class GroupMemberManager {
                 groupMemberEntityService.addApplyNoticeToGroupRoot(gid, group.getName(), userRolesVo.getUid());
             }
         }
+        log.info("[{}],[{}],Gid:[{}],operatorUid:[{}],operatorUsername:[{}]",
+                "Group_Member", "Add", group.getId(), userRolesVo.getUid(), userRolesVo.getUsername());
     }
 
     public void updateMember(GroupMember groupMemberDto) throws StatusFailException, StatusForbiddenException, StatusNotFoundException {
@@ -196,6 +200,8 @@ public class GroupMemberManager {
                 groupMemberEntityService.addWelcomeNoticeToGroupNewMember(gid, group.getName(), groupMemberDto.getUid());
             }
         }
+        log.info("[{}],[{}],Gid:[{}],Uid:[{}],operatorUid:[{}],operatorUsername:[{}]",
+                "Group_Member", "Update", group.getId(),groupMemberDto.getUid(),userRolesVo.getUid(), userRolesVo.getUsername());
     }
 
     public void deleteMember(String uid, Long gid) throws StatusFailException, StatusNotFoundException, StatusForbiddenException {
@@ -229,7 +235,6 @@ public class GroupMemberManager {
             throw new StatusForbiddenException("对不起，您无权限操作！");
         }
 
-
         QueryWrapper<GroupMember> changeGroupMemberQueryWrapper = new QueryWrapper<>();
         changeGroupMemberQueryWrapper.eq("gid", gid).eq("uid", uid);
 
@@ -249,6 +254,9 @@ public class GroupMemberManager {
         } else {
             groupMemberEntityService.addRemoveNoticeToGroupMember(gid, group.getName(), userRolesVo.getUsername(), uid);
         }
+        log.info("[{}],[{}],Gid:[{}],Uid:[{}],operatorUid:[{}],operatorUsername:[{}]",
+                "Group_Member", "Delete", group.getId(),uid,userRolesVo.getUid(), userRolesVo.getUsername());
+
     }
 
     public void exitGroup(Long gid) throws StatusNotFoundException, StatusForbiddenException, StatusFailException {
@@ -281,6 +289,9 @@ public class GroupMemberManager {
         if (!isOk) {
             throw new StatusFailException("退出团队失败，请重新尝试！");
         }
+        log.info("[{}],[{}],Gid:[{}],operatorUid:[{}],operatorUsername:[{}]",
+                "Group_Member", "Exit", group.getId(),userRolesVo.getUid(), userRolesVo.getUsername());
+
     }
 
 }

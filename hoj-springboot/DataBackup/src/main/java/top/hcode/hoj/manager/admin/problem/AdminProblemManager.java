@@ -32,7 +32,10 @@ import top.hcode.hoj.validator.ProblemValidator;
 
 import javax.annotation.Resource;
 import java.io.File;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @Author: Himit_ZH
@@ -65,7 +68,7 @@ public class AdminProblemManager {
     @Autowired
     private RemoteProblemManager remoteProblemManager;
 
-    public IPage<Problem> getProblemList(Integer limit, Integer currentPage, String keyword, Integer auth, String oj) {
+    public IPage<Problem> getProblemList(Integer limit, Integer currentPage, String keyword, Integer auth,Integer type, String oj) {
         if (currentPage == null || currentPage < 1) currentPage = 1;
         if (limit == null || limit < 1) limit = 10;
         IPage<Problem> iPage = new Page<>(currentPage, limit);
@@ -86,6 +89,10 @@ public class AdminProblemManager {
 
         if (auth != null && auth != 0) {
             queryWrapper.eq("auth", auth);
+        }
+
+        if (type != null && type != 0) {
+            queryWrapper.eq("type", type-1);
         }
 
         if (!StringUtils.isEmpty(keyword)) {
@@ -150,6 +157,11 @@ public class AdminProblemManager {
         if (!isOk) {
             throw new StatusFailException("添加失败");
         }
+        // 获取当前登录的用户
+        AccountProfile userRolesVo = (AccountProfile) SecurityUtils.getSubject().getPrincipal();
+
+        log.info("[{}],[{}],problemDtoId:[{}],operatorUid:[{}],operatorUsername:[{}]",
+                "Admin_Problem", "Add_Problem", problemDto.getProblem().getProblemId().toUpperCase(), userRolesVo.getUid(), userRolesVo.getUsername());
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -188,7 +200,8 @@ public class AdminProblemManager {
                         .set("display_pid", problemId);
                 judgeEntityService.update(judgeUpdateWrapper);
             }
-
+            log.info("[{}],[{}],problemId:[{}],operatorUid:[{}],operatorUsername:[{}]",
+                    "Admin_Problem", "Update_Problem", problemId, userRolesVo.getUid(), userRolesVo.getUsername());
         } else {
             throw new StatusFailException("修改失败");
         }
@@ -269,8 +282,134 @@ public class AdminProblemManager {
         if (!isOk) {
             throw new StatusFailException("修改失败");
         }
-        log.info("[{}],[{}],value:[{}],pid:[{}],operatorUid:[{}],operatorUsername:[{}]",
-                "Admin_Problem", "Change_Auth", problem.getAuth(), problem.getId(), userRolesVo.getUid(), userRolesVo.getUsername());
+    }
+
+    public void changeProblemType(Problem problem) throws StatusFailException, StatusForbiddenException {
+        // 普通管理员只能将题目变成隐藏题目和比赛题目
+        boolean root = SecurityUtils.getSubject().hasRole("root");
+
+        boolean problemAdmin = SecurityUtils.getSubject().hasRole("problem_admin");
+
+        if(problem.getIsRemote()){
+            throw new StatusForbiddenException("远程题目不能修改！");
+        }
+
+        if (!problemAdmin && !root) {
+            throw new StatusForbiddenException("您无权修改！");
+        }
+
+        AccountProfile userRolesVo = (AccountProfile) SecurityUtils.getSubject().getPrincipal();
+
+        UpdateWrapper<Problem> problemUpdateWrapper = new UpdateWrapper<>();
+        problemUpdateWrapper.eq("id", problem.getId())
+                .set("type", problem.getType())
+                .set("modified_user", userRolesVo.getUsername());
+
+        if(problem.getType() == 1){
+            // 查找对应题目的 case列表
+            QueryWrapper<ProblemCase> problemCaseQueryWrapper = new QueryWrapper<>();
+            problemCaseQueryWrapper.eq("pid", problem.getId()).eq("status", 0);
+            List<ProblemCase> problemCaseList = problemCaseEntityService.list(problemCaseQueryWrapper);
+            // 需要修改的case列表
+            List<ProblemCase> needUpdateProblemCaseList = new LinkedList<>();
+            // 修改 case列表 的 score
+            int length = problemCaseList.size();
+            int aver = 100 / length;
+            int add_1_num = 100 - aver * length;
+            int cntLen = 0;
+            for(ProblemCase problemCase : problemCaseList){
+                if (cntLen >= length - add_1_num) {
+                    problemCase.setScore(aver + 1);
+                }else {
+                    problemCase.setScore(aver);
+                }
+                needUpdateProblemCaseList.add(problemCase);
+                cntLen++;
+            }
+            // 执行批量修改操作
+            boolean isOk = problemCaseEntityService.saveOrUpdateBatch(needUpdateProblemCaseList);
+            if (!isOk) {
+                throw new StatusFailException("修改失败");
+            }
+        }
+        boolean isOk = problemEntityService.update(problemUpdateWrapper);
+        if (!isOk) {
+            throw new StatusFailException("修改失败");
+        }
+    }
+
+    public void changeProblemsAuth(List<Long> problemIdList, Integer problemAuth) throws StatusFailException, StatusForbiddenException {
+        // 普通管理员只能将题目变成隐藏题目和比赛题目
+        boolean root = SecurityUtils.getSubject().hasRole("root");
+
+        boolean problemAdmin = SecurityUtils.getSubject().hasRole("problem_admin");
+
+        if (!problemAdmin && !root) {
+            throw new StatusForbiddenException("您无权修改！");
+        }
+
+        AccountProfile userRolesVo = (AccountProfile) SecurityUtils.getSubject().getPrincipal();
+        UpdateWrapper<Problem> problemUpdateWrapper = new UpdateWrapper<>();
+        problemUpdateWrapper.in("id", problemIdList)
+                .set("auth", problemAuth)
+                .set("modified_user", userRolesVo.getUsername());
+
+        boolean isOk = problemEntityService.update(problemUpdateWrapper);
+        if (!isOk) {
+            throw new StatusFailException("修改失败");
+        }
+    }
+
+    public void changeProblemsType(List<Long> problemIdList, Integer problemType) throws StatusFailException, StatusForbiddenException {
+
+        boolean root = SecurityUtils.getSubject().hasRole("root");
+
+        boolean problemAdmin = SecurityUtils.getSubject().hasRole("problem_admin");
+
+        if (!problemAdmin && !root) {
+            throw new StatusForbiddenException("您无权修改！");
+        }
+        AccountProfile userRolesVo = (AccountProfile) SecurityUtils.getSubject().getPrincipal();
+        UpdateWrapper<Problem> problemUpdateWrapper = new UpdateWrapper<>();
+
+        problemUpdateWrapper.in("id", problemIdList)
+                .eq("is_remote",false)
+                .set("type", problemType)
+                .set("modified_user", userRolesVo.getUsername());
+
+        if (problemType == 1){
+            // 需要修改的case列表
+            List<ProblemCase> needUpdateProblemCaseList = new LinkedList<>();
+            for(Object pid : problemIdList){
+                // 查找对应题目的 case列表
+                QueryWrapper<ProblemCase> problemCaseQueryWrapper = new QueryWrapper<>();
+                problemCaseQueryWrapper.eq("pid", pid).eq("status", 0);
+                List<ProblemCase> problemCaseList = problemCaseEntityService.list(problemCaseQueryWrapper);
+                // 修改 case列表 的 score
+                int length = problemCaseList.size();
+                int aver = 100 / length;
+                int add_1_num = 100 - aver * length;
+                int cntLen = 0;
+                for(ProblemCase problemCase : problemCaseList){
+                    if (cntLen >= length - add_1_num) {
+                        problemCase.setScore(aver + 1);
+                    }else {
+                        problemCase.setScore(aver);
+                    }
+                    needUpdateProblemCaseList.add(problemCase);
+                    cntLen++;
+                }
+            }
+            // 执行批量修改操作
+            boolean isOk = problemCaseEntityService.saveOrUpdateBatch(needUpdateProblemCaseList);
+            if (!isOk) {
+                throw new StatusFailException("修改失败");
+            }
+        }
+        boolean isOk = problemEntityService.update(problemUpdateWrapper);
+        if (!isOk) {
+            throw new StatusFailException("修改失败");
+        }
     }
 
 

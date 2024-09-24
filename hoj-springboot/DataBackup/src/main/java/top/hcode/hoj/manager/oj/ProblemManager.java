@@ -85,7 +85,7 @@ public class ProblemManager {
      * @Since 2020/10/27
      */
     public Page<ProblemVO> getProblemList(Integer limit, Integer currentPage,
-                                          String keyword, List<Long> tagId, Integer difficulty, String oj) {
+                                          String keyword, List<Long> tagId, Integer difficulty, String oj) throws StatusForbiddenException {
         // 页数，每页题数若为空，设置默认值
         if (currentPage == null || currentPage < 1) currentPage = 1;
         if (limit == null || limit < 1) limit = 10;
@@ -94,8 +94,20 @@ public class ProblemManager {
         if (!StringUtils.isEmpty(keyword)) {
             keyword = keyword.trim();
         }
-        if (oj != null && !Constants.RemoteOJ.isRemoteOJ(oj)) {
-            oj = "Mine";
+        boolean isRoot = SecurityUtils.getSubject().hasRole("root");
+        boolean isAdmin = SecurityUtils.getSubject().hasRole("admin");
+        boolean problemAdmin = SecurityUtils.getSubject().hasRole("problem_admin");
+        // 团队题库权限
+        if (oj != null  && oj.equals("Group")  && !(isRoot||isAdmin||problemAdmin)) {
+            throw new StatusForbiddenException("您的权限不够，无权查看！");
+        }
+        // 比赛题库权限
+        if (oj != null  && oj.equals("Contest")  && !(isRoot||problemAdmin)) {
+            throw new StatusForbiddenException("您的权限不够，无权查看！");
+        }
+        // 隐藏题库权限
+        if (oj != null  && oj.equals("Conceal")  && !isRoot) {
+            throw new StatusForbiddenException("您的权限不够，无权查看！");
         }
         return problemEntityService.getProblemList(limit, currentPage, null, keyword,
                 difficulty, tagId, oj);
@@ -256,17 +268,17 @@ public class ProblemManager {
         if (problem == null) {
             throw new StatusNotFoundException("该题号对应的题目不存在");
         }
-        if (problem.getAuth() != 1) {
+        boolean isRoot = SecurityUtils.getSubject().hasRole("root");
+        boolean isProblemAdmin = SecurityUtils.getSubject().hasRole("problem_admin");
+        if (!(isRoot || isProblemAdmin) && (problem.getAuth() == 2 || problem.getAuth() == 3)) {
             throw new StatusForbiddenException("该题号对应题目并非公开题目，不支持访问！");
         }
-
-        boolean isRoot = SecurityUtils.getSubject().hasRole("root");
         AccountProfile userRolesVo = (AccountProfile) SecurityUtils.getSubject().getPrincipal();
         if (problem.getIsGroup() && !isRoot) {
-            if (gid == null) {
+            if (gid == null){
                 throw new StatusForbiddenException("题目为团队所属，此处不支持访问，请前往团队查看！");
             }
-            if (!groupValidator.isGroupMember(userRolesVo.getUid(), problem.getGid())) {
+            if(!groupValidator.isGroupMember(userRolesVo.getUid(), problem.getGid())) {
                 throw new StatusForbiddenException("对不起，您并非该题目所属的团队内成员，无权查看题目！");
             }
         }
@@ -365,15 +377,7 @@ public class ProblemManager {
                 }
             }
         }
-        if (!judge.getLanguage().toLowerCase().contains("py")) {
-            return judge.getCode() + "\n\n" +
-                    "/**\n" +
-                    "* @runId: " + judge.getSubmitId() + "\n" +
-                    "* @language: " + judge.getLanguage() + "\n" +
-                    "* @author: " + judge.getUsername() + "\n" +
-                    "* @submitTime: " + DateUtil.format(judge.getSubmitTime(), "yyyy-MM-dd HH:mm:ss") + "\n" +
-                    "*/";
-        } else {
+        if (judge.getLanguage().toLowerCase().contains("py")) {
             return judge.getCode() + "\n\n" +
                     "'''\n" +
                     "    @runId: " + judge.getSubmitId() + "\n" +
@@ -381,6 +385,22 @@ public class ProblemManager {
                     "    @author: " + judge.getUsername() + "\n" +
                     "    @submitTime: " + DateUtil.format(judge.getSubmitTime(), "yyyy-MM-dd HH:mm:ss") + "\n" +
                     "'''";
+        }else if (judge.getLanguage().toLowerCase().contains("ruby")){
+            return judge.getCode() + "\n\n" +
+                    "=begin\n" +
+                    "* @runId: " + judge.getSubmitId() + "\n" +
+                    "* @language: " + judge.getLanguage() + "\n" +
+                    "* @author: " + judge.getUsername() + "\n" +
+                    "* @submitTime: " + DateUtil.format(judge.getSubmitTime(), "yyyy-MM-dd HH:mm:ss") + "\n" +
+                    "=end";
+        } else {
+            return judge.getCode() + "\n\n" +
+                    "/**\n" +
+                    "* @runId: " + judge.getSubmitId() + "\n" +
+                    "* @language: " + judge.getLanguage() + "\n" +
+                    "* @author: " + judge.getUsername() + "\n" +
+                    "* @submitTime: " + DateUtil.format(judge.getSubmitTime(), "yyyy-MM-dd HH:mm:ss") + "\n" +
+                    "*/";
         }
     }
 

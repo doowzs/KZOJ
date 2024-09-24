@@ -218,7 +218,7 @@ public class ScheduleServiceImpl implements ScheduleService {
                             .put("endTime", new Date(contest.getLong("endTime"))).map());
                 }
             } catch (Exception e) {
-                log.error("爬虫爬取Nowcoder比赛异常----------------------->{}", e.getMessage());
+                //log.error("爬虫爬取Nowcoder比赛异常----------------------->{}", e.getMessage());
             }
         }
         // 把比赛列表按照开始时间排序，方便查看
@@ -235,7 +235,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         // 缓存时间一天
         redisUtils.set(redisKey, contestsList, 60 * 60 * 24);
         // 增加log提示
-        log.info("获取牛客API的比赛列表成功！共获取数据" + contestsList.size() + "条");
+       // log.info("获取牛客API的比赛列表成功！共获取数据" + contestsList.size() + "条");
     }
 
 

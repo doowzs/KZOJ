@@ -4,10 +4,18 @@
     <springProperty scope="context" name="logging.path" source="logging.file.path"/>
     <springProperty scope="context" name="logging.level.root" source="logging.level.root"/>
     <contextName>hoj</contextName>
+    <!--Pro环境-->
     <property name="LOG_LEVEL" value="${logging.level.root}"/>
     <property name="LOG_PATH" value="${logging.path}"/>
+    <property name="LOG_FILE" value="${LOG_PATH}/application/application.log"/>
+    <property name="ERROR_FILE" value="${LOG_PATH}/error/error.log"/>
+    <property name="INFO_FILE" value="${LOG_PATH}/info/info.log"/>
+<!--    Dev环境
+    <property name="LOG_LEVEL" value="/Users/lilei/Desktop/项目/hoj/logs/level"/>
+    <property name="LOG_PATH" value="/Users/lilei/Desktop/项目/hoj/logs/"/>
     <property name="LOG_FILE" value="${LOG_PATH}/application.log"/>
     <property name="ERROR_FILE" value="${LOG_PATH}/error.log"/>
+    <property name="INFO_FILE" value="${LOG_PATH}/info.log"/>-->
 
     <!--控制台打印全部日志-->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
@@ -97,17 +105,52 @@
         <appender-ref ref="ERROR"/>
     </appender>
 
+    <appender name="INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${INFO_FILE}</file>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <!--表示匹配该级别以上的日志-->
+            <onMatch>ACCEPT</onMatch>
+            <!--表示不匹配该级别以下的日志-->
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <encoder>
+            <pattern>
+                %d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{50} - %msg%n
+            </pattern>
+        </encoder>
+        <!--滚动策略-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!--路径-->
+            <fileNamePattern>${INFO_FILE}.%d{yyyy-MM-dd}.%i</fileNamePattern>
+            <!--保存时长 天-->
+            <maxHistory>180</maxHistory>
+            <!-- 单个文件最大-->
+            <maxFileSize>10MB</maxFileSize>
+            <!--总大小-->
+            <totalSizeCap>2GB</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+    <appender name="INFO_ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+        <discardingThreshold>0</discardingThreshold>
+        <queueSize>512</queueSize>
+        <includeCallerData>true</includeCallerData>
+        <appender-ref ref="INFO"/>
+    </appender>
+
     <!--开发环境-->
     <springProfile name="dev">
         <logger name="top.hcode.hoj" level="${LOG_LEVEL}" additivity="false">
             <appender-ref ref="CONSOLE"/>
             <appender-ref ref="APPLICATION_ASYNC"/>
             <appender-ref ref="ERROR_ASYNC"/>
+            <appender-ref ref="INFO_ASYNC"/>
         </logger>
         <root level="${LOG_LEVEL}">
             <appender-ref ref="CONSOLE"/>
             <appender-ref ref="APPLICATION_ASYNC"/>
             <appender-ref ref="ERROR_ASYNC"/>
+            <appender-ref ref="INFO_ASYNC"/>
         </root>
     </springProfile>
 
@@ -117,11 +160,13 @@
             <appender-ref ref="CONSOLE_ERROR"/>
             <appender-ref ref="APPLICATION_ASYNC"/>
             <appender-ref ref="ERROR_ASYNC"/>
+            <appender-ref ref="INFO_ASYNC"/>
         </logger>
         <root level="${LOG_LEVEL}">
             <appender-ref ref="CONSOLE_ERROR"/>
             <appender-ref ref="APPLICATION_ASYNC"/>
             <appender-ref ref="ERROR_ASYNC"/>
+            <appender-ref ref="INFO_ASYNC"/>
         </root>
     </springProfile>
 

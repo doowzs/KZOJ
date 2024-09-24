@@ -28,11 +28,17 @@ public interface UserRoleMapper extends BaseMapper<UserRole> {
 
     List<Role> getRolesByUid(@Param("uid") String uid);
 
+    List<UserRolesVO> downloadUserList( @Param("isRLTime") Boolean isRLTime);
+
     IPage<UserRolesVO> getUserList(Page<UserRolesVO> page, @Param("limit") int limit,
                                    @Param("currentPage") int currentPage,
-                                   @Param("keyword") String keyword);
+                                   @Param("keyword") String keyword,
+                                   @Param("onlyStatus") Boolean onlyStatus,
+                                   @Param("showLoginTime") Boolean showLoginTime);
 
     IPage<UserRolesVO> getAdminUserList(Page<UserRolesVO> page, @Param("limit") int limit,
                                         @Param("currentPage") int currentPage,
-                                        @Param("keyword") String keyword);
+                                        @Param("keyword") String keyword,
+                                        @Param("onlyStatus") Boolean onlyStatus,
+                                        @Param("showLoginTime") Boolean showLoginTime);
 }

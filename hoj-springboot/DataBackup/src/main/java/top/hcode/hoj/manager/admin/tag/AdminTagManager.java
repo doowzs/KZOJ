@@ -44,6 +44,9 @@ public class AdminTagManager {
         if (!isOk) {
             throw new StatusFailException("添加失败");
         }
+        AccountProfile userRolesVo = (AccountProfile) SecurityUtils.getSubject().getPrincipal();
+        log.info("[{}],[{}],TagId:[{}],TagName:[{}],operatorUid:[{}],operatorUsername:[{}]",
+                "Admin_Tag", "Add", tag.getGid(), tag.getName(), userRolesVo.getUid(), userRolesVo.getUsername());
         return tag;
     }
 
@@ -52,6 +55,9 @@ public class AdminTagManager {
         if (!isOk) {
             throw new StatusFailException("更新失败");
         }
+        AccountProfile userRolesVo = (AccountProfile) SecurityUtils.getSubject().getPrincipal();
+        log.info("[{}],[{}],TagId:[{}],TagName:[{}],operatorUid:[{}],operatorUsername:[{}]",
+                "Admin_Tag", "Update", tag.getGid(), tag.getName(), userRolesVo.getUid(), userRolesVo.getUsername());
     }
 
     public void deleteTag(Long tid) throws StatusFailException {
@@ -88,6 +94,10 @@ public class AdminTagManager {
         if (!isOk) {
             throw new StatusFailException("添加失败");
         }
+        AccountProfile userRolesVo = (AccountProfile) SecurityUtils.getSubject().getPrincipal();
+        log.info("[{}],[{}],tcID:[{}],tcName:[{}],operatorUid:[{}],operatorUsername:[{}]",
+                "Admin_Tag_Classification", "Add", tagClassification.getId(), tagClassification.getName(), userRolesVo.getUid(), userRolesVo.getUsername());
+
         return tagClassification;
     }
 
@@ -96,6 +106,10 @@ public class AdminTagManager {
         if (!isOk) {
             throw new StatusFailException("更新失败");
         }
+        AccountProfile userRolesVo = (AccountProfile) SecurityUtils.getSubject().getPrincipal();
+        log.info("[{}],[{}],tcID:[{}],tcName:[{}],operatorUid:[{}],operatorUsername:[{}]",
+                "Admin_Tag_Classification", "Update", tagClassification.getId(), tagClassification.getName(), userRolesVo.getUid(), userRolesVo.getUsername());
+
     }
 
     public void deleteTagClassification(Long tcid) throws StatusFailException {

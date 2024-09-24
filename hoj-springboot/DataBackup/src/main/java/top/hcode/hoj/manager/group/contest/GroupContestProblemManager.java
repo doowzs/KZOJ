@@ -3,6 +3,7 @@ package top.hcode.hoj.manager.group.contest;
 import cn.hutool.core.map.MapUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -39,6 +40,7 @@ import java.util.Map;
  * @Description:
  */
 @Component
+@Slf4j(topic = "hoj")
 public class GroupContestProblemManager {
 
     @Autowired
@@ -149,6 +151,8 @@ public class GroupContestProblemManager {
 
         boolean isOk = problemEntityService.adminAddProblem(problemDto);
         if (isOk) {
+            log.info("[{}],[{}],Gid:[{}],Pid:[{}],operatorUid:[{}],operatorUsername:[{}]",
+                    "Group_Contest_Problem", "Add", gid,problemDto.getProblem().getId(), userRolesVo.getUid(), userRolesVo.getUsername());
             return MapUtil.builder().put("pid", problemDto.getProblem().getId()).map();
         } else {
             throw new StatusFailException("添加失败");
@@ -224,6 +228,8 @@ public class GroupContestProblemManager {
 
         boolean isOk = contestProblemEntityService.saveOrUpdate(contestProblem);
         if (isOk) {
+            log.info("[{}],[{}],Gid:[{}],Cid:[{}],Pid:[{}],operatorUid:[{}],operatorUsername:[{}]",
+                    "Group_Contest_Problem", "Update", gid, cid, contestProblem.getPid(), userRolesVo.getUid(), userRolesVo.getUsername());
             contestProblemEntityService.syncContestRecord(contestProblem.getPid(), contestProblem.getCid(), contestProblem.getDisplayId());
         } else {
             throw new StatusFailException("更新失败！");
@@ -267,6 +273,9 @@ public class GroupContestProblemManager {
         } else {
             throw new StatusFailException("删除失败！");
         }
+        log.info("[{}],[{}],Gid:[{}],Cid:[{}],Pid:[{}],operatorUid:[{}],operatorUsername:[{}]",
+                "Group_Contest_Problem", "Delete", gid,cid,pid,userRolesVo.getUid(), userRolesVo.getUsername());
+
     }
 
     public void addProblemFromPublic(ContestProblemDTO contestProblemDto) throws StatusNotFoundException, StatusForbiddenException, StatusFailException {
@@ -278,7 +287,7 @@ public class GroupContestProblemManager {
 
         Problem problem = problemEntityService.getById(pid);
 
-        if (problem == null || problem.getAuth() != 1 || problem.getIsGroup()) {
+        if (problem == null ||  problem.getAuth() == 2 || problem.getAuth() == 3 || problem.getIsGroup()) {
             throw new StatusNotFoundException("该题目不存在或已被隐藏！");
         }
 
@@ -326,6 +335,9 @@ public class GroupContestProblemManager {
         if (!isOk) {
             throw new StatusFailException("添加失败");
         }
+        log.info("[{}],[{}],Gid:[{}],Cid:[{}],Pid:[{}],operatorUid:[{}],operatorUsername:[{}]",
+                "Group_Contest_Problem", "Add_FromPublic",gid,cid,pid,userRolesVo.getUid(),userRolesVo.getUsername());
+
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -386,5 +398,8 @@ public class GroupContestProblemManager {
         if (!isOk || !updateProblem) {
             throw new StatusFailException("添加失败");
         }
+        log.info("[{}],[{}],Gid:[{}],Cid:[{}],Pid:[{}],operatorUid:[{}],operatorUsername:[{}]",
+                "Group_Contest_Problem", "Add_FromGroup",gid,cid,problem.getId(),userRolesVo.getUid(),userRolesVo.getUsername());
+
     }
 }

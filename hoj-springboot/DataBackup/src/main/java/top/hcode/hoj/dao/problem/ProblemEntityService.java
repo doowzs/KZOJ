@@ -1,7 +1,9 @@
 package top.hcode.hoj.dao.problem;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import top.hcode.hoj.pojo.dto.ProblemDTO;
+import top.hcode.hoj.pojo.entity.problem.ProblemCase;
 import top.hcode.hoj.pojo.vo.ImportProblemVO;
 import top.hcode.hoj.pojo.vo.ProblemVO;
 import top.hcode.hoj.pojo.entity.problem.Problem;
@@ -29,4 +31,5 @@ public interface ProblemEntityService extends IService<Problem> {
     boolean adminAddProblem(ProblemDTO problemDto);
 
     ImportProblemVO buildExportProblem(Long pid, List<HashMap<String, Object>> problemCaseList, HashMap<Long, String> languageMap, HashMap<Long, String> tagMap);
+
 }

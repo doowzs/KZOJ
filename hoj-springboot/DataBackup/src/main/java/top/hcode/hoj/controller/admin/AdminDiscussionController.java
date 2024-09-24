@@ -36,7 +36,7 @@ public class AdminDiscussionController {
     }
 
     @DeleteMapping("/discussion")
-    @RequiresRoles(value = {"root", "admin","problem_admin"}, logical = Logical.OR)
+    @RequiresRoles(value = {"root","problem_admin"}, logical = Logical.OR)
     @RequiresAuthentication
     public CommonResult<Void> removeDiscussion(@RequestBody List<Integer> didList) {
         return adminDiscussionService.removeDiscussion(didList);

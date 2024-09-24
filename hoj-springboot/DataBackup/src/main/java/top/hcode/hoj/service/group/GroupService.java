@@ -1,6 +1,7 @@
 package top.hcode.hoj.service.group;
 
 import top.hcode.hoj.common.result.CommonResult;
+import top.hcode.hoj.pojo.dto.VerifyDTO;
 import top.hcode.hoj.pojo.entity.group.Group;
 import top.hcode.hoj.pojo.vo.AccessVO;
 import top.hcode.hoj.pojo.vo.GroupVO;
@@ -25,5 +26,7 @@ public interface GroupService {
 
     public CommonResult<Void> updateGroup(Group group);
 
-    public CommonResult<Void> deleteGroup(Long gid);
+    public CommonResult<Void> deleteGroup(VerifyDTO verifyDTO, Long gid);
+
+    public CommonResult<Void> getVerifyEmailCode(String email);
 }

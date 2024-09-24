@@ -1,7 +1,9 @@
 package top.hcode.hoj.controller.group;
 
+import org.springframework.validation.annotation.Validated;
 import top.hcode.hoj.annotation.AnonApi;
 import top.hcode.hoj.common.result.CommonResult;
+import top.hcode.hoj.pojo.dto.VerifyDTO;
 import top.hcode.hoj.pojo.entity.group.Group;
 import top.hcode.hoj.pojo.vo.AccessVO;
 import top.hcode.hoj.pojo.vo.GroupVO;
@@ -68,7 +70,20 @@ public class GroupController {
     @DeleteMapping("/group")
     @RequiresAuthentication
     @RequiresPermissions("group_del")
-    public CommonResult<Void> deleteGroup(@RequestParam(value = "gid", required = true) Long gid) {
-        return groupService.deleteGroup(gid);
+    public CommonResult<Void> deleteGroup(
+            @Validated @RequestBody VerifyDTO verifyDTO,
+            @RequestParam(value = "gid", required = true) Long gid) {
+        return groupService.deleteGroup(verifyDTO,gid);
+    }
+
+    /**
+     * 获取邮箱的验证码
+     * @param email
+     * @return
+     */
+    @GetMapping("/get-verify-email-code")
+    @RequiresAuthentication
+    public CommonResult<Void> getVerifyEmailCode(@RequestParam("email") String email) {
+        return groupService.getVerifyEmailCode(email);
     }
 }

@@ -173,8 +173,12 @@ public class Constants {
         CODE_ACCOUNT_LOCK("account-lock:"),
         CODE_CHANGE_EMAIL_FAIL("change-email-fail:"),
         CODE_CHANGE_EMAIL_LOCK("change-email-lock:"),
+        CODE_VERIFY_EMAIL_FAIL("verify-email-fail:"),
+        CODE_VERIFY_EMAIL_LOCK("verify-email-lock:"),
 
         TRY_LOGIN_NUM("try-login-num:"),
+
+        DOWNLOAD_TESTCASE_NUM("download-testcase-num:"),
 
         ACM_RANK_CACHE("acm_rank_cache"),
         OI_RANK_CACHE("oi_rank_cache"),
@@ -261,10 +265,12 @@ public class Constants {
         EMAIL_BACKGROUND_IMG("EMAIL_BACKGROUND_IMG"),
         REGISTER_KEY_PREFIX("register-user:"),
         CHANGE_EMAIL_KEY_PREFIX("change-email:"),
+        VERIFY_EMAIL_KEY_PREFIX("verify-email:"),
         RESET_PASSWORD_KEY_PREFIX("reset-password:"),
         RESET_EMAIL_LOCK("reset-email-lock:"),
         REGISTER_EMAIL_LOCK("register-email-lock:"),
-        CHANGE_EMAIL_LOCK("change-email-lock:");
+        CHANGE_EMAIL_LOCK("change-email-lock:"),
+        VERIFY_EMAIL_LOCK("verify-email-lock:");
 
         private final String value;
 
@@ -338,7 +344,8 @@ public class Constants {
     public enum ProblemAuth {
         PUBLIC(1),
         PRIVATE(2),
-        CONTEST(3);
+        CONTEST(3),
+        GROUP(4);
 
         private final Integer auth;
 

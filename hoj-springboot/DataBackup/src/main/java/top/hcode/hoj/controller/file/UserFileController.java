@@ -2,11 +2,15 @@ package top.hcode.hoj.controller.file;
 
 
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import top.hcode.hoj.common.exception.StatusFailException;
+import top.hcode.hoj.common.exception.StatusForbiddenException;
 import top.hcode.hoj.service.file.UserFileService;
 
 import javax.servlet.http.HttpServletResponse;
@@ -31,4 +35,12 @@ public class UserFileController {
         userFileService.generateUserExcel(key, response);
     }
 
+    @GetMapping("/download-user-list")
+    @RequiresAuthentication
+    @RequiresRoles("root")
+    public void downloadUserList(
+            @RequestParam(value = "isRLTime", defaultValue = "true") Boolean isRLTime,
+            HttpServletResponse response) throws StatusFailException, IOException, StatusForbiddenException {
+        userFileService.downloadUserList(isRLTime,response);
+    }
 }

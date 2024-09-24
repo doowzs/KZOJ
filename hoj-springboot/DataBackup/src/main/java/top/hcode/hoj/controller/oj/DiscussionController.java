@@ -39,15 +39,27 @@ public class DiscussionController {
                                                              @RequestParam(value = "cid", required = false) Integer categoryId,
                                                              @RequestParam(value = "pid", required = false) String pid,
                                                              @RequestParam(value = "onlyMine", required = false, defaultValue = "false") Boolean onlyMine,
+                                                             @RequestParam(value = "onlyGroup", required = false, defaultValue = "false") Boolean onlyGroup,
+                                                             @RequestParam(value = "onlyExplain", required = false, defaultValue = "false") Boolean onlyExplain,
+                                                             @RequestParam(value = "onlyStatus", required = false, defaultValue = "false") Boolean onlyStatus,
                                                              @RequestParam(value = "keyword", required = false) String keyword,
                                                              @RequestParam(value = "admin", defaultValue = "false") Boolean admin) {
+        return discussionService.getDiscussionList(limit, currentPage, categoryId, pid, onlyMine, onlyGroup, onlyExplain, onlyStatus, keyword, admin);
+    }
 
-        return discussionService.getDiscussionList(limit, currentPage, categoryId, pid, onlyMine, keyword, admin);
+    @GetMapping("/get-Explain-list")
+    @AnonApi
+    @HOJAccess({HOJAccessEnum.PUBLIC_DISCUSSION})
+    public CommonResult<IPage<Discussion>> getExplainList(@RequestParam(value = "limit", required = false, defaultValue = "10") Integer limit,
+                                                          @RequestParam(value = "currentPage", required = false, defaultValue = "1") Integer currentPage,
+                                                          @RequestParam(value = "pid", required = false) String pid,
+                                                          @RequestParam(value = "admin", defaultValue = "false") Boolean admin) {
 
+        return discussionService.getExplainList(limit, currentPage, pid, admin);
     }
 
     @GetMapping("/get-discussion-detail")
-    @AnonApi
+    @RequiresAuthentication
     public CommonResult<DiscussionVO> getDiscussion(@RequestParam(value = "did", required = true) Integer did) {
         return discussionService.getDiscussion(did);
     }

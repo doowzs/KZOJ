@@ -12,7 +12,7 @@ import java.util.Date;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author Himit_ZH
@@ -80,7 +80,7 @@ public class Problem implements Serializable {
     @ApiModelProperty(value = "备注,提醒")
     private String hint;
 
-    @ApiModelProperty(value = "默认为1公开，2为私有，3为比赛中")
+    @ApiModelProperty(value = "默认为1公开，2为私有，3为比赛中,4为团队")
     private Integer auth;
 
     @ApiModelProperty(value = "当该题目为oi题目时的分数")

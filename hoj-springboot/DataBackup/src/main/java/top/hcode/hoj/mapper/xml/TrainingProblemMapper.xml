@@ -9,7 +9,7 @@
              problem p
         where tp.tid = #{tid}
           and tp.pid = p.id
-          and p.auth = 1
+          and (p.auth = 1 or p.auth = 4)
     </select>
 
 
@@ -46,8 +46,8 @@
         FROM problem p,
              training_problem tp
         where p.id = tp.pid
-          and p.auth = 1
-          and tp.tid = #{tid}
+            and (p.auth = 1 or p.auth=4)
+            and tp.tid = #{tid}
         order by tp.`rank` asc
     </select>
 
@@ -119,7 +119,7 @@
         FROM problem p,
              training_problem tp
         where p.id = tp.pid
-          and p.auth = 1
+          and (p.auth = 1 OR p.auth = 4)
           and tp.tid = #{tid}
         order by tp.`rank` asc
     </select>

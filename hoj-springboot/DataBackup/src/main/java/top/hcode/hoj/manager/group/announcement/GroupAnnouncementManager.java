@@ -1,6 +1,7 @@
 package top.hcode.hoj.manager.group.announcement;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -23,6 +24,7 @@ import top.hcode.hoj.validator.GroupValidator;
  * @Description:
  */
 @Component
+@Slf4j(topic = "hoj")
 public class GroupAnnouncementManager {
 
     @Autowired
@@ -112,6 +114,9 @@ public class GroupAnnouncementManager {
         if (!isOk) {
             throw new StatusFailException("添加失败");
         }
+        log.info("[{}],[{}],Gid:[{}],Title:[{}],operatorUid:[{}],operatorUsername:[{}]",
+                "Group_Announcement", "Add", announcement.getGid(), announcement.getTitle() , userRolesVo.getUid(), userRolesVo.getUsername());
+
     }
 
     public void updateAnnouncement(Announcement announcement) throws StatusForbiddenException, StatusNotFoundException, StatusFailException {
@@ -153,6 +158,9 @@ public class GroupAnnouncementManager {
         if (!isOk) {
             throw new StatusFailException("修改失败");
         }
+        log.info("[{}],[{}],Gid:[{}],Title:[{}],operatorUid:[{}],operatorUsername:[{}]",
+                "Group_Announcement", "Update", announcement.getGid(), announcement.getTitle() , userRolesVo.getUid(), userRolesVo.getUsername());
+
     }
 
     public void deleteAnnouncement(Long aid) throws StatusForbiddenException, StatusNotFoundException, StatusFailException {
@@ -187,5 +195,8 @@ public class GroupAnnouncementManager {
         if (!isOk) {
             throw new StatusFailException("删除失败");
         }
+        log.info("[{}],[{}],Gid:[{}],Title:[{}],operatorUid:[{}],operatorUsername:[{}]",
+                "Group_Announcement", "Delete", announcement.getGid(), announcement.getTitle() , userRolesVo.getUid(), userRolesVo.getUsername());
+
     }
 }

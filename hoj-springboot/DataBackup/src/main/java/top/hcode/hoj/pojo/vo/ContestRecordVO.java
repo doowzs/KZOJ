@@ -42,6 +42,9 @@ public class ContestRecordVO implements Serializable {
     @ApiModelProperty(value = "学校")
     private String school;
 
+    @ApiModelProperty(value = "年级")
+    private String number;
+
     @ApiModelProperty(value = "性别")
     private String gender;
 

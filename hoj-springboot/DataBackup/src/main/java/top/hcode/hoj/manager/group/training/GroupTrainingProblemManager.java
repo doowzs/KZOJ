@@ -2,6 +2,7 @@ package top.hcode.hoj.manager.group.training;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -32,6 +33,7 @@ import java.util.HashMap;
  * @Description:
  */
 @Component
+@Slf4j(topic = "hoj")
 public class GroupTrainingProblemManager {
 
     @Autowired
@@ -115,6 +117,8 @@ public class GroupTrainingProblemManager {
         if (!isOk) {
             throw new StatusFailException("修改失败！");
         }
+        log.info("[{}],[{}],Gid:[{}],Tid:[{}],Pid:[{}]operatorUid:[{}],operatorUsername:[{}]",
+                "Group_Training_Problem", "Update", gid, trainingProblem.getTid(), trainingProblem.getPid(), userRolesVo.getUid(), userRolesVo.getUsername());
     }
 
     public void deleteTrainingProblem(Long pid, Long tid) throws StatusNotFoundException, StatusForbiddenException, StatusFailException {
@@ -152,6 +156,9 @@ public class GroupTrainingProblemManager {
         if (!isOk) {
             throw new StatusFailException("删除失败！");
         }
+        log.info("[{}],[{}],Gid:[{}],Tid:[{}],Pid:[{}]operatorUid:[{}],operatorUsername:[{}]",
+                "Group_Training_Problem", "Delete", gid, tid, pid, userRolesVo.getUid(), userRolesVo.getUsername());
+
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -164,7 +171,7 @@ public class GroupTrainingProblemManager {
 
         Problem problem = problemEntityService.getById(pid);
 
-        if (problem == null || problem.getAuth() != 1 || problem.getIsGroup()) {
+        if (problem == null || problem.getAuth() == 2 || problem.getAuth() == 3 || problem.getIsGroup()) {
             throw new StatusNotFoundException("该题目不存在或已被隐藏！");
         }
 
@@ -221,6 +228,8 @@ public class GroupTrainingProblemManager {
         } else {
             throw new StatusFailException("添加失败！");
         }
+        log.info("[{}],[{}],Gid:[{}],Tid:[{}],Pid:[{}]operatorUid:[{}],operatorUsername:[{}]",
+                "Group_Training_Problem", "Add_FromPublic", gid, tid, pid, userRolesVo.getUid(), userRolesVo.getUsername());
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -285,5 +294,8 @@ public class GroupTrainingProblemManager {
         } else {
             throw new StatusFailException("添加失败！");
         }
+        log.info("[{}],[{}],Gid:[{}],Tid:[{}],Pid:[{}]operatorUid:[{}],operatorUsername:[{}]",
+                "Group_Training_Problem", "Add_FromGroup", gid, tid, problemId, userRolesVo.getUid(), userRolesVo.getUsername());
+
     }
 }

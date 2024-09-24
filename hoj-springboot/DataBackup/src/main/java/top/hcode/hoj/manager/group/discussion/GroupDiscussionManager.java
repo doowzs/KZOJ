@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -31,6 +32,7 @@ import top.hcode.hoj.validator.GroupValidator;
  * @Description:
  */
 @Component
+@Slf4j(topic = "hoj")
 public class GroupDiscussionManager {
 
     @Autowired
@@ -194,6 +196,9 @@ public class GroupDiscussionManager {
         if (!isOk) {
             throw new StatusFailException("添加失败");
         }
+        log.info("[{}],[{}],Gid:[{}],discussionID:[{}],operatorUid:[{}],operatorUsername:[{}]",
+                "Group_Discussion", "Add", discussion.getGid(), discussion.getId(),userRolesVo.getUid(), userRolesVo.getUsername());
+
     }
 
     public void updateDiscussion(Discussion discussion) throws StatusForbiddenException, StatusNotFoundException, StatusFailException {
@@ -249,6 +254,9 @@ public class GroupDiscussionManager {
         if (!isOk) {
             throw new StatusFailException("修改失败");
         }
+        log.info("[{}],[{}],Gid:[{}],discussionID:[{}],operatorUid:[{}],operatorUsername:[{}]",
+                "Group_Discussion", "Update", discussion.getGid(), discussion.getId(),userRolesVo.getUid(), userRolesVo.getUsername());
+
     }
 
     public void deleteDiscussion(Long did) throws StatusForbiddenException, StatusNotFoundException, StatusFailException {
@@ -276,5 +284,7 @@ public class GroupDiscussionManager {
         if (!isOk) {
             throw new StatusFailException("删除失败");
         }
+        log.info("[{}],[{}],Gid:[{}],discussionID:[{}],operatorUid:[{}],operatorUsername:[{}]",
+                "Group_Discussion", "Delete", discussion.getGid(), discussion.getId(),userRolesVo.getUid(), userRolesVo.getUsername());
     }
 }

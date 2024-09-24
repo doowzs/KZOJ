@@ -20,6 +20,12 @@ public class AdminEditUserDTO {
 
     private String realname;
 
+    private String school;
+
+    private String number;
+
+    private String gender;
+
     private String email;
 
     private String password;
@@ -29,6 +35,8 @@ public class AdminEditUserDTO {
     private Integer status;
 
     private Boolean setNewPwd;
+
+    private Boolean setOther;
 
     private String titleName;
 

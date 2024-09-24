@@ -31,7 +31,8 @@ public class AdminGroupProblemManager {
                 .eq(gid != null, "gid", gid)
                 .isNotNull("gid")
                 .isNotNull("apply_public_progress")
-                .orderByAsc("apply_public_progress", "gid");
+                .orderByAsc("apply_public_progress", "gid")
+                .orderByDesc("id");
 
         if (!StringUtils.isEmpty(keyword)) {
             problemQueryWrapper.and(wrapper -> wrapper.like("title", keyword).or()
@@ -70,5 +71,6 @@ public class AdminGroupProblemManager {
         if (!isOk) {
             throw new StatusFailException("修改失败！");
         }
+
     }
 }

@@ -46,40 +46,46 @@ public class FileEntityEntityServiceImpl extends ServiceImpl<FileMapper, File> i
     @Override
     public List<List<String>> getContestRankExcelHead(List<String> contestProblemDisplayIDList, Boolean isACM) {
         List<List<String>> headList = new LinkedList<>();
-
         List<String> head0 = new LinkedList<>();
         head0.add("Rank");
-
         List<String> head1 = new LinkedList<>();
-        head1.add("Username");
+        head1.add("User Name");
         List<String> head2 = new LinkedList<>();
-        head2.add("ShowName");
+        head2.add("Show Name");
         List<String> head3 = new LinkedList<>();
         head3.add("Real Name");
         List<String> head4 = new LinkedList<>();
         head4.add("School");
+        List<String> head5 = new LinkedList<>();
+        head5.add("Class");
+        List<String> head6 = new LinkedList<>();
+        head6.add("Gender");
+        List<String> head7 = new LinkedList<>();
+        head7.add("Award Name");
 
         headList.add(head0);
         headList.add(head1);
         headList.add(head2);
         headList.add(head3);
         headList.add(head4);
+        headList.add(head5);
+        headList.add(head6);
+        headList.add(head7);
 
-        List<String> head5 = new LinkedList<>();
+        List<String> head8 = new LinkedList<>();
         if (isACM) {
-            head5.add("AC");
-            List<String> head6 = new LinkedList<>();
-            head6.add("Total Submission");
-            List<String> head7 = new LinkedList<>();
-            head7.add("Total Penalty Time");
-            headList.add(head5);
-            headList.add(head6);
-            headList.add(head7);
+            head8.add("AC");
+            List<String> head9 = new LinkedList<>();
+            head9.add("Total Submission");
+            List<String> head10 = new LinkedList<>();
+            head10.add("Total Penalty Time");
+            headList.add(head8);
+            headList.add(head9);
+            headList.add(head10);
         } else {
-            head5.add("Total Score");
-            headList.add(head5);
+            head8.add("Total Score");
+            headList.add(head8);
         }
-
         // 添加题目头
         for (String displayID : contestProblemDisplayIDList) {
             List<String> tmp = new LinkedList<>();
@@ -109,6 +115,17 @@ public class FileEntityEntityServiceImpl extends ServiceImpl<FileMapper, File> i
             }
             rowData.add(acmContestRankVo.getRealname());
             rowData.add(acmContestRankVo.getSchool());
+            rowData.add(acmContestRankVo.getNumber());
+            switch (acmContestRankVo.getGender()){
+                case "male":rowData.add("男");break;
+                case "female":rowData.add("女");break;
+                default:rowData.add("保密");
+            }
+            if(acmContestRankVo.getAwardName()==null){
+                rowData.add("");
+            }else {
+                rowData.add(acmContestRankVo.getAwardName());
+            }
             rowData.add(acmContestRankVo.getAc());
             rowData.add(acmContestRankVo.getTotal());
             rowData.add(acmContestRankVo.getTotalTime());
@@ -169,7 +186,19 @@ public class FileEntityEntityServiceImpl extends ServiceImpl<FileMapper, File> i
             }
             rowData.add(oiContestRankVo.getRealname());
             rowData.add(oiContestRankVo.getSchool());
+            rowData.add(oiContestRankVo.getNumber());
+            switch (oiContestRankVo.getGender()){
+                case "male":rowData.add("男");break;
+                case "female":rowData.add("女");break;
+                default:rowData.add("保密");
+            }
+            if(oiContestRankVo.getAwardName()==null){
+                rowData.add("");
+            }else {
+                rowData.add(oiContestRankVo.getAwardName());
+            }
             rowData.add(oiContestRankVo.getTotalScore());
+
             HashMap<String, Integer> submissionInfo = oiContestRankVo.getSubmissionInfo();
             for (String displayID : contestProblemDisplayIDList) {
                 Integer score = submissionInfo.getOrDefault(displayID, null);

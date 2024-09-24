@@ -1,7 +1,7 @@
 # redis配置
 redis-host: 127.0.0.1
 redis-port: 6379
-redis-password: hoj123456
+redis-password: Li000317
 
 # 本服务连接mysql的地址和端口号
 mysql-host: 127.0.0.1
@@ -10,7 +10,7 @@ mysql-port: 3306
 mysql-public-host: 127.0.0.1
 mysql-public-port: 3306
 mysql-username: root
-mysql-password: hoj123456
+mysql-password: Li000317
 mysql-name: hoj
 
 # token密钥，default表示随机生成
@@ -30,9 +30,9 @@ email-host: smtp.qq.com
 # 邮箱服务端口号
 email-port: 465
 # 邮箱账号
-email-username: your_email_username
+email-username: lei0421@foxmail.com
 # 邮箱授权码
-email-password: your_email_password
+email-password: roaldfxujtnmbade
 
 # 以下为各个remote judge平台的账号配置
 hdu-username-list:

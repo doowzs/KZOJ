@@ -208,8 +208,15 @@ public class AdminContestProblemManager {
         problemDto.getProblem().setAuth(3);
         boolean isOk = problemEntityService.adminAddProblem(problemDto);
         if (isOk) { // 添加成功
+
+            // 获取当前登录的用户
+            AccountProfile userRolesVo = (AccountProfile) SecurityUtils.getSubject().getPrincipal();
+
+            log.info("[{}],[{}],problemDtoID:[{}],operatorUid:[{}],operatorUsername:[{}]",
+                    "Admin_Contest", "Add_Problem", problemDto.getProblem().getId(), userRolesVo.getUid(), userRolesVo.getUsername());
             // 顺便返回新的题目id，好下一步添加外键操作
             return MapUtil.builder().put("pid", problemDto.getProblem().getId()).map();
+
         } else {
             throw new StatusFailException("添加失败");
         }
@@ -242,6 +249,8 @@ public class AdminContestProblemManager {
         if (!isOk) {
             throw new StatusFailException("修改失败");
         }
+        log.info("[{}],[{}],problemDtoID:[{}],operatorUid:[{}],operatorUsername:[{}]",
+                "Admin_User", "Update", problemDto.getProblem().getProblemId().toUpperCase(), userRolesVo.getUid(), userRolesVo.getUsername());
     }
 
     public ContestProblem getContestProblem(Long cid, Long pid) throws StatusFailException {

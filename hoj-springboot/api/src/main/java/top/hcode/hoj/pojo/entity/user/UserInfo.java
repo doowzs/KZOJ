@@ -48,7 +48,7 @@ public class UserInfo implements Serializable {
     private String course;
 
     @TableField(updateStrategy = FieldStrategy.IGNORED)
-    @ApiModelProperty(value = "学号")
+    @ApiModelProperty(value = "年级")
     private String number;
 
     @TableField(updateStrategy = FieldStrategy.IGNORED)

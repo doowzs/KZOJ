@@ -11,6 +11,7 @@ import com.alibaba.nacos.api.NacosFactory;
 import com.alibaba.nacos.api.exception.NacosException;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.ServiceInstance;
@@ -30,6 +31,7 @@ import top.hcode.hoj.pojo.dto.*;
 import top.hcode.hoj.pojo.entity.common.File;
 import top.hcode.hoj.pojo.entity.judge.RemoteJudgeAccount;
 import top.hcode.hoj.pojo.vo.ConfigVO;
+import top.hcode.hoj.shiro.AccountProfile;
 import top.hcode.hoj.utils.ConfigUtils;
 import top.hcode.hoj.utils.Constants;
 
@@ -179,6 +181,9 @@ public class ConfigManager {
         } else {
             throw new StatusFailException("删除失败！");
         }
+        AccountProfile userRolesVo = (AccountProfile) SecurityUtils.getSubject().getPrincipal();
+        log.info("[{}],[{}],operatorUid:[{}],operatorUsername:[{}]",
+                "System_Home_Carousel", "Delete",  userRolesVo.getUid(), userRolesVo.getUsername());
     }
 
     public void setWebConfig(WebConfigDTO config) throws StatusFailException {
@@ -216,6 +221,10 @@ public class ConfigManager {
         if (!isOk) {
             throw new StatusFailException("修改失败");
         }
+        AccountProfile userRolesVo = (AccountProfile) SecurityUtils.getSubject().getPrincipal();
+        log.info("[{}],[{}],operatorUid:[{}],operatorUsername:[{}]",
+                "System_Web_config", "Update",  userRolesVo.getUid(), userRolesVo.getUsername());
+
     }
 
     public EmailConfigDTO getEmailConfig() {
@@ -260,6 +269,9 @@ public class ConfigManager {
         if (!isOk) {
             throw new StatusFailException("修改失败");
         }
+        AccountProfile userRolesVo = (AccountProfile) SecurityUtils.getSubject().getPrincipal();
+        log.info("[{}],[{}],operatorUid:[{}],operatorUsername:[{}]",
+                "System_Email_Config", "Update",  userRolesVo.getUid(), userRolesVo.getUsername());
     }
 
 
@@ -325,6 +337,10 @@ public class ConfigManager {
         if (!isOk) {
             throw new StatusFailException("修改失败");
         }
+
+        AccountProfile userRolesVo = (AccountProfile) SecurityUtils.getSubject().getPrincipal();
+        log.info("[{}],[{}],operatorUid:[{}],operatorUsername:[{}]",
+                "System_Db_Redis_config", "Update",  userRolesVo.getUid(), userRolesVo.getUsername());
     }
 
     public SwitchConfigDTO getSwitchConfig() {
@@ -442,6 +458,9 @@ public class ConfigManager {
         if (!isOk) {
             throw new StatusFailException("修改失败");
         }
+        AccountProfile userRolesVo = (AccountProfile) SecurityUtils.getSubject().getPrincipal();
+        log.info("[{}],[{}],operatorUid:[{}],operatorUsername:[{}]",
+                "System_SwitchConfig", "Update",  userRolesVo.getUid(), userRolesVo.getUsername());
     }
 
     private boolean checkListDiff(List<String> list1, List<String> list2) {

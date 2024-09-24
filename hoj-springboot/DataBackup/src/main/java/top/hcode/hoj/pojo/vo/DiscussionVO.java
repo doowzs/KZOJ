@@ -66,6 +66,9 @@ public class DiscussionVO {
     @ApiModelProperty(value = "优先级，是否置顶")
     private Boolean topPriority;
 
+    @ApiModelProperty(value = "是否为题解")
+    private Boolean isExplain;
+
     @ApiModelProperty(value = "团队ID")
     private Long gid;
 

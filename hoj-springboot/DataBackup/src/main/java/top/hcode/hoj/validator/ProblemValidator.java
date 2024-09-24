@@ -48,7 +48,7 @@ public class ProblemValidator {
 
         Constants.ProblemAuth auth = Constants.ProblemAuth.getProblemAuth(problem.getAuth());
         if (auth == null) {
-            throw new StatusFailException("题目的权限必须为公开题目(1), 隐藏题目(2), 比赛题目(3)！");
+            throw new StatusFailException("题目的权限必须为公开题目(1), 隐藏题目(2), 比赛题目(3)，团队题目(4)！");
         }
 
         Constants.JudgeMode judgeMode = Constants.JudgeMode.getJudgeMode(problem.getJudgeMode());

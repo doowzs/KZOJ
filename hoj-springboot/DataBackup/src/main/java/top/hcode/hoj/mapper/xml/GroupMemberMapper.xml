@@ -14,10 +14,10 @@
     </resultMap>
 
     <select id="getMemberList" resultMap="map_MemberList">
-        SELECT gm.id, gm.gid, gm.uid, gm.auth, gm.gmt_create, gm.gmt_modified, ui.username
+        SELECT gm.id, gm.gid, gm.uid, gm.auth, gm.gmt_create, gm.gmt_modified, ui.username,ui.realname
         FROM group_member gm, user_info ui
         <where>
-            gm.gid = #{gid} and gm.uid = ui.uuid and (gm.auth = 3 or gm.auth = 4 or gm.auth = 5)
+            gm.gid = #{gid} and gm.uid = ui.uuid and (gm.auth = 3 or gm.auth = 4 or gm.auth = 5) and ui.status = 0
             <if test="auth != 0">
                 and gm.auth = #{auth}
             </if>
@@ -29,10 +29,10 @@
     </select>
 
     <select id="getApplyList" resultMap="map_MemberList">
-        SELECT gm.*, ui.username
+        SELECT gm.*, ui.username,ui.realname
         FROM group_member gm, user_info ui
         <where>
-            gm.gid = #{gid} and gm.uid = ui.uuid
+            gm.gid = #{gid} and gm.uid = ui.uuid and ui.status = 0
             <if test="auth != 0">
                 and gm.auth = #{auth}
             </if>
@@ -40,6 +40,6 @@
                 and ui.username like concat('%',#{keyword},'%')
             </if>
         </where>
-        ORDER BY gm.gmt_create DESC
+        ORDER BY gm.auth ASC,gm.gmt_create DESC
     </select>
 </mapper>

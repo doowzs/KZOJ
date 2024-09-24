@@ -5,7 +5,7 @@
     <parent>
         <artifactId>hoj-springboot</artifactId>
         <groupId>top.hcode</groupId>
-        <version>4.6</version>
+        <version>4.5</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>hoj-backend</artifactId>
@@ -15,6 +15,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.2.6.RELEASE</version>
                 <configuration>
                     <!-- 指定该Main Class为全局的唯一入口 -->
                     <mainClass>top.hcode.hoj.DataBackupApplication</mainClass>
@@ -53,7 +54,7 @@
         <dependency>
             <groupId>top.hcode</groupId>
             <artifactId>hoj-api</artifactId>
-            <version>4.6</version>
+            <version>4.5</version>
         </dependency>
 
         <dependency>
@@ -168,11 +169,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>net.sourceforge.htmlunit</groupId>-->
-<!--            <artifactId>htmlunit</artifactId>-->
-<!--            <version>2.50.0</version>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>net.sourceforge.htmlunit</groupId>-->
+        <!--            <artifactId>htmlunit</artifactId>-->
+        <!--            <version>2.50.0</version>-->
+        <!--        </dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>

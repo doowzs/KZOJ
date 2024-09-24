@@ -64,6 +64,9 @@ public class Discussion {
     @ApiModelProperty(value = "优先级，是否置顶")
     private Boolean topPriority;
 
+    @ApiModelProperty(value = "是否为题解")
+    private Boolean isExplain;
+
     @ApiModelProperty(value = "是否封禁或删除 0正常，1封禁")
     private Integer status;
 

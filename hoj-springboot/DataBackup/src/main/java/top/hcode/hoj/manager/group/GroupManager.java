@@ -1,7 +1,11 @@
 package top.hcode.hoj.manager.group;
 
+import cn.hutool.core.lang.Validator;
+import cn.hutool.core.util.RandomUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,10 +18,16 @@ import top.hcode.hoj.config.NacosSwitchConfig;
 import top.hcode.hoj.config.SwitchConfig;
 import top.hcode.hoj.dao.group.GroupEntityService;
 import top.hcode.hoj.dao.group.GroupMemberEntityService;
+import top.hcode.hoj.dao.problem.ProblemEntityService;
 import top.hcode.hoj.dao.user.UserAcproblemEntityService;
+import top.hcode.hoj.dao.user.UserInfoEntityService;
+import top.hcode.hoj.manager.email.EmailManager;
+import top.hcode.hoj.pojo.dto.VerifyDTO;
 import top.hcode.hoj.pojo.entity.group.Group;
 import top.hcode.hoj.pojo.entity.group.GroupMember;
+import top.hcode.hoj.pojo.entity.problem.Problem;
 import top.hcode.hoj.pojo.entity.user.UserAcproblem;
+import top.hcode.hoj.pojo.entity.user.UserInfo;
 import top.hcode.hoj.pojo.vo.AccessVO;
 import top.hcode.hoj.pojo.vo.GroupVO;
 import top.hcode.hoj.shiro.AccountProfile;
@@ -25,7 +35,10 @@ import top.hcode.hoj.utils.Constants;
 import top.hcode.hoj.utils.RedisUtils;
 import top.hcode.hoj.validator.GroupValidator;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -34,6 +47,7 @@ import java.util.stream.Collectors;
  * @Description:
  */
 @Component
+@Slf4j(topic = "hoj")
 public class GroupManager {
 
     @Autowired
@@ -43,7 +57,13 @@ public class GroupManager {
     private UserAcproblemEntityService userAcproblemEntityService;
 
     @Autowired
+    private UserInfoEntityService userInfoEntityService;
+
+    @Autowired
     private GroupMemberEntityService groupMemberEntityService;
+
+    @Autowired
+    private ProblemEntityService problemEntityService;
 
     @Autowired
     private RedisUtils redisUtils;
@@ -53,6 +73,9 @@ public class GroupManager {
 
     @Autowired
     private NacosSwitchConfig nacosSwitchConfig;
+
+    @Autowired
+    private EmailManager emailManager;
 
     public IPage<GroupVO> getGroupList(Integer limit, Integer currentPage, String keyword, Integer auth, boolean onlyMine) {
         AccountProfile userRolesVo = (AccountProfile) SecurityUtils.getSubject().getPrincipal();
@@ -189,7 +212,7 @@ public class GroupManager {
             throw new StatusFailException("团队权限不能为空且应为1~3！");
         }
 
-        if (group.getAuth() == 2 || group.getAuth() == 3) {
+        if ( group.getAuth() == 3) {
             if (StringUtils.isEmpty(group.getCode()) || group.getCode().length() != 6) {
                 throw new StatusFailException("团队邀请码不能为空且长度应为 6！");
             }
@@ -212,7 +235,6 @@ public class GroupManager {
         if (sameShortNameGroupCount > 0) {
             throw new StatusFailException("团队简称已存在，请修改后重试！");
         }
-
         boolean isOk = groupEntityService.save(group);
         if (!isOk) {
             throw new StatusFailException("创建失败，请重新尝试！");
@@ -222,6 +244,8 @@ public class GroupManager {
                     .setGid(group.getId())
                     .setAuth(5));
         }
+        log.info("[{}],[{}],Gid:[{}],Gname:[{}],operatorUid:[{}],operatorUsername:[{}]",
+                "Group", "Add", group.getId(),group.getName(),userRolesVo.getUid(), userRolesVo.getUsername());
     }
 
     public void updateGroup(Group group) throws StatusFailException, StatusForbiddenException {
@@ -273,9 +297,11 @@ public class GroupManager {
         if (!isOk) {
             throw new StatusFailException("更新失败，请重新尝试！");
         }
+        log.info("[{}],[{}],Gid:[{}],operatorUid:[{}],operatorUsername:[{}]",
+                "Group", "Update", group.getId(),userRolesVo.getUid(), userRolesVo.getUsername());
     }
 
-    public void deleteGroup(Long gid) throws StatusFailException, StatusNotFoundException, StatusForbiddenException {
+    public void deleteGroup(VerifyDTO verifyDTO, Long gid) throws StatusFailException, StatusNotFoundException, StatusForbiddenException {
         AccountProfile userRolesVo = (AccountProfile) SecurityUtils.getSubject().getPrincipal();
 
         boolean isRoot = SecurityUtils.getSubject().hasRole("root");
@@ -289,6 +315,46 @@ public class GroupManager {
         if (!isRoot && !userRolesVo.getUid().equals(group.getUid())) {
             throw new StatusForbiddenException("对不起，您无权限操作！");
         }
+        if (!Validator.isEmail(verifyDTO.getEmail())) {
+            throw new StatusFailException("邮箱格式错误！");
+        }
+
+        // 如果已经被锁定半小时不能修改
+        String lockKey = Constants.Account.CODE_VERIFY_EMAIL_LOCK + userRolesVo.getUid();
+        // 统计失败的key
+        String countKey = Constants.Account.CODE_VERIFY_EMAIL_FAIL + userRolesVo.getUid();
+
+        if (redisUtils.hasKey(lockKey)) {
+            long expire = redisUtils.getExpire(lockKey);
+            Date now = new Date();
+            long minute = expire / 60;
+            long second = expire % 60;
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date afterDate = new Date(now.getTime() + expire * 1000);
+            String msg = "由于您多次验证失败，解散团队功能已锁定，请在" + minute + "分" + second + "秒后(" + formatter.format(afterDate) + ")再进行尝试！";
+            throw new StatusFailException(msg);
+        }
+
+        String cacheCodeKey = Constants.Email.VERIFY_EMAIL_KEY_PREFIX.getValue() + verifyDTO.getEmail();
+        String cacheCode = (String) redisUtils.get(cacheCodeKey);
+        if (cacheCode == null) {
+            throw new StatusFailException("邮箱验证码不存在或已过期，请重新发送！");
+        }
+        if (!Objects.equals(cacheCode, verifyDTO.getCode())) {
+            Integer count = (Integer) redisUtils.get(countKey);
+            if (count == null) {
+                redisUtils.set(countKey, 1, 60 * 30); // 三十分钟不尝试，该限制会自动清空消失
+                count = 0;
+            } else if (count < 5) {
+                redisUtils.incr(countKey, 1);
+            }
+            count++;
+            if (count == 5) {
+                redisUtils.del(countKey); // 清空统计
+                redisUtils.set(lockKey, "lock", 60 * 30); // 设置锁定更改
+            }
+            throw new StatusFailException("验证码错误！您已累计验证失败" + count + "次...");
+        }
 
         QueryWrapper<GroupMember> groupMemberQueryWrapper = new QueryWrapper<>();
         groupMemberQueryWrapper.eq("gid", gid).in("auth", 3, 4, 5);
@@ -297,6 +363,17 @@ public class GroupManager {
                 .map(GroupMember::getUid)
                 .collect(Collectors.toList());
 
+        UpdateWrapper<Problem> problemUpdateWrapper = new UpdateWrapper<>();
+        problemUpdateWrapper.eq("gid",gid).eq("apply_public_progress",2);
+        int sameProblemGIDCount = problemEntityService.count(problemUpdateWrapper);
+        if (sameProblemGIDCount > 0) { // 查询成功
+            problemUpdateWrapper.set("gid",null);
+            problemUpdateWrapper.set("apply_public_progress", null);
+            boolean isOk = problemEntityService.update(problemUpdateWrapper);
+            if (!isOk) {
+                throw new StatusFailException("删除失败，请重新尝试！");
+            }
+        }
         boolean isOk = groupEntityService.removeById(gid);
         if (!isOk) {
             throw new StatusFailException("删除失败，请重新尝试！");
@@ -306,5 +383,30 @@ public class GroupManager {
                     groupMemberUidList,
                     userRolesVo.getUsername());
         }
+        log.info("[{}],[{}],Gid:[{}],operatorUid:[{}],operatorUsername:[{}]",
+                "Group", "Delete", group.getId(),userRolesVo.getUid(), userRolesVo.getUsername());
+    }
+
+    public void getVerifyEmailCode(String email) throws StatusFailException {
+
+        String lockKey = Constants.Email.VERIFY_EMAIL_LOCK + email;
+        if (redisUtils.hasKey(lockKey)) {
+            throw new StatusFailException("对不起，您的操作频率过快，请在" + redisUtils.getExpire(lockKey) + "秒后再次发送修改邮件！");
+        }
+
+        // 获取当前登录的用户
+        AccountProfile userRolesVo = (AccountProfile) SecurityUtils.getSubject().getPrincipal();
+        QueryWrapper<UserInfo> emailUserInfoQueryWrapper = new QueryWrapper<>();
+        emailUserInfoQueryWrapper.select("uuid", "email")
+                .eq("email", email);
+        UserInfo emailUserInfo = userInfoEntityService.getOne(emailUserInfoQueryWrapper, false);
+        boolean isOK = (emailUserInfo != null && Objects.equals(emailUserInfo.getUuid(), userRolesVo.getUid()));
+        if (!isOK) {
+            throw new StatusFailException("当前邮箱与绑定当邮箱不一致");
+        }
+        String numbers = RandomUtil.randomNumbers(6); // 随机生成6位数字的组合
+        redisUtils.set(Constants.Email.VERIFY_EMAIL_KEY_PREFIX.getValue() + email, numbers, 10 * 60); //默认验证码有效10分钟
+        emailManager.verifyEmailCode(email, userRolesVo.getUsername(), numbers);
+        redisUtils.set(lockKey, 0, 30);
     }
 }

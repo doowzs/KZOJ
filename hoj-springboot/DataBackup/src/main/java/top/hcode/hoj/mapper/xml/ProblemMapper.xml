@@ -32,7 +32,19 @@
             ON p.id = pt.pid
         </if>
         <where>
-            p.auth = 1 and p.is_group = false
+            <if test="oj !='Conceal' and oj !='Contest' and oj !='Group'">
+                p.auth = 1
+            </if>
+            <if test="oj =='Conceal'">
+                p.auth = 2
+            </if>
+            <if test="oj =='Contest'">
+                p.auth = 3
+            </if>
+            <if test="oj =='Group'">
+                p.auth = 4
+            </if>
+            and p.is_group = false
             <if test="keyword != null and keyword != ''">
                 and (
                 p.title like concat('%',#{keyword},'%') or p.problem_id like concat('%',#{keyword},'%')
@@ -44,7 +56,7 @@
             <if test="difficulty != null">
                 and p.difficulty = #{difficulty}
             </if>
-            <if test="oj != null and oj !='Mine'">
+            <if test="oj != null and oj !='Mine' and oj !='Conceal' and oj !='Contest' and oj !='Group' " >
                 and p.problem_id like concat(#{oj},'%') and p.is_remote=true
             </if>
             <if test="oj != null and oj =='Mine'">

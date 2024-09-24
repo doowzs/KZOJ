@@ -49,14 +49,20 @@ public class UserRoleEntityServiceImpl extends ServiceImpl<UserRoleMapper, UserR
         return userRoleMapper.getRolesByUid(uid);
     }
 
+    //  下载用户
     @Override
-    public IPage<UserRolesVO> getUserList(int limit, int currentPage, String keyword, Boolean onlyAdmin) {
+    public List<UserRolesVO> downloadUserList(Boolean isRLTime) {
+        return userRoleMapper.downloadUserList(isRLTime);
+    }
+
+    @Override
+    public IPage<UserRolesVO> getUserList(int limit, int currentPage, String keyword, Boolean onlyAdmin,Boolean onlyStatus,Boolean showLoginTime) {
         //新建分页
         Page<UserRolesVO> page = new Page<>(currentPage, limit);
         if (onlyAdmin) {
-            return userRoleMapper.getAdminUserList(page, limit, currentPage, keyword);
+            return userRoleMapper.getAdminUserList(page, limit, currentPage, keyword,onlyStatus,showLoginTime);
         } else {
-            return userRoleMapper.getUserList(page, limit, currentPage, keyword);
+            return userRoleMapper.getUserList(page, limit, currentPage,keyword,onlyStatus,showLoginTime);
         }
     }
 

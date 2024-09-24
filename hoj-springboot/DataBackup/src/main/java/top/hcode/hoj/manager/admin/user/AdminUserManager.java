@@ -55,13 +55,13 @@ public class AdminUserManager {
     @Autowired
     private RedisUtils redisUtils;
 
-    public IPage<UserRolesVO> getUserList(Integer limit, Integer currentPage, Boolean onlyAdmin, String keyword) {
+    public IPage<UserRolesVO> getUserList(Integer limit, Integer currentPage, Boolean onlyAdmin, String keyword,Boolean onlyStatus,Boolean showLoginTime) {
         if (currentPage == null || currentPage < 1) currentPage = 1;
         if (limit == null || limit < 1) limit = 10;
         if (keyword != null) {
             keyword = keyword.trim();
         }
-        return userRoleEntityService.getUserList(limit, currentPage, keyword, onlyAdmin);
+        return userRoleEntityService.getUserList(limit, currentPage, keyword, onlyAdmin,onlyStatus,showLoginTime);
     }
 
     public void editUser(AdminEditUserDTO adminEditUserDto) throws StatusFailException {
@@ -69,14 +69,22 @@ public class AdminUserManager {
         String username = adminEditUserDto.getUsername();
         String uid = adminEditUserDto.getUid();
         String realname = adminEditUserDto.getRealname();
+        String school = adminEditUserDto.getSchool();
+        String number = adminEditUserDto.getNumber();
+        String gender = adminEditUserDto.getGender();
         String email = adminEditUserDto.getEmail();
         String password = adminEditUserDto.getPassword();
         int type = adminEditUserDto.getType();
         int status = adminEditUserDto.getStatus();
         boolean setNewPwd = adminEditUserDto.getSetNewPwd();
+        boolean setOther = adminEditUserDto.getSetOther();
 
         String titleName = adminEditUserDto.getTitleName();
         String titleColor = adminEditUserDto.getTitleColor();
+
+        if (uid.equals("1")) {
+            throw new StatusFailException("error");
+        }
 
         if (!StringUtils.isEmpty(realname) && realname.length() > 50) {
             throw new StatusFailException("真实姓名的长度不能超过50位");
@@ -85,11 +93,13 @@ public class AdminUserManager {
         if (!StringUtils.isEmpty(titleName) && titleName.length() > 20) {
             throw new StatusFailException("头衔的长度建议不要超过20位");
         }
-
         if (!StringUtils.isEmpty(password) && (password.length() < 6 || password.length() > 20)) {
             throw new StatusFailException("密码长度建议为6~20位！");
         }
-
+        String PWD_REGEX = "^(?=.*\\d)(?=.*[a-zA-Z]).{6,20}$";
+        if (!password.matches(PWD_REGEX) && setNewPwd) {
+            throw new StatusFailException("密码强度太弱，密码长度为6~20位数字和字母！");
+        }
         if (username.length() > 20) {
             throw new StatusFailException("用户名长度建议不能超过20位!");
         }
@@ -110,10 +120,13 @@ public class AdminUserManager {
         userInfoUpdateWrapper.eq("uuid", uid)
                 .set("username", username)
                 .set("realname", realname)
+                .set("school", school)
+                .set("number", number)
+                .set("gender", gender)
                 .set("email", email)
                 .set(setNewPwd, "password", SecureUtil.md5(password))
-                .set("title_name", titleName)
-                .set("title_color", titleColor)
+                .set(setOther,"title_name", titleName)
+                .set(setOther,"title_color", titleColor)
                 .set("status", status);
         boolean updateUserInfo = userInfoEntityService.update(userInfoUpdateWrapper);
 
@@ -122,7 +135,7 @@ public class AdminUserManager {
         UserRole userRole = userRoleEntityService.getOne(userRoleQueryWrapper, false);
         boolean changeUserRole = false;
         int oldType = userRole.getRoleId().intValue();
-        if (userRole.getRoleId().intValue() != type) {
+        if (userRole.getRoleId().intValue() != type && setOther) {
             userRole.setRoleId((long) type);
             changeUserRole = userRoleEntityService.updateById(userRole);
             if (type == 1000 || oldType == 1000) {
@@ -146,6 +159,10 @@ public class AdminUserManager {
             String content = userRoleEntityService.getAuthChangeContent(oldType, type);
             adminNoticeManager.addSingleNoticeToUser(userRolesVo.getUid(), uid, title, content, "Sys");
         }
+        AccountProfile userRolesVo = (AccountProfile) SecurityUtils.getSubject().getPrincipal();
+        log.info("[{}],[{}],uid:[{}],userName:[{}],operatorUid:[{}],operatorUsername:[{}]",
+                "Admin_User", "Update", uid, username, userRolesVo.getUid(), userRolesVo.getUsername());
+
 
     }
 
@@ -184,6 +201,9 @@ public class AdminUserManager {
                 int successCount = users.size() - failedCount;
                 String errMsg = "[导入结果] 成功数：" + successCount + ",  失败数：" + failedCount +
                         ",  失败的用户名：" + failedUserNameSet;
+                AccountProfile userRolesVo = (AccountProfile) SecurityUtils.getSubject().getPrincipal();
+                log.info("[{}],[{}],successCount:[{}],failedCount:[{}],operatorUid:[{}],operatorUsername:[{}]",
+                        "Admin_User", "Insert", successCount, failedCount, userRolesVo.getUid(), userRolesVo.getUsername());
                 throw new StatusFailException(errMsg);
             }
         } else {
@@ -229,7 +249,12 @@ public class AdminUserManager {
                 userInfo.setSchool(school);
             }
         }
-
+        if (user.size() >= 8) {
+            String number = user.get(7);
+            if (!StringUtils.isEmpty(number)) {
+                userInfo.setNumber(number);
+            }
+        }
 
         boolean result1 = userInfoEntityService.save(userInfo);
         UserRole userRole = new UserRole()
@@ -260,7 +285,8 @@ public class AdminUserManager {
         HashMap<String, Object> userInfo = new HashMap<>(); // 存储账号密码放入redis中，等待导出excel
         for (int num = numberFrom; num <= numberTo; num++) {
             String uuid = IdUtil.simpleUUID();
-            String password = RandomUtil.randomString(passwordLength);
+            String password = RandomUtil.randomString("0123456789",passwordLength-1);
+            password = password + RandomUtil.randomString("abcdefghijklmnopqrstuvwxyz", 1);
             String username = prefix + num + suffix;
             userInfoList.add(new UserInfo()
                     .setUuid(uuid)
@@ -281,6 +307,9 @@ public class AdminUserManager {
             // 异步同步系统通知
             List<String> uidList = userInfoList.stream().map(UserInfo::getUuid).collect(Collectors.toList());
             adminNoticeManager.syncNoticeToNewRegisterBatchUser(uidList);
+            AccountProfile userRolesVo = (AccountProfile) SecurityUtils.getSubject().getPrincipal();
+            log.info("[{}],[{}],uidList:[{}],operatorUid:[{}],operatorUsername:[{}]",
+                    "Admin_User", "Insert", uidList, userRolesVo.getUid(), userRolesVo.getUsername());
             return MapUtil.builder().put("key", key).map();
         } else {
             throw new StatusFailException("生成指定用户失败！注意查看组合生成的用户名是否已有存在的！");

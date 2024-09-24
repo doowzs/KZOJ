@@ -1,18 +1,18 @@
 # 默认以下配置默认会读取环境变量的值
 
 # redis配置
-redis-host: ${REDIS_HOST:172.20.0.2}
+redis-host: ${REDIS_HOST:127.0.0.1}
 redis-port: ${REDIS_PORT:6379}
-redis-password: ${REDIS_PASSWORD:hoj123456}
+redis-password: ${REDIS_PASSWORD:Li000317}
 
 # 本服务连接mysql的地址和端口号
-mysql-host: ${MYSQL_HOST:172.20.0.3}
+mysql-host: ${MYSQL_HOST:127.0.0.1}
 mysql-port: ${MYSQL_PORT:3306}
 # mysql的公网地址和端口号
-mysql-public-host: ${MYSQL_PUBLIC_HOST:172.20.0.3}
+mysql-public-host: ${MYSQL_PUBLIC_HOST:127.0.0.1}
 mysql-public-port: ${MYSQL_PUBLIC_PORT:3306}
 mysql-username: ${MYSQL_USERNAME:root}
-mysql-password: ${MYSQL_ROOT_PASSWORD:hoj123456}
+mysql-password: ${MYSQL_ROOT_PASSWORD:Li000317}
 mysql-name: ${MYSQL_DATABASE_NAME:hoj}
 
 # token密钥，default表示随机生成
@@ -32,9 +32,9 @@ email-host: ${EMAIL_SERVER_HOST:smtp.qq.com}
 # 邮箱服务端口号
 email-port: ${EMAIL_SERVER_PORT:465}
 # 邮箱账号
-email-username: ${EMAIL_USERNAME:your_email_username}
+email-username: ${EMAIL_USERNAME:lei0421@foxmail.com}
 # 邮箱授权码
-email-password: ${EMAIL_PASSWORD:your_email_password}
+email-password: ${EMAIL_PASSWORD:roaldfxujtnmbade}
 
 # 以下为各个remote judge平台的账号配置
 hdu-username-list: ${HDU_ACCOUNT_USERNAME_LIST:}

@@ -3,6 +3,7 @@ package top.hcode.hoj.manager.group.training;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -37,6 +38,7 @@ import java.util.Objects;
  * @Description:
  */
 @Component
+@Slf4j(topic = "hoj")
 public class GroupTrainingManager {
 
     @Autowired
@@ -204,6 +206,8 @@ public class GroupTrainingManager {
         if (!isOk) {
             throw new StatusFailException("添加失败！");
         }
+        log.info("[{}],[{}],Gid:[{}],Tid:[{}],operatorUid:[{}],operatorUsername:[{}]",
+                "Group_Training", "Add", gid, training.getId() ,userRolesVo.getUid(), userRolesVo.getUsername());
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -293,6 +297,9 @@ public class GroupTrainingManager {
                 }
             }
         }
+        log.info("[{}],[{}],Gid:[{}],Tid:[{}],operatorUid:[{}],operatorUsername:[{}]",
+                "Group_Training", "Update", gid, training.getId() ,userRolesVo.getUid(), userRolesVo.getUsername());
+
     }
 
     public void deleteTraining(Long tid) throws StatusForbiddenException, StatusNotFoundException, StatusFailException {
@@ -327,6 +334,8 @@ public class GroupTrainingManager {
         if (!isOk) {
             throw new StatusFailException("删除失败！");
         }
+        log.info("[{}],[{}],Gid:[{}],Tid:[{}],operatorUid:[{}],operatorUsername:[{}]",
+                "Group_Training", "Delete", gid, training.getId() ,userRolesVo.getUid(), userRolesVo.getUsername());
     }
 
     public void changeTrainingStatus(Long tid, Boolean status) throws StatusForbiddenException, StatusNotFoundException, StatusFailException {

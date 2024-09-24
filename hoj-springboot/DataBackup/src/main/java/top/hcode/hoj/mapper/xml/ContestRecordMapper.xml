@@ -28,7 +28,7 @@
     <select id="getOIContestRecordByRecentSubmission" resultType="top.hcode.hoj.pojo.vo.ContestRecordVO">
         SELECT cr.id,cr.cid,cr.uid,cr.pid,cr.cpid,cr.display_id,cr.submit_id,u.username,cr.status,cr.submit_time,
         cr.time,cr.score,cr.use_time,cr.checked,cr.gmt_create,cr.gmt_modified,
-        u.gender,u.realname as realname,u.avatar,u.school,u.nickname
+        u.gender,u.realname as realname,u.avatar,u.school,u.nickname,u.number
         FROM
         (SELECT uid,pid,cpid,MAX(time) AS time FROM contest_record
         <where>
@@ -68,7 +68,7 @@
     <select id="getOIContestRecordByHighestSubmission" resultType="top.hcode.hoj.pojo.vo.ContestRecordVO">
         SELECT cr.id,cr.cid,cr.uid,cr.pid,cr.cpid,cr.display_id,cr.submit_id,u.username,cr.status,cr.submit_time,
         cr.time,cr.score,cr.use_time,cr.checked,cr.gmt_create,cr.gmt_modified,
-        u.gender,u.realname as realname,u.avatar,u.school,u.nickname
+        u.gender,u.realname as realname,u.avatar,u.school,u.nickname,u.number
         FROM
         (SELECT uid,pid,cpid,MAX(score) AS score FROM contest_record
         <where>
@@ -109,7 +109,7 @@
     <select id="getACMContestRecord" resultType="top.hcode.hoj.pojo.vo.ContestRecordVO">
         SELECT cr.id,cr.cid,cr.uid,cr.pid,cr.cpid,cr.display_id,cr.submit_id,u.username,cr.status,cr.submit_time,
         cr.time,cr.score,cr.use_time,cr.checked,cr.gmt_create,cr.gmt_modified,
-        u.gender,u.realname as realname,u.avatar,u.school,u.nickname
+        u.gender,u.realname as realname,u.avatar,u.school,u.nickname,u.number
         FROM contest_record cr,user_info u
         <where>
             cr.uid = u.uuid

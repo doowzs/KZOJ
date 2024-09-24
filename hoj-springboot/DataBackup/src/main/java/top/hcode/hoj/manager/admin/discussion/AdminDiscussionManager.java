@@ -1,5 +1,6 @@
 package top.hcode.hoj.manager.admin.discussion;
 
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
@@ -31,10 +32,16 @@ public class AdminDiscussionManager {
     private DiscussionReportEntityService discussionReportEntityService;
 
     public void updateDiscussion(Discussion discussion) throws StatusFailException {
+        if(discussion.getPid() == null && discussion.getIsExplain()){
+            throw new StatusFailException("需要绑定题目后才能设置题解精选");
+        }
         boolean isOk = discussionEntityService.updateById(discussion);
         if (!isOk) {
             throw new StatusFailException("修改失败");
         }
+        AccountProfile userRolesVo = (AccountProfile) SecurityUtils.getSubject().getPrincipal();
+        log.info("[{}],[{}],discussionID:[{}],operatorUid:[{}],operatorUsername:[{}]",
+                "Admin_Discussion", "Update", discussion, userRolesVo.getUid(), userRolesVo.getUsername());
     }
 
     public void removeDiscussion(List<Integer> didList) throws StatusFailException {
@@ -56,6 +63,10 @@ public class AdminDiscussionManager {
         if (!isOk) {
             throw new StatusFailException("修改失败");
         }
+        AccountProfile userRolesVo = (AccountProfile) SecurityUtils.getSubject().getPrincipal();
+        log.info("[{}],[{}],discussionReportID:[{}],operatorUid:[{}],operatorUsername:[{}]",
+                "Admin_Discussion", "Update", discussionReport, userRolesVo.getUid(), userRolesVo.getUsername());
+
     }
 
 }

@@ -5,6 +5,7 @@ import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -38,6 +39,7 @@ import java.util.Objects;
  * @Description:
  */
 @Component
+@Slf4j(topic = "hoj")
 public class GroupContestManager {
     @Autowired
     private GroupEntityService groupEntityService;
@@ -200,6 +202,8 @@ public class GroupContestManager {
         if (!isOk) {
             throw new StatusFailException("添加失败");
         }
+        log.info("[{}],[{}],Gid:[{}],GContestId:[{}],operatorUid:[{}],operatorUsername:[{}]",
+                "Group_Contest", "Add", adminContestVo.getGid(), contest.getId(),userRolesVo.getUid(), userRolesVo.getUsername());
     }
 
     public void updateContest(AdminContestVO adminContestVo) throws StatusForbiddenException, StatusNotFoundException, StatusFailException {
@@ -264,6 +268,9 @@ public class GroupContestManager {
         } else {
             throw new StatusFailException("修改失败");
         }
+        log.info("[{}],[{}],Gid:[{}],GContestId:[{}],operatorUid:[{}],operatorUsername:[{}]",
+                "Group_Contest", "Update", adminContestVo.getGid(), contest.getId(),userRolesVo.getUid(), userRolesVo.getUsername());
+
     }
 
     public void deleteContest(Long cid) throws StatusForbiddenException, StatusNotFoundException, StatusFailException {
@@ -298,6 +305,9 @@ public class GroupContestManager {
         if (!isOk) {
             throw new StatusFailException("删除失败");
         }
+        log.info("[{}],[{}],Gid:[{}],GContestId:[{}],operatorUid:[{}],operatorUsername:[{}]",
+                "Group_Contest", "Delete", contest.getGid(), contest.getId(),userRolesVo.getUid(), userRolesVo.getUsername());
+
     }
 
     public void changeContestVisible(Long cid, Boolean visible) throws StatusForbiddenException, StatusNotFoundException, StatusFailException {

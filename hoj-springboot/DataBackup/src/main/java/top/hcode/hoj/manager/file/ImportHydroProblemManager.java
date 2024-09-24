@@ -147,6 +147,8 @@ public class ImportHydroProblemManager {
                 if (failedProblemTitleSet.size() > 0) {
                     errMsg = errMsg + "<br/>未知失败的题目标题：" + failedProblemTitleSet;
                 }
+                log.info("[{}],[{}],successCount:[{}],failedCount:[{}],operatorUid:[{}],operatorUsername:[{}]",
+                        "Import_Hydro_Problem", "Insert", successCount, failedCount, userRolesVo.getUid(), userRolesVo.getUsername());
                 throw new StatusFailException(errMsg);
             }
         }

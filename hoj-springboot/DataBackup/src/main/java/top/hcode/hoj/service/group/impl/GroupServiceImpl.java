@@ -6,6 +6,7 @@ import top.hcode.hoj.common.exception.StatusNotFoundException;
 import top.hcode.hoj.common.result.CommonResult;
 import top.hcode.hoj.common.result.ResultStatus;
 import top.hcode.hoj.manager.group.GroupManager;
+import top.hcode.hoj.pojo.dto.VerifyDTO;
 import top.hcode.hoj.pojo.entity.group.Group;
 import top.hcode.hoj.pojo.vo.AccessVO;
 import top.hcode.hoj.pojo.vo.GroupVO;
@@ -84,9 +85,9 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public CommonResult<Void> deleteGroup(Long gid) {
+    public CommonResult<Void> deleteGroup(VerifyDTO verifyDTO, Long gid) {
         try {
-            groupManager.deleteGroup(gid);
+            groupManager.deleteGroup(verifyDTO,gid);
             return CommonResult.successResponse();
         } catch (StatusNotFoundException e) {
             return CommonResult.errorResponse(e.getMessage(), ResultStatus.NOT_FOUND);
@@ -94,6 +95,15 @@ public class GroupServiceImpl implements GroupService {
             return CommonResult.errorResponse(e.getMessage(), ResultStatus.FORBIDDEN);
         } catch (StatusFailException e) {
             return CommonResult.errorResponse(e.getMessage(), ResultStatus.FAIL);
+        }
+    }
+    @Override
+    public CommonResult<Void> getVerifyEmailCode(String email) {
+        try {
+            groupManager.getVerifyEmailCode(email);
+            return CommonResult.successResponse();
+        } catch (StatusFailException e) {
+            return CommonResult.errorResponse(e.getMessage());
         }
     }
 }

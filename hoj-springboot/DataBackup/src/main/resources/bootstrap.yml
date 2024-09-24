@@ -1,7 +1,7 @@
 # nacos配置
 nacos-url: ${NACOS_URL:127.0.0.1:8848}
-nacos-username: ${NACOS_USERNAME:root}
-nacos-password: ${NACOS_PASSWORD:hoj123456}
+nacos-username: ${NACOS_USERNAME:nacos}
+nacos-password: ${NACOS_PASSWORD:nacos}
 nacos-switch-config: hoj-switch.yml
 nacos-web-config: hoj-web.yml
 

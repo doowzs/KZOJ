@@ -143,9 +143,14 @@ public class AdminContestManager {
         }
 
         boolean isOk = contestEntityService.save(contest);
-        if (!isOk) { // 删除成功
+        if (!isOk) { // 添加成功
             throw new StatusFailException("添加失败");
         }
+        // 获取当前登录的用户
+        AccountProfile userRolesVo = (AccountProfile) SecurityUtils.getSubject().getPrincipal();
+        log.info("[{}],[{}],contestID:[{}],operatorUid:[{}],operatorUsername:[{}]",
+                "Admin_Contest", "Add_Public_Problem", contest.getId(), userRolesVo.getUid(), userRolesVo.getUsername());
+
     }
 
     public void cloneContest(Long cid) throws StatusSystemErrorException {
@@ -202,6 +207,8 @@ public class AdminContestManager {
                     contestRegisterEntityService.remove(updateWrapper);
                 }
             }
+            log.info("[{}],[{}],contestID:[{}],operatorUid:[{}],operatorUsername:[{}]",
+                    "Admin_User", "Update", contest.getId(), userRolesVo.getUid(), userRolesVo.getUsername());
         } else {
             throw new StatusFailException("修改失败");
         }

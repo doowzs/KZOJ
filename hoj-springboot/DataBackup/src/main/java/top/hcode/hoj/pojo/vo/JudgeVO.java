@@ -27,6 +27,9 @@ public class JudgeVO {
     @ApiModelProperty(value = "用户名")
     private String username;
 
+    @ApiModelProperty(value = "真实姓名")
+    private String realname;
+
     @ApiModelProperty(value = "题目id")
     private Long pid;
 

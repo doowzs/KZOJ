@@ -22,7 +22,9 @@ public interface UserRoleEntityService extends IService<UserRole> {
 
     List<Role> getRolesByUid(String uid);
 
-    IPage<UserRolesVO> getUserList(int limit, int currentPage, String keyword, Boolean onlyAdmin);
+    List<UserRolesVO> downloadUserList(Boolean isRLTime);
+
+    IPage<UserRolesVO> getUserList(int limit, int currentPage, String keyword, Boolean onlyAdmin,Boolean onlyStatus,Boolean showLoginTime);
 
     void deleteCache(String uid, boolean isRemoveSession);
 

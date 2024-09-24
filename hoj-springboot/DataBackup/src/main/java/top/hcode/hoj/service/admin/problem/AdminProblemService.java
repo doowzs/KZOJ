@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface AdminProblemService {
 
-    public CommonResult<IPage<Problem>> getProblemList(Integer limit, Integer currentPage, String keyword, Integer auth, String oj);
+    public CommonResult<IPage<Problem>> getProblemList(Integer limit, Integer currentPage, String keyword, Integer auth, Integer type,String oj);
 
     public CommonResult<Problem> getProblem(Long pid);
 
@@ -31,4 +31,10 @@ public interface AdminProblemService {
     public CommonResult<Void> importRemoteOJProblem(String name,String problemId);
 
     public CommonResult<Void> changeProblemAuth(Problem problem);
+
+    public CommonResult<Void> changeProblemType(Problem problem);
+
+    public CommonResult<Void> changeProblemsAuth(List<Long> problemIdList,Integer problemAuth);
+
+    public CommonResult<Void> changeProblemsType(List<Long> problemIdList,Integer problemType);
 }

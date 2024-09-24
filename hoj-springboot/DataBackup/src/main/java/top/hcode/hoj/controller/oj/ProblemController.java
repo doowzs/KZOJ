@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import top.hcode.hoj.annotation.AnonApi;
+import top.hcode.hoj.common.exception.StatusForbiddenException;
 import top.hcode.hoj.common.result.CommonResult;
 import top.hcode.hoj.pojo.dto.LastAcceptedCodeVO;
 import top.hcode.hoj.pojo.dto.PidListDTO;
@@ -39,13 +40,13 @@ public class ProblemController {
      * @Since 2020/10/27
      */
     @RequestMapping(value = "/get-problem-list", method = RequestMethod.GET)
-    @AnonApi
+    @RequiresAuthentication
     public CommonResult<Page<ProblemVO>> getProblemList(@RequestParam(value = "limit", required = false) Integer limit,
                                                         @RequestParam(value = "currentPage", required = false) Integer currentPage,
                                                         @RequestParam(value = "keyword", required = false) String keyword,
                                                         @RequestParam(value = "tagId", required = false) List<Long> tagId,
                                                         @RequestParam(value = "difficulty", required = false) Integer difficulty,
-                                                        @RequestParam(value = "oj", required = false) String oj) {
+                                                        @RequestParam(value = "oj", required = false) String oj) throws StatusForbiddenException {
 
         return problemService.getProblemList(limit, currentPage, keyword, tagId, difficulty, oj);
     }
@@ -57,7 +58,7 @@ public class ProblemController {
      * @Since 2020/10/27
      */
     @GetMapping("/get-random-problem")
-    @AnonApi
+    @RequiresAuthentication
     public CommonResult<RandomProblemVO> getRandomProblem() {
         return problemService.getRandomProblem();
     }
@@ -83,7 +84,7 @@ public class ProblemController {
      * @Since 2020/10/27
      */
     @RequestMapping(value = "/get-problem-detail", method = RequestMethod.GET)
-    @AnonApi
+    @RequiresAuthentication
     public CommonResult<ProblemInfoVO> getProblemInfo(@RequestParam(value = "problemId", required = true) String problemId,
                                                       @RequestParam(value = "gid", required = false) Long gid) {
         return problemService.getProblemInfo(problemId, gid);

@@ -34,7 +34,7 @@ public class UserInfoVO {
     @ApiModelProperty(value = "邮箱")
     private String email;
 
-    @ApiModelProperty(value = "学号")
+    @ApiModelProperty(value = "年级")
     private String number;
 
     @ApiModelProperty(value = "性别")

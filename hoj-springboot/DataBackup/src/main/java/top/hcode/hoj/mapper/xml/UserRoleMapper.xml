@@ -79,18 +79,32 @@
         </collection>
     </resultMap>
 
-
     <!-- 主查询  -->
     <select id="getUserList" resultMap="map_UserRolesList" resultType="list">
-        SELECT u.* FROM user_info u
+        <if test="!showLoginTime">
+            SELECT u.*  FROM user_info u
+        </if>
+        <if test="showLoginTime">
+            SELECT u.* ,uu.gmt_create as recentLoginTime FROM user_info u
+            LEFT JOIN (
+            SELECT * FROM `session` s
+            WHERE gmt_create =( SELECT max( gmt_create ) FROM `session` WHERE uid = s.uid )
+            ) uu ON u.uuid = uu.uid
+        </if>
         <where>
+            <if test="onlyStatus">
+                u.status = 1
+            </if>
+            <if test="keyword!=null and keyword!='' and onlyStatus" >
+                and
+            </if>
             <if test="keyword!=null and keyword!=''">
-                u.username like CONCAT("%",#{keyword},"%")
-                or u.email like CONCAT("%",#{keyword},"%")
+                (u.username like CONCAT("%",#{keyword},"%")
                 or u.realname like CONCAT("%",#{keyword},"%")
+                or u.school like CONCAT("%",#{keyword},"%"))
             </if>
         </where>
-        order by u.gmt_create desc, u.uuid desc
+        order by u.gmt_create desc,u.uuid desc
     </select>
 
     <!-- 子查询 -->
@@ -100,17 +114,41 @@
 
     <!-- 主查询 -->
     <select id="getAdminUserList" resultMap="map_UserRolesList" resultType="list">
-        SELECT u.* FROM user_info u, (SELECT DISTINCT ur.uid AS uid FROM user_role ur
-        WHERE ur.role_id=1000 OR ur.role_id=1001 OR ur.role_id=1008) t
+        <if test="!showLoginTime">
+            SELECT u.* FROM user_info u, (SELECT DISTINCT ur.uid AS uid FROM user_role ur
+            WHERE ur.role_id=1000 OR ur.role_id=1001 OR ur.role_id=1008) t
+        </if>
+        <if test="showLoginTime">
+            SELECT u.* ,uu.gmt_create as recentLoginTime FROM
+            (SELECT DISTINCT ur.uid AS uid FROM user_role ur
+            WHERE ur.role_id=1000 OR ur.role_id=1001 OR ur.role_id=1008) t,user_info u
+            LEFT JOIN (
+            SELECT * FROM `session` s
+            WHERE gmt_create =( SELECT max( gmt_create ) FROM `session` WHERE uid = s.uid )
+            ) uu ON u.uuid = uu.uid
+        </if>
         <where>
-         t.uid = u.uuid
+            t.uid = u.uuid
             <if test="keyword!=null and keyword!=''">
                 and (u.username like CONCAT("%",#{keyword},"%")
-                or u.email like CONCAT("%",#{keyword},"%")
-                or u.realname like CONCAT("%",#{keyword},"%"))
+                or u.realname like CONCAT("%",#{keyword},"%")
+                or u.school like CONCAT("%",#{keyword},"%"))
+            </if>
+            <if test="onlyStatus">
+                and u.status = 1
             </if>
         </where>
         order by u.gmt_create desc, u.uuid desc
     </select>
 
+    <select id="downloadUserList" resultMap="map_UserRolesList" resultType="list">
+        SELECT u.* ,uu.gmt_create as recentLoginTime,uu.ip,uu.user_agent as userAgent FROM user_info u
+        LEFT JOIN (
+        SELECT * FROM `session` s
+        <if test="isRLTime">
+            WHERE gmt_create =( SELECT max( gmt_create ) FROM `session` WHERE uid = s.uid )
+        </if>
+        ) uu ON u.uuid = uu.uid
+        order by u.gmt_create desc,u.uuid desc
+    </select>
 </mapper>

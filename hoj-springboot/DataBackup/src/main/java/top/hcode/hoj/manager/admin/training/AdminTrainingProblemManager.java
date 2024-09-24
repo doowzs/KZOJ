@@ -79,7 +79,7 @@ public class AdminTrainingProblemManager {
             problemQueryWrapper.in(pidList.size() > 0, "id", pidList);
         } else {
             // 权限需要是公开的（隐藏的，比赛中不可加入！）
-            problemQueryWrapper.eq("auth", 1).eq("is_group", false);
+            problemQueryWrapper.in("auth", Arrays.asList(1,4)).eq("is_group", false);
             problemQueryWrapper.notIn(pidList.size() > 0, "id", pidList);
         }
 

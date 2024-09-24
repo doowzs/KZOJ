@@ -85,6 +85,9 @@ public class DiscussionManager {
                                                Integer categoryId,
                                                String pid,
                                                boolean onlyMine,
+                                               boolean onlyGroup,
+                                               boolean onlyExplain,
+                                               boolean onlyStatus,
                                                String keyword,
                                                boolean admin) {
         AccountProfile userRolesVo = (AccountProfile) SecurityUtils.getSubject().getPrincipal();
@@ -117,9 +120,18 @@ public class DiscussionManager {
         if (!(admin && isAdmin)) {
             discussionQueryWrapper.isNull("gid");
         }
-
+        if ((admin && isAdmin) && onlyGroup) {
+            discussionQueryWrapper.isNotNull("gid");
+        }
+        if ((admin && isAdmin) && onlyExplain) {
+            discussionQueryWrapper.isNotNull("pid");
+        }
+        if ((admin && isAdmin) && onlyStatus) {
+            discussionQueryWrapper.eq("status",1);
+        }
         discussionQueryWrapper
                 .eq(!(admin && isAdmin), "status", 0)
+                .eq(!(admin && isAdmin), "is_explain", 0)
                 .orderByDesc("top_priority")
                 .orderByDesc("gmt_create")
                 .orderByDesc("like_num")
@@ -128,6 +140,45 @@ public class DiscussionManager {
         if (onlyMine && userRolesVo != null) {
             discussionQueryWrapper.eq("uid", userRolesVo.getUid());
         }
+        IPage<Discussion> discussionIPage = discussionEntityService.page(iPage, discussionQueryWrapper);
+        List<Discussion> records = discussionIPage.getRecords();
+        if (!CollectionUtils.isEmpty(records)) {
+            for (Discussion discussion : records) {
+                if (userRolesVo == null) {
+                    discussion.setContent(null);
+                } else if (!userRolesVo.getUid().equals(discussion.getUid())) {
+                    discussion.setContent(null);
+                }
+            }
+        }
+        return discussionIPage;
+    }
+
+    public IPage<Discussion> getExplainList(Integer limit,
+                                            Integer currentPage,
+                                            String pid,
+                                            boolean admin) {
+        AccountProfile userRolesVo = (AccountProfile) SecurityUtils.getSubject().getPrincipal();
+        QueryWrapper<Discussion> discussionQueryWrapper = new QueryWrapper<>();
+
+        IPage<Discussion> iPage = new Page<>(currentPage, limit);
+
+        boolean isAdmin = SecurityUtils.getSubject().hasRole("root")
+                || SecurityUtils.getSubject().hasRole("problem_admin")
+                || SecurityUtils.getSubject().hasRole("admin");
+
+        if (!StringUtils.isEmpty(pid)) {
+            discussionQueryWrapper.eq("pid", pid);
+        }
+
+        discussionQueryWrapper
+                .eq(!(admin && isAdmin), "status", 0)
+                .eq("is_explain", 1)
+                .orderByDesc("top_priority")
+                .orderByAsc("gmt_create")
+                .orderByDesc("like_num")
+                .orderByDesc("view_num");
+
         IPage<Discussion> discussionIPage = discussionEntityService.page(iPage, discussionQueryWrapper);
         List<Discussion> records = discussionIPage.getRecords();
         if (!CollectionUtils.isEmpty(records)) {
@@ -168,8 +219,7 @@ public class DiscussionManager {
         if (discussionVo.getStatus() == 1) {
             throw new StatusForbiddenException("对不起，该讨论已被封禁！");
         }
-
-        if (discussionVo.getGid() != null) {
+        if (discussionVo.getGid() != null && !discussionVo.getIsExplain()) {
             accessValidator.validateAccess(HOJAccessEnum.GROUP_DISCUSSION);
             if (!isRoot && !discussionVo.getUid().equals(uid)
                     && !groupValidator.isGroupMember(uid, discussionVo.getGid())) {
@@ -373,18 +423,18 @@ public class DiscussionManager {
                 if (!isSave) {
                     throw new StatusFailException("点赞失败，请重试尝试！");
                 }
-            }
-            // 点赞+1
-            UpdateWrapper<Discussion> discussionUpdateWrapper = new UpdateWrapper<>();
-            discussionUpdateWrapper.eq("id", discussion.getId())
-                    .setSql("like_num=like_num+1");
-            discussionEntityService.update(discussionUpdateWrapper);
-            // 当前帖子要不是点赞者的 才发送点赞消息
-            if (!userRolesVo.getUsername().equals(discussion.getAuthor())) {
-                discussionEntityService.updatePostLikeMsg(discussion.getUid(),
-                        userRolesVo.getUid(),
-                        did,
-                        discussion.getGid());
+                // 点赞+1
+                UpdateWrapper<Discussion> discussionUpdateWrapper = new UpdateWrapper<>();
+                discussionUpdateWrapper.eq("id", discussion.getId())
+                        .setSql("like_num=like_num+1");
+                discussionEntityService.update(discussionUpdateWrapper);
+                // 当前帖子要不是点赞者的 才发送点赞消息
+                if (!userRolesVo.getUsername().equals(discussion.getAuthor())) {
+                    discussionEntityService.updatePostLikeMsg(discussion.getUid(),
+                            userRolesVo.getUid(),
+                            did,
+                            discussion.getGid());
+                }
             }
         } else { // 取消点赞
             if (discussionLike != null) { // 如果存在就删除
@@ -392,11 +442,11 @@ public class DiscussionManager {
                 if (!isDelete) {
                     throw new StatusFailException("取消点赞失败，请重试尝试！");
                 }
+                // 点赞-1
+                UpdateWrapper<Discussion> discussionUpdateWrapper = new UpdateWrapper<>();
+                discussionUpdateWrapper.setSql("like_num=like_num-1").eq("id", did);
+                discussionEntityService.update(discussionUpdateWrapper);
             }
-            // 点赞-1
-            UpdateWrapper<Discussion> discussionUpdateWrapper = new UpdateWrapper<>();
-            discussionUpdateWrapper.setSql("like_num=like_num-1").eq("id", did);
-            discussionEntityService.update(discussionUpdateWrapper);
         }
 
     }

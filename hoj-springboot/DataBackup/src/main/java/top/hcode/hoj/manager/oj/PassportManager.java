@@ -219,15 +219,16 @@ public class PassportManager {
         if (StringUtils.isEmpty(registerDto.getPassword())) {
             throw new StatusFailException("密码不能为空");
         }
-
         if (registerDto.getPassword().length() < 6 || registerDto.getPassword().length() > 20) {
             throw new StatusFailException("密码长度应该为6~20位！");
         }
-
+        String PWD_REGEX = "^(?=.*\\d)(?=.*[a-zA-Z]).{6,20}$";
+        if (!registerDto.getPassword().matches(PWD_REGEX)) {
+            throw new StatusFailException("密码强度太弱，密码长度为6~20位数字和字母！");
+        }
         if (StringUtils.isEmpty(registerDto.getUsername())) {
             throw new StatusFailException("用户名不能为空");
         }
-
         if (registerDto.getUsername().length() > 20) {
             throw new StatusFailException("用户名长度不能超过20位!");
         }
@@ -309,7 +310,10 @@ public class PassportManager {
         if (password.length() < 6 || password.length() > 20) {
             throw new StatusFailException("新密码长度应该为6~20位！");
         }
-
+        String PWD_REGEX = "^(?=.*\\d)(?=.*[a-zA-Z]).{6,20}$";
+        if (!password.matches(PWD_REGEX)) {
+            throw new StatusFailException("密码强度太弱，密码长度为6~20位数字和字母！");
+        }
         String codeKey = Constants.Email.RESET_PASSWORD_KEY_PREFIX.getValue() + username;
         if (!redisUtils.hasKey(codeKey)) {
             throw new StatusFailException("重置密码链接不存在或已过期，请重新发送重置邮件");

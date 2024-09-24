@@ -1,6 +1,8 @@
 package top.hcode.hoj.service.oj;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import top.hcode.hoj.common.exception.StatusFailException;
+import top.hcode.hoj.common.exception.StatusForbiddenException;
 import top.hcode.hoj.common.result.CommonResult;
 import top.hcode.hoj.pojo.dto.LastAcceptedCodeVO;
 import top.hcode.hoj.pojo.dto.PidListDTO;
@@ -19,8 +21,8 @@ import java.util.List;
  */
 public interface ProblemService {
 
-    public CommonResult<Page<ProblemVO>> getProblemList(Integer limit, Integer currentPage,
-                                                        String keyword, List<Long> tagId, Integer difficulty, String oj);
+    public CommonResult<Page<ProblemVO>> getProblemList(Integer limit, Integer currentPage, String keyword,
+                                                        List<Long> tagId, Integer difficulty, String oj) throws StatusForbiddenException;
 
     public CommonResult<RandomProblemVO> getRandomProblem();
 

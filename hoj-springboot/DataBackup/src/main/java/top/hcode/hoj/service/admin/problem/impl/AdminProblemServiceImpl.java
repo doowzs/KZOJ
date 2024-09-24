@@ -29,8 +29,8 @@ public class AdminProblemServiceImpl implements AdminProblemService {
     private AdminProblemManager adminProblemManager;
 
     @Override
-    public CommonResult<IPage<Problem>> getProblemList(Integer limit, Integer currentPage, String keyword, Integer auth, String oj) {
-        IPage<Problem> problemList = adminProblemManager.getProblemList(limit, currentPage, keyword, auth, oj);
+    public CommonResult<IPage<Problem>> getProblemList(Integer limit, Integer currentPage, String keyword, Integer auth, Integer type,String oj) {
+        IPage<Problem> problemList = adminProblemManager.getProblemList(limit, currentPage, keyword, auth, type, oj);
         return CommonResult.successResponse(problemList);
     }
 
@@ -109,6 +109,40 @@ public class AdminProblemServiceImpl implements AdminProblemService {
     public CommonResult<Void> changeProblemAuth(Problem problem) {
         try {
             adminProblemManager.changeProblemAuth(problem);
+            return CommonResult.successResponse();
+        } catch (StatusFailException e) {
+            return CommonResult.errorResponse(e.getMessage());
+        } catch (StatusForbiddenException e) {
+            return CommonResult.errorResponse(e.getMessage(), ResultStatus.FORBIDDEN);
+        }
+    }
+    @Override
+    public CommonResult<Void> changeProblemType(Problem problem) {
+        try {
+            adminProblemManager.changeProblemType(problem);
+            return CommonResult.successResponse();
+        } catch (StatusFailException e) {
+            return CommonResult.errorResponse(e.getMessage());
+        } catch (StatusForbiddenException e) {
+            return CommonResult.errorResponse(e.getMessage(), ResultStatus.FORBIDDEN);
+        }
+    }
+    @Override
+    public CommonResult<Void> changeProblemsAuth(List<Long> problemIdList, Integer problemAuth) {
+        try {
+            adminProblemManager.changeProblemsAuth(problemIdList,problemAuth);
+            return CommonResult.successResponse();
+        } catch (StatusFailException e) {
+            return CommonResult.errorResponse(e.getMessage());
+        } catch (StatusForbiddenException e) {
+            return CommonResult.errorResponse(e.getMessage(), ResultStatus.FORBIDDEN);
+        }
+    }
+
+    @Override
+    public CommonResult<Void> changeProblemsType(List<Long> problemIdList, Integer problemType) {
+        try {
+            adminProblemManager.changeProblemsType(problemIdList,problemType);
             return CommonResult.successResponse();
         } catch (StatusFailException e) {
             return CommonResult.errorResponse(e.getMessage());

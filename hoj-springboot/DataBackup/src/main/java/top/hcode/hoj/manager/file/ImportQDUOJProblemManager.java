@@ -218,6 +218,8 @@ public class ImportQDUOJProblemManager {
                 if (failedProblemTitleSet.size() > 0) {
                     errMsg = errMsg + "<br/>未知失败的题目标题：" + failedProblemTitleSet;
                 }
+                log.info("[{}],[{}],successCount:[{}],failedCount:[{}],operatorUid:[{}],operatorUsername:[{}]",
+                        "Import_QDOJ_Problem", "Insert", successCount, failedCount, userRolesVo.getUid(), userRolesVo.getUsername());
                 throw new StatusFailException(errMsg);
             }
         }
@@ -242,7 +244,7 @@ public class ImportQDUOJProblemManager {
                 .setIsGroup(false)
                 .setIsUploadCase(true)
                 .setSource(problemJson.getStr("source", null))
-                .setDifficulty(1)
+                .setDifficulty(0)
                 .setProblemId(problemJson.getStr("display_id"))
                 .setIsRemoveEndBlank(true)
                 .setOpenCaseResult(true)

@@ -20,6 +20,9 @@ public class OIRankVO implements Serializable {
     @ApiModelProperty(value = "用户名")
     private String username;
 
+    @ApiModelProperty(value = "真实名字")
+    private String realname;
+
     @ApiModelProperty(value = "昵称")
     private String nickname;
 
