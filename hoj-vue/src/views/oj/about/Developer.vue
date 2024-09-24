@@ -2,26 +2,16 @@
   <div>
     <div class="intr-center">
       <paper-card type="server">
-        <h1 class="text-darken">HOJ</h1>
+        <el-image
+            style="width: 128px; height: 103px"
+            :src="imgUrl"
+            fit="scale-down"
+        ></el-image>
         <h1>
-          <a href="https://gitee.com/himitzh0730/hoj" target="_blank"
-            >Hcode Online Judge</a
-          >
+          星熠 Online Judge
         </h1>
         <p>
-          {{ $t('m.Leader_BackEnd_FrontEnd_Engineer') }} / Himit_ZH
-          <a href="https://github.com/HimitZH" class="icon" target="_blank"
-            ><i class="fa fa-github"></i>
-          </a>
-        </p>
-        <p>
-          {{ $t('m.Group_Function_Development_Contributor') }} / 冷蕴
-          <a href="https://github.com/IUaenaSong" class="icon" target="_blank"
-            ><i class="fa fa-github"></i>
-          </a>
-        </p>
-        <p class="teal-text">
-          <i class="el-icon-circle-check"></i> {{ $t('m.Open_Source') }}
+          Per aspera ad astra 穿越逆境，抵达繁星
         </p>
       </paper-card>
     </div>
@@ -73,7 +63,15 @@
     </el-row>
   </div>
 </template>
-<script></script>
+<script>
+export default {
+  data() {
+    return {
+      imgUrl: require('@/assets/icon.png'),
+    };
+  },
+};
+</script>
 <style scoped>
 .intr-center {
   text-align: center;
@@ -87,7 +85,7 @@ paper-card[type='server'] {
   transition: 0.2s ease-out 0s;
   color: rgba(0, 0, 0, 0.63);
   background-image: linear-gradient(180deg, hsla(0, 0%, 100%, 0) 30%, #fff),
-    linear-gradient(70deg, #e0f1ff 32%, #fffae3);
+  linear-gradient(70deg, #e0f1ff 32%, #fffae3);
   padding: 1rem;
   position: relative;
   border: 1px solid rgba(0, 0, 0, 0.15);

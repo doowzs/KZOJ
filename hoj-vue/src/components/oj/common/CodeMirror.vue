@@ -1,100 +1,121 @@
 <template>
   <div style="margin: 0px 0px 15px 0px;font-size: 14px;position: relative">
     <el-row
-      class="header"
-      id="js-right-header"
+        class="header"
+        id="js-right-header"
     >
       <el-col
-        :xs="24"
-        :sm="16"
-        :md="16"
-        :lg="16"
+          :xs="24"
+          :sm="16"
+          :md="16"
+          :lg="16"
       >
+        <!--        语言-->
         <div class="select-row">
           <span>{{ $t('m.Lang') }}:</span>
           <span>
             <el-select
-              :value="this.language"
-              @change="onLangChange"
-              class="left-adjust"
-              size="small"
+                :value="this.language"
+                @change="onLangChange"
+                class="left-adjust"
+                size="small"
             >
               <el-option
-                v-for="item in languages"
-                :key="item"
-                :value="item"
+                  v-for="item in languages"
+                  :key="item"
+                  :value="item"
               >{{ item }}
               </el-option>
             </el-select>
           </span>
+          <!--          清空-->
           <span>
             <el-tooltip
-              :content="$t('m.Reset_Code')"
-              placement="top"
+                :content="$t('m.Reset_Code')"
+                placement="top"
             >
               <el-button
-                icon="el-icon-refresh"
-                @click="onResetClick"
-                size="small"
+                  icon="el-icon-refresh"
+                  @click="onResetClick"
+                  size="small"
               ></el-button>
             </el-tooltip>
           </span>
+          <!--          下载最近代码-->
           <span v-if="isAuthenticated && !submitDisabled">
             <el-tooltip
-              :content="$t('m.Get_Recently_Passed_Code')"
-              placement="top"
+                :content="$t('m.Get_Recently_Passed_Code')"
+                placement="top"
             >
               <el-button
-                icon="el-icon-download"
-                size="small"
-                @click="getUserLastAccepetedCode"
+                  icon="el-icon-download"
+                  size="small"
+                  @click="getUserLastAccepetedCode"
               >
               </el-button>
             </el-tooltip>
           </span>
+
+          <!--          格式化代码-->
+          <span>
+            <el-tooltip
+                :content="$t('m.Code_Beauty')"
+                placement="top"
+            >
+              <el-button
+                  icon="el-icon-brush"
+                  @click="codeBeauty"
+                  size="small"
+              ></el-button>
+            </el-tooltip>
+          </span>
+
         </div>
       </el-col>
       <el-col
-        :xs="24"
-        :sm="8"
-        :md="8"
-        :lg="8"
+          :xs="24"
+          :sm="8"
+          :md="8"
+          :lg="8"
       >
+
         <div class="select-row fl-right">
+          <!--          文件上传-->
           <span>
             <el-tooltip
-              :content="$t('m.Upload_file')"
-              placement="bottom"
+                :content="$t('m.Upload_file')"
+                placement="bottom"
             >
               <el-button
-                icon="el-icon-upload"
-                @click="onUploadFile"
-                size="small"
+                  icon="el-icon-upload"
+                  @click="onUploadFile"
+                  size="small"
               ></el-button>
             </el-tooltip>
           </span>
           <span>
             <input
-              type="file"
-              id="file-uploader"
-              style="display: none"
-              @change="onUploadFileDone"
+                type="file"
+                id="file-uploader"
+                style="display: none"
+                @change="onUploadFileDone"
             />
           </span>
+          <!--          设置-->
           <span>
             <el-tooltip
-              :content="$t('m.Code_Editor_Setting')"
-              placement="top"
+                :content="$t('m.Code_Editor_Setting')"
+                placement="top"
             >
               <el-popover
-                placement="bottom"
-                width="300"
-                trigger="click"
+                  placement="bottom"
+                  width="300"
+                  trigger="click"
               >
                 <el-button
-                  slot="reference"
-                  icon="el-icon-s-tools"
-                  size="small"
+                    slot="reference"
+                    icon="el-icon-s-tools"
+                    size="small"
                 >
                 </el-button>
                 <div class="setting-title">{{ $t('m.Setting') }}</div>
@@ -104,16 +125,16 @@
                     {{ $t('m.Theme') }}
                   </span>
                   <el-select
-                    :value="this.theme"
-                    @change="onThemeChange"
-                    class="setting-item-value"
-                    size="small"
+                      :value="this.theme"
+                      @change="onThemeChange"
+                      class="setting-item-value"
+                      size="small"
                   >
                     <el-option
-                      v-for="item in themes"
-                      :key="item.label"
-                      :label="$t('m.' + item.label)"
-                      :value="item.value"
+                        v-for="item in themes"
+                        :key="item.label"
+                        :label="$t('m.' + item.label)"
+                        :value="item.value"
                     >{{ $t('m.' + item.label) }}
                     </el-option>
                   </el-select>
@@ -124,16 +145,16 @@
                     {{ $t('m.FontSize') }}
                   </span>
                   <el-select
-                    :value="fontSize"
-                    @change="onFontSizeChange"
-                    class="setting-item-value"
-                    size="small"
+                      :value="fontSize"
+                      @change="onFontSizeChange"
+                      class="setting-item-value"
+                      size="small"
                   >
                     <el-option
-                      v-for="item in fontSizes"
-                      :key="item"
-                      :label="item"
-                      :value="item"
+                        v-for="item in fontSizes"
+                        :key="item"
+                        :label="item"
+                        :value="item"
                     >{{ item }}
                     </el-option>
                   </el-select>
@@ -141,67 +162,67 @@
                 <div class="setting-item">
                   <span class="setting-item-name">
                     <svg
-                      focusable="false"
-                      viewBox="0 0 1024 1024"
-                      fill="currentColor"
-                      width="1.2em"
-                      height="1.2em"
-                      style="vertical-align: text-bottom;"
-                      aria-hidden="true"
+                        focusable="false"
+                        viewBox="0 0 1024 1024"
+                        fill="currentColor"
+                        width="1.2em"
+                        height="1.2em"
+                        style="vertical-align: text-bottom;"
+                        aria-hidden="true"
                     >
                       <g transform="translate(101.57 355.48)">
                         <rect
-                          width="812.53"
-                          height="152.35"
-                          x="0"
-                          y="0"
-                          rx="50.78"
+                            width="812.53"
+                            height="152.35"
+                            x="0"
+                            y="0"
+                            rx="50.78"
                         ></rect>
                         <rect
-                          width="812.53"
-                          height="50.78"
-                          x="0"
-                          y="253.92"
-                          rx="25.39"
+                            width="812.53"
+                            height="50.78"
+                            x="0"
+                            y="253.92"
+                            rx="25.39"
                         ></rect>
                         <rect
-                          width="50.78"
-                          height="203.13"
-                          x="0"
-                          y="177.74"
-                          rx="25.39"
+                            width="50.78"
+                            height="203.13"
+                            x="0"
+                            y="177.74"
+                            rx="25.39"
                         ></rect>
                         <rect
-                          width="50.78"
-                          height="203.13"
-                          x="761.75"
-                          y="177.74"
-                          rx="25.39"
+                            width="50.78"
+                            height="203.13"
+                            x="761.75"
+                            y="177.74"
+                            rx="25.39"
                         ></rect>
                       </g>
                     </svg> {{ $t('m.TabSize') }}
                   </span>
                   <el-select
-                    :value="tabSize"
-                    @change="onTabSizeChange"
-                    class="setting-item-value"
-                    size="small"
+                      :value="tabSize"
+                      @change="onTabSizeChange"
+                      class="setting-item-value"
+                      size="small"
                   >
                     <el-option
-                      :label="$t('m.Two_Spaces') "
-                      :value="2"
+                        :label="$t('m.Two_Spaces') "
+                        :value="2"
                     >
                       {{ $t('m.Two_Spaces') }}
                     </el-option>
                     <el-option
-                      :label="$t('m.Four_Spaces') "
-                      :value="4"
+                        :label="$t('m.Four_Spaces') "
+                        :value="4"
                     >
                       {{ $t('m.Four_Spaces') }}
                     </el-option>
                     <el-option
-                      :label="$t('m.Eight_Spaces') "
-                      :value="8"
+                        :label="$t('m.Eight_Spaces') "
+                        :value="8"
                     >
                       {{ $t('m.Eight_Spaces') }}
                     </el-option>
@@ -210,41 +231,42 @@
               </el-popover>
             </el-tooltip>
           </span>
+          <!--          专注模式-->
           <template v-if="supportFocusMode">
             <span
-              v-if="!openFocusMode"
-              class="hidden-sm-and-down"
+                v-if="!openFocusMode"
+                class="hidden-sm-and-down"
             >
               <el-tooltip
-                :content="$t('m.Enter_Focus_Mode')"
-                placement="bottom"
+                  :content="$t('m.Enter_Focus_Mode')"
+                  placement="bottom"
               >
                 <el-button
-                  icon="el-icon-full-screen"
-                  @click="switchFocusMode(true)"
-                  size="small"
+                    icon="el-icon-full-screen"
+                    @click="switchFocusMode(true)"
+                    size="small"
                 ></el-button>
               </el-tooltip>
             </span>
             <span
-              v-else
-              class="hidden-sm-and-down"
+                v-else
+                class="hidden-sm-and-down"
             >
               <el-tooltip
-                :content="$t('m.Exit_Focus_Mode')"
-                placement="bottom"
+                  :content="$t('m.Exit_Focus_Mode')"
+                  placement="bottom"
               >
                 <el-button
-                  @click="switchFocusMode(false)"
-                  size="small"
+                    @click="switchFocusMode(false)"
+                    size="small"
                 >
                   <svg
-                    focusable="false"
-                    viewBox="0 0 1024 1024"
-                    fill="currentColor"
-                    width="0.95em"
-                    height="0.95em"
-                    aria-hidden="true"
+                      focusable="false"
+                      viewBox="0 0 1024 1024"
+                      fill="currentColor"
+                      width="0.95em"
+                      height="0.95em"
+                      aria-hidden="true"
                   >
                     <path d="M463.04 863.32h-88.51V641.14H152.35v-88.87H463.4l-.36 311.05zM863.32 463.4H552.27l.31-311.05h88.56v222.18h222.18v88.87z">
                     </path>
@@ -256,73 +278,74 @@
         </div>
       </el-col>
     </el-row>
+
     <div :style="'line-height: 1.5;font-size:'+fontSize">
       <codemirror
-        class="js-right"
-        :value="value"
-        :options="options"
-        @change="onEditorCodeChange"
-        ref="myEditor"
+          class="js-right"
+          :value="value"
+          :options="options"
+          @change="onEditorCodeChange"
+          ref="myEditor"
       >
       </codemirror>
     </div>
     <el-drawer
-      :visible.sync="openTestCaseDrawer"
-      style="position: absolute;"
-      :modal="false"
-      size="40%"
-      :with-header="false"
-      @close="closeDrawer"
-      direction="btt"
+        :visible.sync="openTestCaseDrawer"
+        style="position: absolute;"
+        :modal="false"
+        size="40%"
+        :with-header="false"
+        @close="closeDrawer"
+        direction="btt"
     >
       <el-tabs
-        v-model="testJudgeActiveTab"
-        type="border-card"
-        style="height: 100%;"
-        @tab-click="handleClick"
+          v-model="testJudgeActiveTab"
+          type="border-card"
+          style="height: 100%;"
+          @tab-click="handleClick"
       >
         <el-tab-pane
-          :label="$t('m.Test_Case')"
-          name="input"
-          style="margin-right: 15px;margin-top: 8px;"
+            :label="$t('m.Test_Case')"
+            name="input"
+            style="margin-right: 15px;margin-top: 8px;"
         >
           <div class="mt-10">
             <el-tag
-              type="primary"
-              class="tj-test-tag"
-              size="samll"
-              v-for="(example, index) of problemTestCase"
-              :key="index"
-              @click="addTestCaseToTestJudge(example.input, example.output, index)"
-              :effect="example.active?'dark':'plain'"
+                type="primary"
+                class="tj-test-tag"
+                size="samll"
+                v-for="(example, index) of problemTestCase"
+                :key="index"
+                @click="addTestCaseToTestJudge(example.input, example.output, index)"
+                :effect="example.active?'dark':'plain'"
             >
               {{ $t('m.Fill_Case') }} {{ index+1 }}
             </el-tag>
           </div>
           <el-input
-            type="textarea"
-            class="mt-10"
-            :rows="7"
-            show-word-limit
-            resize="none"
-            maxlength="1000"
-            v-model="userInput"
+              type="textarea"
+              class="mt-10"
+              :rows="7"
+              show-word-limit
+              resize="none"
+              maxlength="1000"
+              v-model="userInput"
           >
           </el-input>
         </el-tab-pane>
         <el-tab-pane
-          :label="$t('m.Test_Result')"
-          name="result"
+            :label="$t('m.Test_Result')"
+            name="result"
         >
           <div v-loading="testJudgeLoding">
             <template v-if="testJudgeRes.status == -10">
               <div class="tj-res-tab mt-10">
                 <el-alert
-                  :title="$t('m.Non_Test_Judge_Tips')"
-                  type="info"
-                  center
-                  :closable="false"
-                  show-icon
+                    :title="$t('m.Non_Test_Judge_Tips')"
+                    type="info"
+                    center
+                    :closable="false"
+                    show-icon
                 >
                 </el-alert>
               </div>
@@ -330,15 +353,15 @@
             <template v-else-if="testJudgeRes.status != -2">
               <div class="tj-res-tab">
                 <el-alert
-                  class="mt-10"
-                  :type="getResultStausType(testJudgeRes.problemJudgeMode,testJudgeRes.status)"
-                  :closable="false"
-                  show-icon
+                    class="mt-10"
+                    :type="getResultStausType(testJudgeRes.problemJudgeMode,testJudgeRes.status)"
+                    :closable="false"
+                    show-icon
                 >
                   <template slot="title">
                     <span class="status-title">{{ getResultStatusName(testJudgeRes.problemJudgeMode,
-                      testJudgeRes.status,
-                      testJudgeRes.expectedOutput!=null) }}
+                        testJudgeRes.status,
+                        testJudgeRes.expectedOutput!=null) }}
                       <template v-if="equalsExpectedOuput != null">
                         {{ "("+ $t('m.Pass_Test_Case')+ " "+equalsExpectedOuput+")" }}
                       </template>
@@ -354,21 +377,21 @@
                       </div>
                       <div>
                         <span
-                          style="vertical-align: sub;"
-                          class="color-gray mr-5"
+                            style="vertical-align: sub;"
+                            class="color-gray mr-5"
                         >
                           <svg
-                            data-v-79a9c93e=""
-                            focusable="false"
-                            viewBox="0 0 1025 1024"
-                            fill="currentColor"
-                            width="1.2em"
-                            height="1.2em"
-                            aria-hidden="true"
+                              data-v-79a9c93e=""
+                              focusable="false"
+                              viewBox="0 0 1025 1024"
+                              fill="currentColor"
+                              width="1.2em"
+                              height="1.2em"
+                              aria-hidden="true"
                           >
                             <path
-                              d="M448.98 92.52V92.67l.37 40.46v62.75h125.5V92.52h81.22v103.36h33.12c76.08 0 137.9 61.05 139.12 136.84l.02 2.3v33.12h103.36v80.84l-40.6.37h-62.76v91.05h103.36v81.21H828.33v67.58c0 76.08-61.06 137.9-136.84 139.12l-2.3.02h-33.12v103.36h-80.84l-.37-40.6v-62.76H449.25l-.27 103.36h-80.84V828.33h-33.12c-76.08 0-137.9-61.06-139.12-136.84l-.02-2.3v-67.58H92.52v-80.83l40.6-.38h62.76v-91.15l-103.36-.27v-80.47l40.6-.37h62.76v-33.12c0-76.08 61.05-137.9 136.84-139.12l2.3-.02h33.12V92.52h80.84zM689.2 277.1H335.02c-32 0-57.93 25.93-57.93 57.93v354.17c0 32 25.93 57.93 57.93 57.93h354.17c32 0 57.93-25.94 57.93-57.93V335.02c0-32-25.94-57.93-57.93-57.93zm-73.73 91.05a40.6 40.6 0 0 1 40.6 40.6v206.72a40.6 40.6 0 0 1-40.6 40.6H408.75a40.6 40.6 0 0 1-40.6-40.6V408.75a40.6 40.6 0 0 1 40.6-40.6zm-40.6 81.16H449.3v125.55h125.55V449.3z"
-                              transform="translate(1)"
+                                d="M448.98 92.52V92.67l.37 40.46v62.75h125.5V92.52h81.22v103.36h33.12c76.08 0 137.9 61.05 139.12 136.84l.02 2.3v33.12h103.36v80.84l-40.6.37h-62.76v91.05h103.36v81.21H828.33v67.58c0 76.08-61.06 137.9-136.84 139.12l-2.3.02h-33.12v103.36h-80.84l-.37-40.6v-62.76H449.25l-.27 103.36h-80.84V828.33h-33.12c-76.08 0-137.9-61.06-139.12-136.84l-.02-2.3v-67.58H92.52v-80.83l40.6-.38h62.76v-91.15l-103.36-.27v-80.47l40.6-.37h62.76v-33.12c0-76.08 61.05-137.9 136.84-139.12l2.3-.02h33.12V92.52h80.84zM689.2 277.1H335.02c-32 0-57.93 25.93-57.93 57.93v354.17c0 32 25.93 57.93 57.93 57.93h354.17c32 0 57.93-25.94 57.93-57.93V335.02c0-32-25.94-57.93-57.93-57.93zm-73.73 91.05a40.6 40.6 0 0 1 40.6 40.6v206.72a40.6 40.6 0 0 1-40.6 40.6H408.75a40.6 40.6 0 0 1-40.6-40.6V408.75a40.6 40.6 0 0 1 40.6-40.6zm-40.6 81.16H449.3v125.55h125.55V449.3z"
+                                transform="translate(1)"
                             >
                             </path>
                           </svg>
@@ -382,9 +405,9 @@
                       {{ testJudgeRes.stderr }}
                     </div>
                     <div
-                      v-if="testJudgeRes.problemJudgeMode == 'spj' 
+                        v-if="testJudgeRes.problemJudgeMode == 'spj'
                           && (testJudgeRes.status == 0 || testJudgeRes.status == -1)"
-                      style="font-weight: 700;"
+                        style="font-weight: 700;"
                     >
                       {{ $t('m.Problem_Uncertain_Answer') }}
                     </div>
@@ -396,29 +419,29 @@
                   <span class="name">{{ $t('m.Test_Input') }}</span>
                   <span class="value">
                     <el-input
-                      type="textarea"
-                      class="textarea"
-                      :readonly="true"
-                      resize="none"
-                      :autosize="{ minRows: 1, maxRows: 4}"
-                      v-model="testJudgeRes.userInput"
+                        type="textarea"
+                        class="textarea"
+                        :readonly="true"
+                        resize="none"
+                        :autosize="{ minRows: 1, maxRows: 4}"
+                        v-model="testJudgeRes.userInput"
                     >
                     </el-input>
                   </span>
                 </div>
                 <div
-                  class="tj-res-item"
-                  v-if="testJudgeRes.expectedOutput!=null"
+                    class="tj-res-item"
+                    v-if="testJudgeRes.expectedOutput!=null"
                 >
                   <span class="name">{{ $t('m.Expected_Output') }}</span>
                   <span class="value">
                     <el-input
-                      type="textarea"
-                      :readonly="true"
-                      resize="none"
-                      :autosize="{ minRows: 1, maxRows: 4}"
-                      class="textarea"
-                      v-model="testJudgeRes.expectedOutput"
+                        type="textarea"
+                        :readonly="true"
+                        resize="none"
+                        :autosize="{ minRows: 1, maxRows: 4}"
+                        class="textarea"
+                        v-model="testJudgeRes.expectedOutput"
                     >
                     </el-input>
                   </span>
@@ -427,12 +450,12 @@
                   <span class="name">{{ $t('m.Real_Output') }}</span>
                   <span class="value">
                     <el-input
-                      type="textarea"
-                      class="textarea"
-                      :readonly="true"
-                      resize="none"
-                      :autosize="{ minRows: 1, maxRows: 4}"
-                      v-model="testJudgeRes.userOutput"
+                        type="textarea"
+                        class="textarea"
+                        :readonly="true"
+                        resize="none"
+                        :autosize="{ minRows: 1, maxRows: 4}"
+                        v-model="testJudgeRes.userOutput"
                     >
                     </el-input>
                   </span>
@@ -456,10 +479,10 @@
         <el-tab-pane>
           <span slot="label">
             <el-tag
-              type="success"
-              class="tj-btn"
-              @click="submitTestJudge"
-              effect="plain"
+                type="success"
+                class="tj-btn"
+                @click="submitTestJudge"
+                effect="plain"
             >
               <i class="el-icon-video-play"> {{ $t('m.Running_Test') }}</i>
             </el-tag>
@@ -467,11 +490,11 @@
           <template v-if="!isAuthenticated">
             <div class="tj-res-tab mt-10">
               <el-alert
-                :title="$t('m.Please_login_first')"
-                type="warning"
-                center
-                :closable="false"
-                show-icon
+                  :title="$t('m.Please_login_first')"
+                  type="warning"
+                  center
+                  :closable="false"
+                  show-icon
               >
               </el-alert>
             </div>
@@ -487,6 +510,10 @@ import api from "@/common/api";
 import myMessage from "@/common/message";
 import { codemirror, CodeMirror } from "vue-codemirror-lite";
 import { JUDGE_STATUS, JUDGE_STATUS_RESERVE } from "@/common/constants";
+
+//js_beautify
+import { js_beautify, css_beautify, html_beautify } from 'js-beautify'
+
 
 // 风格对应的样式
 import "codemirror/theme/monokai.css";
@@ -627,6 +654,26 @@ export default {
         showCursorWhenSelecting: true,
         highlightSelectionMatches: { showToken: /\w/, annotateScrollbar: true },
         // extraKeys: { Ctrl: 'autocomplete' }, //自定义快捷键
+        extraKeys: {
+          Tab: (cm) => {
+            if (cm.somethingSelected()) { // 存在文本选择
+              cm.indentSelection('add'); // 正向缩进文本
+            } else { // 无文本选择
+              // cm.indentLine(cm.getCursor().line, "add"); // 整行缩进 不符合预期
+              cm.replaceSelection(Array(cm.getOption("indentUnit") + 1).join(" "), "end", "+input"); // 光标处插入 indentUnit 个空格
+            }
+          },
+          "Shift-Tab": (cm) => { // 反向缩进
+            if (cm.somethingSelected()) {
+              cm.indentSelection('subtract'); // 反向缩进
+            } else {
+              // cm.indentLine(cm.getCursor().line, "subtract"); // 直接缩进整行
+              const cursor = cm.getCursor();
+              cm.setCursor({line: cursor.line, ch: cursor.ch - 4}); // 光标回退 indexUnit 字符
+            }
+            return ;
+          },
+        },
         matchBrackets: true, //括号匹配
         indentUnit: this.tabSize, //一个块（编辑语言中的含义）应缩进多少个空格
         styleActiveLine: true,
@@ -677,7 +724,7 @@ export default {
     this.editor.setSize('100%', this.height);
     this.editor.on("inputRead", (instance, changeObj) => {
       if (changeObj.text && changeObj.text.length > 0) {
-      let c = changeObj.text[0].charAt(changeObj.text[0].length - 1)
+        let c = changeObj.text[0].charAt(changeObj.text[0].length - 1)
         if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) {
           instance.showHint({ completeSingle:false });
         }
@@ -695,6 +742,17 @@ export default {
     })
   },
   methods: {
+    codeBeauty() {
+      const options = {
+        indent_size: this.tabSize,
+        brace_style:'collapse-preserve-inline',
+        wrap_line_length:12000,
+        max_preserve_newlines: 2,
+      };
+      const newValue =  js_beautify(this.value || '',options);
+      this.$emit('update:value', newValue);
+    },
+
     onEditorCodeChange(newCode) {
       this.$emit("update:value", newCode);
     },
@@ -784,15 +842,15 @@ export default {
         isRemoteJudge: this.isRemoteJudge,
       };
       api.submitTestJudge(data).then(
-        (res) => {
-          this.testJudgeKey = res.data.data;
-          this.testJudgeActiveTab = "result";
-          this.testJudgeLoding = true;
-          this.checkTestJudgeStatus();
-        },
-        (err) => {
-          this.testJudgeActiveTab = "input";
-        }
+          (res) => {
+            this.testJudgeKey = res.data.data;
+            this.testJudgeActiveTab = "result";
+            this.testJudgeLoding = true;
+            this.checkTestJudgeStatus();
+          },
+          (err) => {
+            this.testJudgeActiveTab = "input";
+          }
       );
     },
     checkTestJudgeStatus() {
@@ -803,34 +861,34 @@ export default {
       }
       const checkStatus = () => {
         api.getTestJudgeResult(this.testJudgeKey).then(
-          (res) => {
-            let resData = res.data.data;
-            if (resData.status != JUDGE_STATUS_RESERVE["Pending"]) {
-              // status不为pending
-              this.testJudgeRes = resData;
-              this.equalsExpectedOuput = null;
-              if (resData.status == JUDGE_STATUS_RESERVE["ac"]) {
-                let size = this.problemTestCase.length;
-                for (let i = 0; i < size; i++) {
-                  let example = this.problemTestCase[i];
-                  if (
-                    example.input == this.testJudgeRes.userInput &&
-                    example.output == this.testJudgeRes.expectedOutput
-                  ) {
-                    this.equalsExpectedOuput = i + 1;
+            (res) => {
+              let resData = res.data.data;
+              if (resData.status != JUDGE_STATUS_RESERVE["Pending"]) {
+                // status不为pending
+                this.testJudgeRes = resData;
+                this.equalsExpectedOuput = null;
+                if (resData.status == JUDGE_STATUS_RESERVE["ac"]) {
+                  let size = this.problemTestCase.length;
+                  for (let i = 0; i < size; i++) {
+                    let example = this.problemTestCase[i];
+                    if (
+                        example.input == this.testJudgeRes.userInput &&
+                        example.output == this.testJudgeRes.expectedOutput
+                    ) {
+                      this.equalsExpectedOuput = i + 1;
+                    }
                   }
                 }
+                this.testJudgeLoding = false;
+                clearTimeout(this.refreshStatus);
+              } else {
+                this.refreshStatus = setTimeout(checkStatus, 1000);
               }
+            },
+            (res) => {
               this.testJudgeLoding = false;
               clearTimeout(this.refreshStatus);
-            } else {
-              this.refreshStatus = setTimeout(checkStatus, 1000);
             }
-          },
-          (res) => {
-            this.testJudgeLoding = false;
-            clearTimeout(this.refreshStatus);
-          }
         );
       };
       // 设置每1秒检查一下该题的提交结果
@@ -1032,5 +1090,8 @@ export default {
 }
 .cm-s-material .cm-matchhighlight {
   background-color: rgba(128, 203, 196, 0.2);
+}
+.textarea{
+  font-family: "Inconsolata",monospace;
 }
 </style>

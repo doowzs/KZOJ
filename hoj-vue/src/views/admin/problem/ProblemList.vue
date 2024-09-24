@@ -3,112 +3,160 @@
     <el-card>
       <div slot="header">
         <span class="panel-title home-title">{{
-          query.contestId ? $t('m.Contest_Problem_List') : $t('m.Problem_List')
-        }}</span>
+            query.contestId ? $t('m.Contest_Problem_List') : $t('m.Problem_List')
+          }}</span>
         <div class="filter-row">
           <span>
+              <el-button
+                  icon="el-icon-edit"
+                  size="small"
+                  @click.native="openChangeProblemsAuth"
+                  type="danger"
+              >{{ $t('m.Edit') }}
+            </el-button>
+          </span>
+          <span>
             <el-button
-              type="primary"
-              size="small"
-              @click="goCreateProblem"
-              icon="el-icon-plus"
-              >{{ $t('m.Create') }}
+                type="primary"
+                size="small"
+                @click="goCreateProblem"
+                icon="el-icon-plus"
+            >{{ $t('m.Create') }}
             </el-button>
           </span>
           <span v-if="query.contestId">
             <el-button
-              type="primary"
-              size="small"
-              icon="el-icon-plus"
-              @click="addProblemDialogVisible = true"
-              >{{ $t('m.Add_From_Public_Problem') }}
+                type="primary"
+                size="small"
+                icon="el-icon-plus"
+                @click="addProblemDialogVisible = true"
+            >{{ $t('m.Add_From_Public_Problem') }}
             </el-button>
           </span>
           <span>
             <el-button
-              type="success"
-              size="small"
-              @click="AddRemoteOJProblemDialogVisible = true"
-              icon="el-icon-plus"
-              >{{ $t('m.Add_Rmote_OJ_Problem') }}
+                type="success"
+                size="small"
+                @click="AddRemoteOJProblemDialogVisible = true"
+                icon="el-icon-plus"
+            >{{ $t('m.Add_Rmote_OJ_Problem') }}
             </el-button>
           </span>
           <span>
             <vxe-input
-              v-model="query.keyword"
-              :placeholder="$t('m.Enter_keyword')"
-              type="search"
-              size="medium"
-              @search-click="filterByKeyword"
-              @keyup.enter.native="filterByKeyword"
+                v-model="query.keyword"
+                :placeholder="$t('m.Enter_keyword')"
+                type="search"
+                size="medium"
+                @search-click="filterByKeyword"
+                @keyup.enter.native="filterByKeyword"
             ></vxe-input>
           </span>
 
           <span>
             <el-select
-              v-model="query.oj"
-              @change="ProblemListChangeFilter"
-              size="small"
-              style="width: 180px;"
+                v-model="query.oj"
+                @change="ProblemListChangeFilter"
+                size="small"
+                style="width: 120px;"
             >
               <el-option
-                :label="$t('m.All_Problem')"
-                :value="'All'"
+                  :label="$t('m.All_Problem')"
+                  :value="'All'"
               ></el-option>
               <el-option :label="$t('m.My_OJ')" :value="'Mine'"></el-option>
               <el-option
-                :label="remoteOj.name"
-                :key="index"
-                :value="remoteOj.key"
-                v-for="(remoteOj, index) in REMOTE_OJ"
+                  :label="remoteOj.name"
+                  :key="index"
+                  :value="remoteOj.key"
+                  v-for="(remoteOj, index) in REMOTE_OJ"
               ></el-option>
             </el-select>
           </span>
 
           <span v-if="!query.contestId">
             <el-select
-              v-model="query.problemListAuth"
-              @change="ProblemListChangeFilter"
-              size="small"
-              style="width: 180px;"
+                v-model="query.problemListAuth"
+                @change="ProblemListChangeFilter"
+                size="small"
+                style="width: 120px;"
             >
-              <el-option :label="$t('m.All_Problem')" :value="0"></el-option>
-              <el-option :label="$t('m.Public_Problem')" :value="1"></el-option>
               <el-option
-                :label="$t('m.Private_Problem')"
-                :value="2"
+                  :label="$t('m.All_Problem')"
+                  :value="0">
+              </el-option>
+              <el-option
+                  :label="$t('m.Public_Problem')"
+                  :value="1">
+              </el-option>
+              <el-option
+                  :label="$t('m.Private_Problem')"
+                  :value="2"
               ></el-option>
               <el-option
-                :label="$t('m.Contest_Problem')"
-                :value="3"
+                  :label="$t('m.Contest_Problem')"
+                  :value="3"
+              ></el-option>
+              <el-option
+                  :label="$t('m.Group_Problem')"
+                  :value="4"
               ></el-option>
             </el-select>
           </span>
+          <span>
+            <el-select
+                v-model="query.problemListType"
+                @change="ProblemListChangeFilter"
+                size="small"
+                style="width: 120px;"
+            >
+              <el-option
+                  :label="$t('m.All_Problem')"
+                  :value="-1"
+              ></el-option>
+              <el-option
+                  label="ACM"
+                  :value="0"
+              ></el-option>
+              <el-option
+                  label="OI"
+                  :value="1"
+              ></el-option>
+            </el-select>
+          </span>
+
         </div>
       </div>
       <vxe-table
-        stripe
-        auto-resize
-        :data="problemList"
-        ref="adminProblemList"
-        :loading="loading"
-        align="center"
+          stripe
+          auto-resize
+          :cell-style="{padding:'18px 0px 18px 0px'}"
+          :data="problemList"
+          ref="adminProblemList"
+          :loading="loading"
+          align="center"
+          :checkbox-config="{ labelField: '', highlight: true, range: true }"
+          @checkbox-change="handleSelectionChange"
+          @checkbox-all="handlechangeAll"
+
       >
+        <vxe-table-column type="checkbox" width="60"></vxe-table-column>
+
         <vxe-table-column min-width="64" field="id" title="ID">
         </vxe-table-column>
         <vxe-table-column
-          min-width="100"
-          field="problemId"
-          :title="$t('m.Display_ID')"
-          v-if="!isContest"
+            min-width="100"
+            field="problemId"
+            :title="$t('m.Display_ID')"
+            v-if="!isContest"
         >
         </vxe-table-column>
 
         <vxe-table-column
-          min-width="150"
-          :title="$t('m.Original_Display')"
-          v-else
-          align="left"
+            min-width="150"
+            :title="$t('m.Original_Display')"
+            v-else
+            align="left"
         >
           <template v-slot="{ row }">
             <p v-if="query.contestId">
@@ -120,19 +168,19 @@
         </vxe-table-column>
 
         <vxe-table-column
-          field="title"
-          min-width="150"
-          :title="$t('m.Title')"
-          show-overflow
-          v-if="!isContest"
+            field="title"
+            min-width="150"
+            :title="$t('m.Title')"
+            show-overflow
+            v-if="!isContest"
         >
         </vxe-table-column>
 
         <vxe-table-column
-          min-width="150"
-          :title="$t('m.Contest_Display')"
-          v-else
-          align="left"
+            min-width="130"
+            :title="$t('m.Contest_Display')"
+            v-else
+            align="left"
         >
           <template v-slot="{ row }">
             <p v-if="contestProblemMap[row.id]">
@@ -158,7 +206,7 @@
                     contestProblemMap[row.id].color
                   )
                 "
-              >
+            >
               </el-color-picker>
             </span>
             <span v-else>{{ row.title }}</span>
@@ -166,45 +214,69 @@
         </vxe-table-column>
 
         <vxe-table-column
-          field="author"
-          min-width="130"
-          :title="$t('m.Author')"
-          show-overflow
+            field="author"
+            min-width="70"
+            :title="$t('m.Author')"
+            show-overflow
         >
         </vxe-table-column>
-        <vxe-table-column min-width="120" :title="$t('m.Created_Time')">
+        <vxe-table-column min-width="150" :title="$t('m.Created_Time')">
           <template v-slot="{ row }">
             {{ row.gmtCreate | localtime }}
           </template>
         </vxe-table-column>
         <vxe-table-column
-          min-width="96"
-          field="modifiedUser"
-          :title="$t('m.Modified_User')"
-          show-overflow
+            min-width="70"
+            field="modifiedUser"
+            :title="$t('m.Modified_User')"
+            show-overflow
         >
         </vxe-table-column>
-        <vxe-table-column min-width="120" :title="$t('m.Auth')">
+        <vxe-table-column min-width="110" :title="$t('m.Auth')">
           <template v-slot="{ row }">
             <el-select
-              v-model="row.auth"
-              @change="changeProblemAuth(row)"
-              size="small"
-              :disabled="!isSuperAdmin && !isProblemAdmin && !query.contestId"
+                v-model="row.auth"
+                @change="changeProblemAuth(row)"
+                size="small"
+                :disabled="!isSuperAdmin && !isProblemAdmin && !query.contestId"
             >
               <el-option
-                :label="$t('m.Public_Problem')"
-                :value="1"
-                :disabled="!isSuperAdmin && !isProblemAdmin"
+                  :label="$t('m.Public_Problem')"
+                  :value="1"
+                  :disabled="!isSuperAdmin && !isProblemAdmin"
               ></el-option>
               <el-option
-                :label="$t('m.Private_Problem')"
-                :value="2"
+                  :label="$t('m.Private_Problem')"
+                  :value="2"
               ></el-option>
               <el-option
-                :label="$t('m.Contest_Problem')"
-                :value="3"
-                :disabled="!query.contestId"
+                  :label="$t('m.Contest_Problem')"
+                  :value="3"
+              ></el-option>
+              <el-option
+                  :label="$t('m.Group_Problem')"
+                  :value="4"
+              ></el-option>
+            </el-select>
+          </template>
+        </vxe-table-column>
+        <vxe-table-column min-width="80" :title="$t('m.Type')">
+          <template v-slot="{ row }">
+            <el-select
+                v-model="row.type"
+                size="small"
+                @change="changeProblemType(row)"
+                :disabled="row.isRemote"
+            >
+              <el-option
+                  label="ACM"
+                  :value="0"
+                  :disabled="!isSuperAdmin && !isProblemAdmin"
+              ></el-option>
+              <el-option
+                  label="OI"
+                  :value="1"
+                  :disabled="!isSuperAdmin && !isProblemAdmin"
               ></el-option>
             </el-select>
           </template>
@@ -212,65 +284,65 @@
         <vxe-table-column title="Option" min-width="200">
           <template v-slot="{ row }">
             <el-tooltip
-              effect="dark"
-              :content="$t('m.Edit')"
-              placement="top"
-              v-if="
+                effect="dark"
+                :content="$t('m.Edit')"
+                placement="top"
+                v-if="
                 isSuperAdmin ||
-                  isProblemAdmin ||
-                  row.author == userInfo.username
+                isProblemAdmin ||
+                row.author == userInfo.username
               "
             >
               <el-button
-                icon="el-icon-edit-outline"
-                size="mini"
-                @click.native="goEdit(row.id)"
-                type="primary"
+                  icon="el-icon-edit-outline"
+                  size="mini"
+                  @click.native="goEdit(row.id)"
+                  type="primary"
               >
               </el-button>
             </el-tooltip>
 
             <el-tooltip
-              effect="dark"
-              :content="$t('m.Download_Testcase')"
-              placement="top"
-              v-if="isSuperAdmin || isProblemAdmin"
+                effect="dark"
+                :content="$t('m.Download_Testcase')"
+                placement="top"
+                v-if="isSuperAdmin || isProblemAdmin"
             >
               <el-button
-                icon="el-icon-download"
-                size="mini"
-                @click.native="downloadTestCase(row.id)"
-                type="success"
+                  icon="el-icon-download"
+                  size="mini"
+                  @click.native="downloadTestCase(row.id)"
+                  type="success"
               >
               </el-button>
             </el-tooltip>
 
             <el-tooltip
-              effect="dark"
-              :content="$t('m.Remove')"
-              placement="top"
-              v-if="query.contestId"
+                effect="dark"
+                :content="$t('m.Remove')"
+                placement="top"
+                v-if="query.contestId"
             >
               <el-button
-                icon="el-icon-close"
-                size="mini"
-                @click.native="removeProblem(row.id)"
-                type="warning"
+                  icon="el-icon-close"
+                  size="mini"
+                  @click.native="removeProblem(row.id)"
+                  type="warning"
               >
               </el-button>
             </el-tooltip>
 
             <el-tooltip
-              effect="dark"
-              :content="$t('m.Delete')"
-              placement="top"
-              v-if="isSuperAdmin || isProblemAdmin"
+                effect="dark"
+                :content="$t('m.Delete')"
+                placement="top"
+                v-if="isSuperAdmin || isProblemAdmin"
             >
               <el-button
-                icon="el-icon-delete-solid"
-                size="mini"
-                @click.native="deleteProblem(row.id)"
-                type="danger"
+                  icon="el-icon-delete-solid"
+                  size="mini"
+                  @click.native="deleteProblem(row.id)"
+                  type="danger"
               >
               </el-button>
             </el-tooltip>
@@ -280,46 +352,46 @@
 
       <div class="panel-options" v-if="showPagination">
         <el-pagination
-          class="page"
-          layout="prev, pager, next, sizes"
-          @current-change="currentChange"
-          :page-size.sync="query.pageSize"
-          :total.sync="total"
-          :current-page.sync="query.currentPage"
-          @size-change="onPageSizeChange"
-          :page-sizes="[10, 30, 50, 100]"
+            class="page"
+            layout="prev, pager, next, sizes"
+            @current-change="currentChange"
+            :page-size.sync="query.pageSize"
+            :total.sync="total"
+            :current-page.sync="query.currentPage"
+            @size-change="onPageSizeChange"
+            :page-sizes="[10, 30, 50, 100]"
         >
         </el-pagination>
       </div>
     </el-card>
 
     <el-dialog
-      :title="$t('m.Add_Contest_Problem')"
-      v-if="query.contestId"
-      width="90%"
-      :visible.sync="addProblemDialogVisible"
-      :close-on-click-modal="false"
+        :title="$t('m.Add_Contest_Problem')"
+        v-if="query.contestId"
+        width="90%"
+        :visible.sync="addProblemDialogVisible"
+        :close-on-click-modal="false"
     >
       <AddPublicProblem
-        :contestID="query.contestId"
-        @on-change="getProblemList"
+          :contestID="query.contestId"
+          @on-change="getProblemList"
       ></AddPublicProblem>
     </el-dialog>
 
     <el-dialog
-      :title="$t('m.Add_Rmote_OJ_Problem')"
-      width="350px"
-      :visible.sync="AddRemoteOJProblemDialogVisible"
-      :close-on-click-modal="false"
+        :title="$t('m.Add_Rmote_OJ_Problem')"
+        width="350px"
+        :visible.sync="AddRemoteOJProblemDialogVisible"
+        :close-on-click-modal="false"
     >
       <el-form>
         <el-form-item :label="$t('m.Remote_OJ')">
           <el-select v-model="otherOJName" size="small">
             <el-option
-              :label="remoteOj.name"
-              :value="remoteOj.key"
-              v-for="(remoteOj, index) in REMOTE_OJ"
-              :key="index"
+                :label="remoteOj.name"
+                :value="remoteOj.key"
+                v-for="(remoteOj, index) in REMOTE_OJ"
+                :key="index"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -328,23 +400,89 @@
         </el-form-item>
 
         <el-form-item
-          v-if="query.contestId"
-          :label="$t('m.Enter_The_Problem_Display_ID_in_the_Contest')"
-          required
+            v-if="query.contestId"
+            :label="$t('m.Enter_The_Problem_Display_ID_in_the_Contest')"
+            required
         >
           <el-input v-model="displayId" size="small"></el-input>
         </el-form-item>
 
         <el-form-item style="text-align:center">
           <el-button
-            type="primary"
-            icon="el-icon-plus"
-            @click="addRemoteOJProblem"
-            :loading="addRemoteOJproblemLoading"
-            >{{ $t('m.Add') }}
+              type="primary"
+              icon="el-icon-plus"
+              @click="addRemoteOJProblem"
+              :loading="addRemoteOJproblemLoading"
+          >{{ $t('m.Add') }}
           </el-button>
         </el-form-item>
       </el-form>
+    </el-dialog>
+
+    <el-dialog
+        :visible.sync="showAuthDialog"
+        width="360px"
+    >
+      <el-row>
+        <h1 class="title">{{ $t('m.Edit_Problems') }}</h1>
+      </el-row>
+      <el-row>
+        <el-col :span="17">
+          <el-select
+              v-model="ProblemAuth"
+              size="medium"
+              width="100%"
+          >
+            <el-option
+                :label="$t('m.Public_Problem')"
+                :value="1">
+            </el-option>
+            <el-option
+                :label="$t('m.Private_Problem')"
+                :value="2"
+            ></el-option>
+            <el-option
+                :label="$t('m.Contest_Problem')"
+                :value="3"
+            ></el-option>
+            <el-option
+                :label="$t('m.Group_Problem')"
+                :value="4"
+            ></el-option>
+          </el-select>
+        </el-col>
+        <el-col :span="7">
+          <el-button
+              @click.native="changeProblemsAuth(null)"
+              type="primary"
+          >{{ $t('m.Edit_Problem_Auth') }}</el-button>
+        </el-col>
+      </el-row>
+      <el-row style="margin-top: 10px;margin-bottom: 10px"> </el-row>
+      <el-row >
+        <el-col :span="17"><el-select
+            v-model="ProblemType"
+            size="medium"
+            width="100%"
+        >
+          <el-option
+              label="ACM"
+              :value="0"
+          ></el-option>
+          <el-option
+              label="OI"
+              :value="1"
+          ></el-option>
+        </el-select></el-col>
+        <el-col :span="7">
+          <el-button
+              @click.native="changeProblemsType(null)"
+              type="primary"
+          >{{ $t('m.Edit_Problem') }}
+          </el-button>
+        </el-col>
+      </el-row>
+      <div slot="footer" class="dialog-footer"></div>
     </el-dialog>
   </div>
 </template>
@@ -354,8 +492,9 @@ import api from '@/common/api';
 import utils from '@/common/utils';
 import AddPublicProblem from '@/components/admin/AddPublicProblem.vue';
 import myMessage from '@/common/message';
-import { REMOTE_OJ } from '@/common/constants';
-import { mapGetters } from 'vuex';
+import {REMOTE_OJ} from '@/common/constants';
+import {mapGetters} from 'vuex';
+
 export default {
   name: 'ProblemList',
   components: {
@@ -366,6 +505,7 @@ export default {
       total: 0,
       query: {
         problemListAuth: 0,
+        problemListType: -1,
         oj: 'All',
         pageSize: 10,
         keyword: '',
@@ -373,6 +513,10 @@ export default {
         contestId: null,
       },
       problemList: [],
+      selectedProblems: [],
+      ProblemAuth: 1,
+      ProblemType: 1,
+      showAuthDialog: false,
       contestProblemMap: {},
       loading: false,
       routeName: '',
@@ -408,6 +552,13 @@ export default {
     isContest() {
       return !(this.routeName == 'admin-problem-list' && !this.query.contestId);
     },
+    selectedProblemIDs() {
+      let ids = [];
+      for (let problem of this.selectedProblems) {
+        ids.push(problem.id);
+      }
+      return ids;
+    },
   },
   methods: {
     init() {
@@ -417,20 +568,19 @@ export default {
       this.query.pageSize = parseInt(query.pageSize) || 10;
       this.query.keyword = query.keyword;
       this.query.problemListAuth = query.problemListAuth
-        ? parseInt(query.problemListAuth)
-        : 0;
+          ? parseInt(query.problemListAuth)
+          : 0;
       this.query.oj = query.oj || 'All';
       this.query.contestId = this.$route.params.contestId;
       this.contestProblemMap = {};
       this.getProblemList();
       this.REMOTE_OJ = Object.assign({}, REMOTE_OJ);
     },
-
     goEdit(problemId) {
       if (this.routeName === 'admin-problem-list') {
         this.$router.push({
           name: 'admin-edit-problem',
-          params: { problemId },
+          params: {problemId},
           query: {
             back: this.$route.fullPath,
           },
@@ -438,7 +588,7 @@ export default {
       } else if (this.routeName === 'admin-contest-problem-list') {
         this.$router.push({
           name: 'admin-edit-contest-problem',
-          params: { problemId: problemId, contestId: this.query.contestId },
+          params: {problemId: problemId, contestId: this.query.contestId},
         });
       }
     },
@@ -453,7 +603,7 @@ export default {
       } else if (this.routeName === 'admin-contest-problem-list') {
         this.$router.push({
           name: 'admin-create-contest-problem',
-          params: { contestId: this.query.contestId },
+          params: {contestId: this.query.contestId},
         });
       }
     },
@@ -499,74 +649,172 @@ export default {
       if (this.routeName === 'admin-problem-list') {
         this.showPagination = false;
         api.admin_getProblemList(params).then(
-          (res) => {
-            this.loading = false;
-            this.total = res.data.data.total;
-            this.problemList = res.data.data.records;
-            this.showPagination = true;
-          },
-          (err) => {
-            this.loading = false;
-            this.showPagination = true;
-          }
+            (res) => {
+              this.loading = false;
+              this.total = res.data.data.total;
+              this.problemList = res.data.data.records;
+              this.showPagination = true;
+            },
+            (err) => {
+              this.loading = false;
+              this.showPagination = true;
+            }
         );
       } else {
         this.showPagination = false;
         api.admin_getContestProblemList(params).then(
-          (res) => {
-            this.loading = false;
-            this.total = res.data.data.problemList.total;
-            this.problemList = res.data.data.problemList.records;
-            this.contestProblemMap = res.data.data.contestProblemMap;
-            this.showPagination = true;
-          },
-          (err) => {
-            this.loading = false;
-            this.showPagination = true;
-          }
+            (res) => {
+              this.loading = false;
+              this.total = res.data.data.problemList.total;
+              this.problemList = res.data.data.problemList.records;
+              this.contestProblemMap = res.data.data.contestProblemMap;
+              this.showPagination = true;
+            },
+            (err) => {
+              this.loading = false;
+              this.showPagination = true;
+            }
         );
       }
     },
-
+    // 用户表部分勾选 改变选中的内容
+    handleSelectionChange({records}) {
+      this.selectedProblems = [];
+      for (let num = 0; num < records.length; num++) {
+        this.selectedProblems.push(records[num].id);
+      }
+    },
+    // 一键全部选中，改变选中的内容列表
+    handlechangeAll() {
+      let ProblemList = this.$refs.adminProblemList.getCheckboxRecords();
+      this.selectedProblems = [];
+      for (let num = 0; num < ProblemList.length; num++) {
+        this.selectedProblems.push(ProblemList[num].id);
+      }
+    },
     changeProblemAuth(row) {
       api.admin_changeProblemAuth(row).then((res) => {
         myMessage.success(this.$i18n.t('m.Update_Successfully'));
+        this.getProblemList(this.query.currentPage);
       });
+    },
+    openChangeProblemsAuth() {
+      this.ProblemAuth = 1;
+      this.ProblemType = 1;
+      this.showAuthDialog = true;
+    },
+    changeProblemsAuth(ids) {
+      if (!ids) {
+        ids = this.selectedProblems;
+      }
+      if (ids.length > 0) {
+        this.$confirm(this.$i18n.t('m.Update_User_Tips'), 'Tips', {
+          confirmButtonText: this.$i18n.t('m.OK'),
+          cancelButtonText: this.$i18n.t('m.Cancel'),
+          type: 'warning',
+        }).then(
+            () => {
+              api
+                  .admin_changeProblemsAuth(ids, this.ProblemAuth)
+                  .then((res) => {
+                    myMessage.success(this.$i18n.t('m.Update_Successfully'));
+                    this.selectedProblems = [];
+                    this.showAuthDialog = false;
+                    this.getProblemList(this.query.currentPage);
+                  })
+                  .catch(() => {
+                    this.selectedProblems = [];
+                    this.showAuthDialog = false;
+                    this.getProblemList(this.query.currentPage);
+                  });
+            },
+            () => {
+            }
+        );
+      } else {
+        myMessage.warning(
+            this.$i18n.t('m.The_number_of_problems_selected_cannot_be_empty')
+        );
+      }
+    },
+    changeProblemType(row) {
+      api.admin_changeProblemType(row).then((res) => {
+        myMessage.success(this.$i18n.t('m.Update_Successfully'));
+        this.getProblemList(this.query.currentPage);
+      });
+    },
+    changeProblemsType(ids) {
+      if (!ids) {
+        ids = this.selectedProblems;
+      }
+      if (ids.length > 0) {
+        this.$confirm(this.$i18n.t('m.Update_User_Tips'), 'Tips', {
+          confirmButtonText: this.$i18n.t('m.OK'),
+          cancelButtonText: this.$i18n.t('m.Cancel'),
+          type: 'warning',
+        }).then(
+            () => {
+              api
+                  .admin_changeProblemsType(ids, this.ProblemType)
+                  .then((res) => {
+                    myMessage.success(this.$i18n.t('m.Update_Successfully'));
+                    this.selectedProblems = [];
+                    this.showAuthDialog = false;
+                    this.getProblemList(this.query.currentPage);
+                  })
+                  .catch(() => {
+                    this.selectedProblems = [];
+                    this.showAuthDialog = false;
+                    this.getProblemList(this.query.currentPage);
+                  });
+            },
+            () => {
+            }
+        );
+      } else {
+        myMessage.warning(
+            this.$i18n.t('m.The_number_of_problems_selected_cannot_be_empty')
+        );
+      }
     },
 
     deleteProblem(id) {
       this.$confirm(this.$i18n.t('m.Delete_Problem_Tips'), 'Tips', {
         type: 'warning',
       }).then(
-        () => {
-          let funcName =
-            this.routeName === 'admin-problem-list'
-              ? 'admin_deleteProblem'
-              : 'admin_deleteContestProblem';
-          api[funcName](id, null)
-            .then((res) => {
-              myMessage.success(this.$i18n.t('m.Delete_successfully'));
-              this.getProblemList();
-            })
-            .catch(() => {});
-        },
-        () => {}
+          () => {
+            let funcName =
+                this.routeName === 'admin-problem-list'
+                    ? 'admin_deleteProblem'
+                    : 'admin_deleteContestProblem';
+            api[funcName](id, null)
+                .then((res) => {
+                  myMessage.success(this.$i18n.t('m.Delete_successfully'));
+                  this.getProblemList();
+                })
+                .catch(() => {
+                });
+          },
+          () => {
+          }
       );
     },
     removeProblem(pid) {
       this.$confirm(this.$i18n.t('m.Remove_Contest_Problem_Tips'), 'Tips', {
         type: 'warning',
       }).then(
-        () => {
-          api
-            .admin_deleteContestProblem(pid, this.query.contestId)
-            .then((res) => {
-              myMessage.success('success');
-              this.getProblemList();
-            })
-            .catch(() => {});
-        },
-        () => {}
+          () => {
+            api
+                .admin_deleteContestProblem(pid, this.query.contestId)
+                .then((res) => {
+                  myMessage.success('success');
+                  this.getProblemList();
+                })
+                .catch(() => {
+                });
+          },
+          () => {
+          }
       );
     },
     updateProblem(row) {
@@ -579,11 +827,12 @@ export default {
         funcName = 'admin_editProblem';
       }
       api[funcName](data)
-        .then((res) => {
-          myMessage.success(this.$i18n.t('m.Update_Successfully'));
-          this.getProblemList();
-        })
-        .catch(() => {});
+          .then((res) => {
+            myMessage.success(this.$i18n.t('m.Update_Successfully'));
+            this.getProblemList();
+          })
+          .catch(() => {
+          });
     },
     downloadTestCase(problemID) {
       let url = '/api/file/download-testcase?pid=' + problemID;
@@ -607,7 +856,7 @@ export default {
 
       if (!this.displayId && this.query.contestId) {
         myMessage.error(
-          this.$i18n.t('m.The_Problem_Display_ID_in_the_Contest_is_required')
+            this.$i18n.t('m.The_Problem_Display_ID_in_the_Contest_is_required')
         );
         return;
       }
@@ -620,20 +869,20 @@ export default {
         funcName = 'admin_addRemoteOJProblem';
       }
       api[funcName](
-        this.otherOJName,
-        this.otherOJProblemId,
-        this.query.contestId,
-        this.displayId
+          this.otherOJName,
+          this.otherOJProblemId,
+          this.query.contestId,
+          this.displayId
       ).then(
-        (res) => {
-          this.addRemoteOJproblemLoading = false;
-          this.AddRemoteOJProblemDialogVisible = false;
-          myMessage.success(this.$i18n.t('m.Add_Successfully'));
-          this.currentChange(1);
-        },
-        (err) => {
-          this.addRemoteOJproblemLoading = false;
-        }
+          (res) => {
+            this.addRemoteOJproblemLoading = false;
+            this.AddRemoteOJProblemDialogVisible = false;
+            myMessage.success(this.$i18n.t('m.Add_Successfully'));
+            this.currentChange(1);
+          },
+          (err) => {
+            this.addRemoteOJproblemLoading = false;
+          }
       );
     },
     changeContestProblemColor(id, color) {
@@ -659,20 +908,31 @@ export default {
   margin-top: 5px;
   margin-bottom: 5px;
 }
+
 .filter-row span div {
   margin-top: 8px;
 }
+
 @media screen and (max-width: 768px) {
   .filter-row span {
     margin-right: 5px;
   }
+
   .filter-row span div {
     width: 80%;
   }
 }
+
 @media screen and (min-width: 768px) {
   .filter-row span {
     margin-right: 20px;
   }
+}
+.title {
+  margin: 0px auto 40px auto;
+  text-align: center;
+  color: #1e9fff;
+  font-size: 25px;
+  font-weight: bold;
 }
 </style>

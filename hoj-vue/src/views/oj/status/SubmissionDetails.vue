@@ -145,11 +145,11 @@
       </vxe-table>
     </el-col>
     <template v-if="testCaseResult != null">
-      <template v-if="testCaseResult.judgeCaseMode == JUDGE_CASE_MODE.DEFAULT 
+      <template v-if="testCaseResult.judgeCaseMode == JUDGE_CASE_MODE.DEFAULT
         || testCaseResult.judgeCaseMode == JUDGE_CASE_MODE.ERGODIC_WITHOUT_ERROR ">
         <el-col
           :span="24"
-          v-if="testCaseResult != null 
+          v-if="testCaseResult != null
       && testCaseResult.judgeCaseList != null
       && testCaseResult.judgeCaseList.length > 0"
         >
@@ -267,6 +267,28 @@
         </el-col>
       </template>
     </template>
+<!--    测试数据下载-->
+    <template v-if="isDownload && isSubmissionOwner && !(isCE || isSE || isSF)">
+      <el-card style="margin-top: 13px;width: 99.5%" shadow="hover">
+        <div slot="header">
+            <span class="panel-title home-title">{{
+                $t('m.Download_Explanation')
+              }}</span>
+        </div>
+        <ul style="font-size: medium">
+          <li>{{ $t('m.Download_tips_1') }}</li>
+          <li>{{ $t('m.Download_tips_2') }}</li>
+          <li>{{ $t('m.Download_tips_3') }}</li>
+        </ul>
+        <div class="download-btn">
+          <el-button type="primary" size="small" icon="el-icon-download"
+                     @click="downloadWrongcaseCase">
+            Test #{{this.seq}} {{ $t('m.Download_Wrong_Testcase')}}
+          </el-button>
+        </div>
+      </el-card>
+    </template>
+<!--    提交的代码-->
     <template v-if="
         (submission.code && submission.share && codeShare) ||
           isSubmissionOwner ||
@@ -279,9 +301,9 @@
         v-if="submission.code"
       >
         <Highlight
-          :code="submission.code"
-          :language="submission.language"
-          :border-color.sync="status.color"
+            :code="submission.code"
+            :language="submission.language"
+            :border-color.sync="status.color"
         ></Highlight>
       </el-col>
       <el-col :span="24">
@@ -353,11 +375,14 @@ export default {
         language: "",
         author: "",
         errorMessage: "",
+        isDisplay: 1,
         share: true,
       },
+      isDownload:true,
+      seq: "",
       tableData: [],
       testCaseResult: {},
-      codeShare: true,
+      codeShare: false,
       isIOProblem: false,
       loadingTable: false,
       JUDGE_STATUS: "",
@@ -402,6 +427,12 @@ export default {
       return utils.submissionLengthFormat(length);
     },
 
+    downloadWrongcaseCase() {
+      let url = '/api/file/download-wrong-case?submitId=' + this.submission.submitId;
+      utils.downloadFile(url).then(() => {
+        myMessage.success(this.$i18n.t('m.Download_success'));
+      });
+    },
     getProblemUri(row) {
       if (row.cid != 0) {
         // 比赛题目
@@ -467,12 +498,12 @@ export default {
           this.submission = data.submission;
           this.tableData = [data.submission];
           if (data.submission.cid != 0) {
-            // 比赛的提交不可分享
+            // 比赛的提交不可分享，不可下载
             this.codeShare = false;
+            this.isDownload = false;
           } else {
             this.codeShare = data.codeShare;
           }
-
           this.$nextTick((_) => {
             addCodeBtn();
           });
@@ -486,10 +517,26 @@ export default {
     //首先该题必须支持开放测试点结果查看，同时若是比赛题目，只支持IO查看测试点情况，ACM强制禁止查看
     getAllCaseResult() {
       api.getAllCaseResult(this.$route.params.submitID).then((res) => {
-        this.testCaseResult = res.data.data;
+        if(res.data.data!=null){
+          this.testCaseResult = res.data.data;
+          // 找到第一个未通过的测试点
+          var len = this.testCaseResult.judgeCaseList.length
+          if (len > 0) {
+            for (let i = 0; i < len; i++) {
+              let status = this.testCaseResult.judgeCaseList[i].status;
+              if(status != 0){
+                this.seq = this.testCaseResult.judgeCaseList[i].seq;
+                return
+              }
+            }
+          }
+        }
+        // 未开放测试点结果查看，AC不可查看
+        this.isDownload = false;
+      },() => {
+        this.isDownload = false;
       });
     },
-
     shareSubmission(shared) {
       let data = {
         submitId: this.submission.submitId,
@@ -632,5 +679,10 @@ export default {
 .subtask-item:hover .text-color-purple,
 .subtask-title.active .text-color-purple.active {
   color: #676fc1 !important;
+}
+.download-btn {
+  float: right;
+  margin-right: 10px;
+  margin-bottom: 20px;
 }
 </style>

@@ -51,6 +51,7 @@
 import api from '@/common/api';
 import { mapActions } from 'vuex';
 import mMessage from '@/common/message';
+import myMessage from "@/common/message";
 export default {
   data() {
     const CheckUsernameNotExist = (rule, value, callback) => {
@@ -136,6 +137,10 @@ export default {
     handleResetPwd() {
       this.$refs['formResetPassword'].validate((valid) => {
         if (valid) {
+          if(!this.formResetPassword.password.match(/^(?=.*\d)(?=.*[a-zA-Z]).{6,20}$/)){
+            myMessage.warning(this.$i18n.t('m.Pass_Strength'));
+            return;
+          }
           this.btnLoading = true;
           let data = Object.assign({}, this.formResetPassword);
           delete data.passwordAgain;

@@ -6,9 +6,15 @@
         :router="true"
         :default-active="currentPath"
       >
-        <div class="logo">
-          <img :src="imgUrl" alt="Online Judge Admin" />
-        </div>
+        <el-tooltip
+            :content="$t('m.Click_To_Change_Web_Language')"
+            placement="bottom"
+            effect="dark"
+          >
+          <div class="logo" @click="changeWebLanguage(webLanguage == 'zh-CN' ? 'en-US' : 'zh-CN')">
+            <img :src="imgUrl" alt="Online Judge Admin" />
+          </div>
+        </el-tooltip>
         <el-menu-item index="/admin/">
           <i class="fa fa-tachometer fa-size" aria-hidden="true"></i
           >{{ $t('m.Dashboard') }}
@@ -46,9 +52,10 @@
           <el-menu-item index="/admin/problem/create">{{
             $t('m.Create_Problem')
           }}</el-menu-item>
-          <el-menu-item index="/admin/problem/tag">{{
-            $t('m.Admin_Tag')
-          }}</el-menu-item>
+          <el-menu-item  index="/admin/problem/tag"
+            v-if="isSuperAdmin || isProblemAdmin"
+          >{{$t('m.Admin_Tag') }}
+          </el-menu-item>
            <el-menu-item index="/admin/group-problem/apply"
            v-if="isSuperAdmin || isProblemAdmin"
            >{{$t('m.Admin_Group_Apply_Problem')}}
@@ -75,7 +82,10 @@
           <el-menu-item index="/admin/training/create">{{
             $t('m.Create_Training')
           }}</el-menu-item>
-          <el-menu-item index="/admin/training/category">{{
+          <el-menu-item
+              index="/admin/training/category"
+              v-if="isSuperAdmin || isProblemAdmin"
+          >{{
             $t('m.Admin_Category')
           }}</el-menu-item>
         </el-submenu>
@@ -402,6 +412,7 @@
             </mu-list-item>
 
             <mu-list-item
+              v-if="isSuperAdmin || isProblemAdmin"
               button
               :ripple="false"
               slot="nested"

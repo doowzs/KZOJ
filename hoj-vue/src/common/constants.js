@@ -137,54 +137,57 @@ export const JUDGE_STATUS_RESERVE={
   'sf':10,
 }
 
+
 export const PROBLEM_LEVEL={
   '0':{
     name:{
-      'zh-CN':'入门',
+      'zh-CN' : '入门',
+      'en-US' : 'very easy',
     },
-    color:'#ffde7d'
+    color:'#eb5a65'
   },
   '1':{
     name:{
-      'zh-CN':'普及-',
+      'zh-CN': '普及-',
+      'en-US': 'easy',
     },
-    color:'#e0f9b5'
+    color:'#e7a03c'
   },
   '2':{
     name:{
-      'zh-CN':'普及/提高-',
-      
+      'zh-CN': '普及/提高-',
+      'en-US': 'normal',
     },
-    color:'#ed3f14'
+    color:'#fed54d'
   },
-   '3':{
+  '3':{
     name:{
-      'zh-CN':'普及+/提高-',
-     
+      'zh-CN': '普及+/提高',
+      'en-US': 'mid',
     },
-    color:'#00b8a9'
+    color:'#72c140'
   },
   '4':{
     name:{
-      'zh-CN':'提高+/省选-',
-     
+      'zh-CN': '提高+/省选-',
+      'en-US': 'hard',
     },
-    color:'#88304e'
+    color:'#5296d5'
   },
-   '5':{
+  '5':{
     name:{
-      'zh-CN':'省选/NOI-',
-     
+      'zh-CN': '省选/NOI-',
+      'en-US': 'very hard',
     },
-    color:'#e23e57'
+    color:'#9243c8'
   },
-   '6':{
+  '6':{
     name:{
-      'zh-CN':'NOI',
-    
+      'zh-CN': 'NOI/NOI+/CTSC',
+      'en-US': 'very hard',
     },
-    color:'#521262'
-  }  
+    color:'#111d65'
+  },
 }
 
 
@@ -213,6 +216,21 @@ export const REMOTE_OJ = [
     name:"SPOJ",
     key:"SPOJ"
   }
+]
+
+export const Problem_Bank = [
+  {
+    name:'隐藏题库',
+    key:'Conceal'
+  },
+  {
+    name:'比赛题库',
+    key:'Contest'
+  },
+  {
+    name:'团队题库',
+    key:'Group'
+  },
 ]
 
 export const CONTEST_STATUS = {
@@ -295,7 +313,7 @@ export const CONTEST_TYPE_REVERSE = {
     name:'Protected',
     color:'warning',
     tips:'Protected_Tips',
-    submit:false,       //保护赛，可以看但是不能提交，提交需要附带比赛密码
+    submit:false,       //保护赛，需要报名后才能进入
     look:true,
   }
 }

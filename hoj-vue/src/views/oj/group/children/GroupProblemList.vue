@@ -205,7 +205,7 @@ export default {
       JUDGE_STATUS: {},
       isGetStatusOk: false,
       testcolor: 'rgba(0, 206, 209, 1)',
-      showTags: false,
+      showTags: true,
       loading: false,
       routeName: '',
       adminPage: false,

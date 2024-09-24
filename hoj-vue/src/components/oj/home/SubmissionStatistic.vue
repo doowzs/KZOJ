@@ -83,12 +83,11 @@ export default {
           {
             name: this.$i18n.t("m.AC"),
             type: "line",
-            stack: "Total",
             areaStyle: {},
             emphasis: {
               focus: "series",
             },
-            color: "#91cc75",
+            color: "#3551db",
             data: [0, 0, 0, 0, 0, 0, 0],
           },
           {

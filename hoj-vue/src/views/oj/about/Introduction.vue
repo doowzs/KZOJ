@@ -5,13 +5,18 @@
         <el-card class="container">
           <div slot="header">
             <span class="panel-title home-title">{{
-              $t('m.Compiler') + ' & ' + $t('m.Example')
-            }}</span>
+                $t('m.Compiler') + ' & ' + $t('m.Example')
+              }}</span>
           </div>
-          <div class="content">
-            <ul>
-              <li v-for="lang in languages" :key="lang.name">
+
+          <el-collapse accordion class="content">
+
+            <el-collapse-item v-for="lang in languages" :key="lang.name">
+              <template  slot="title">
                 {{ lang.name }} ( {{ lang.description }} )
+              </template>
+
+              <li>
                 <p style="color: #409EFF;font-size:16px">
                   {{ $t('m.Compiler') }}
                 </p>
@@ -20,20 +25,24 @@
                   A+B {{ $t('m.Problem') }}
                 </p>
                 <Highlight
-                  :code="lang.template"
-                  :language="lang.name"
+                    :code="lang.template"
+                    :language="lang.name"
                 ></Highlight>
               </li>
-            </ul>
-          </div>
+
+            </el-collapse-item>
+          </el-collapse>
+
         </el-card>
       </el-col>
+
+      <!--      结果说明-->
       <el-col :md="12" :sm="24">
         <el-card class="container">
           <div slot="header">
             <span class="panel-title home-title">{{
-              $t('m.Result_Explanation')
-            }}</span>
+                $t('m.Result_Explanation')
+              }}</span>
           </div>
           <ul class="result">
             <li>
@@ -97,8 +106,8 @@
         <el-card class="container">
           <div slot="header">
             <span class="panel-title home-title">{{
-              $t('m.Compile_Explanation')
-            }}</span>
+                $t('m.Compile_Explanation')
+              }}</span>
           </div>
           <ul class="result">
             <li>1. {{ $t('m.Compile_Tips1') }}</li>

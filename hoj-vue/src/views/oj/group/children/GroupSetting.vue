@@ -199,7 +199,7 @@
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :md="8" :xs="24" v-if="group.auth != 1">
+        <el-col :md="8" :xs="24" v-if="group.auth == 3">
           <el-form-item :label="$t('m.Group_Code')" required prop="code">
             <el-input
               v-model="group.code"
@@ -271,7 +271,7 @@ export default {
         size: 0.8,
         outputType: 'png',
       },
-      defaultAvatar: require('@/assets/default.jpg'),
+      defaultAvatar: require('@/assets/default.png'),
       rules: {
         name: [
           {

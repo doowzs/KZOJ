@@ -10,6 +10,7 @@ export const m = {
   No_Access_There_is_no_open_discussion_area_on_the_website: 'No Access: There is no open discussion area on the website!',
   No_Access_There_is_no_open_group_discussion_area_on_the_website: 'No Access: There is no open group discussion area on the website!',
   No_Access_There_is_no_open_contest_comment_area_on_the_website: 'No Access: There is no open contest comment area on the website!',
+  Welcome_to_Login: 'Welcome to Login KZ Online Judge System',
 
   //  /components/oj/common/NavBar.vue 导航栏
   NavBar_Home: 'Home',
@@ -20,16 +21,19 @@ export const m = {
   NavBar_Rank: 'Rank',
   NavBar_ACM_Rank: 'ACM Rank',
   NavBar_OI_Rank: 'OI Rank',
+  NavBar_HOF_Rank: 'HOF',
   NavBar_Discussion: 'Discussion',
   NavBar_Group: 'Group',
-  NavBar_About: 'About',
-  NavBar_Introduction: 'Introduction',
-  NavBar_Developer: 'Developer',
+  NavBar_Other: 'Other',
+  NavBar_Introduction: 'Compiler',
+  NavBar_Typing:"Typing",
+  NavBar_Developer: 'Introduction',
   NavBar_Login: 'Login',
   NavBar_Register: 'Register',
   NavBar_UserHome: 'Home',
   NavBar_Submissions: 'Submissions',
   NavBar_Setting: 'Setting',
+  NavBar_Wiki: 'Wiki',
   NavBar_Management: 'Management',
   NavBar_Logout: 'Logout',
   Dialog_Login: 'Login',
@@ -42,8 +46,11 @@ export const m = {
   NavBar_Contest_Own_Submission: 'My Submission',
   NavBar_Contest_Rank: 'Contest Rank',
   NavBar_Group_Home: 'Group Home',
+  // 新年许愿墙
+  NavBar_New_Year: 'New Year',
+  Code_Beauty:'Code Beauty',
 
-  //  /components/oj/common/Login.vue 登录弹窗
+  //  /components/oj/登录弹窗
   Login_Username: 'Username',
   Login_Password: 'Password',
   Login_Btn: 'Login',
@@ -57,7 +64,7 @@ export const m = {
   Password_Check_Between: 'The length of the password is between 6 and 20.',
   Welcome_Back: 'Welcome back~',
 
-  // /components/oj/common/Register.vue 注册弹窗
+  //  注册弹窗
   Register_Username: 'Please Enter Username',
   Register_Password: 'Please Enter Password',
   Register_Password_Again: 'Please Enter Password Again',
@@ -65,6 +72,7 @@ export const m = {
   Register_Email_Captcha: 'Please enter the captcha from the email',
   Register_Btn: 'Register',
   Register_Already_Registed: 'Already registed? Login now!',
+  Bind_Email_Address: 'Unbound Email address? Bind now!',
   The_username_already_exists: 'The username already exists.',
   The_email_already_exists: 'The email already exists.',
   Password_does_not_match: 'Password does not match.',
@@ -77,8 +85,7 @@ export const m = {
   Register_Send_Email_Msg: 'Verification code has been sent to the designated mailbox! If you haven\'t received the email for a long time, please check whether your email is accurate!',
   Thanks_for_registering: 'Thanks for your registering, you can login now.',
 
-  // /components/oj/common/ResetPassword.vue 重置密码弹窗
-  // /views/oj/user/SetNeWPassword.vue 设置新密码页
+  //  设置新密码页
   Reset_Password_Email: 'Please Enter Your Email',
   Reset_Password_Captcha: 'Please Enter the captcha',
   Send_Password_Reset_Email: 'Send Password Reset Email',
@@ -99,7 +106,6 @@ export const m = {
   Current_Password: 'Current Password',
   Old_Email: 'Old Email',
   New_Email: 'New Email',
-  Captcha:'Captcha',
   Get_Captcha: 'Get Captcha',
   Old_Mobile: 'Old Mobile',
   New_Mobile: 'New Mobile',
@@ -120,20 +126,23 @@ export const m = {
   Change_Send_Email_Msg: 'Verification code has been sent to the designated mailbox! If you haven\'t received the email for a long time, please check whether your email is accurate!',
   Change_Send_Mobile_Msg: 'Verification code has been sent to the designated mobile! If you haven\'t received the message for a long time, please check whether your mobile is accurate!',
   Update_Successfully: 'Update Successfully',
+  Pass_Strength:"The password strength is too weak, and the password length is 6-20 digits and letters",
   Update_Failed: 'Update Failed',
   Guess_robot: 'Speed too fast, may be machine operation! Please verify again!',
   The_current_password_cannot_be_empty: 'The current password is required.',
   The_new_password_cannot_be_empty: 'The new password is required.',
   The_new_email_cannot_be_empty: 'The new email is required.',
+  Update_User_Tips: 'Are you sure you want to change it',
 
 
-  // /components/oj/setting/UserInfo.vue 
+  // /components/oj/setting/UserInfo.vue
   Avatar_Setting: 'Avatar Setting',
   UserInfo_Setting: 'User Info Setting',
   Upload_avatar_hint: 'Drag and drop the avatar here, or click here.',
   CF_Username: 'Codeforces Username',
   School: 'School',
-  Student_Number: 'Student Number',
+  Class: 'Class',
+  Select_Class: 'Please Select Class',
   Blog: 'Blog',
   Github: 'Github',
   Gender: 'Gender',
@@ -155,6 +164,7 @@ export const m = {
   Not_set_yet: 'This guy is lazy. He doesn\'t write anything.',
   UserHome_Solved: 'Solved',
   UserHome_Submissions: 'Submissions',
+  UserHome_Accompany: 'Accompany',
   UserHome_Score: 'Score',
   UserHome_Rating: 'Rating',
   List_Solved_Problems: 'List of solved problems',
@@ -165,24 +175,24 @@ export const m = {
   Difficulty_Statistics:'Difficulty Statistics',
   Problems:'Problems',
   Calendar_Tooltip_Uint:'submissions',
-  Jan: 'Jan', 
-  Feb: 'Feb', 
-  Mar: 'Mar', 
-  Apr: 'Apr', 
+  Jan: 'Jan',
+  Feb: 'Feb',
+  Mar: 'Mar',
+  Apr: 'Apr',
   May: 'May',
-  Jun: 'Jun', 
+  Jun: 'Jun',
   Jul: 'Jul',
-  Aug: 'Aug', 
-  Sep: 'Sep', 
-  Oct: 'Oct', 
-  Nov: 'Nov', 
+  Aug: 'Aug',
+  Sep: 'Sep',
+  Oct: 'Oct',
+  Nov: 'Nov',
   Dec: 'Dec',
-  Sun: 'Sun', 
-  Mon: 'Mon', 
-  Tue: 'Tue', 
-  Wed: 'Wed', 
-  Thu: 'Thu', 
-  Fri: 'Fri', 
+  Sun: 'Sun',
+  Mon: 'Mon',
+  Tue: 'Tue',
+  Wed: 'Wed',
+  Thu: 'Thu',
+  Fri: 'Fri',
   Sat: 'Sat',
   Less:'Less',
   More:'More',
@@ -208,13 +218,15 @@ export const m = {
   Latest_Problem: 'Latest Problem',
   Supported_Remote_Online_Judge: 'Supported Remote Online Judge',
   Statistics_Submissions_In_The_Last_Week: 'Statistics: Submissions In The Last Week',
+  Pearls_Of_Wisdom:"Pearls Of Wisdom",
+  Count_Down:"Count Down",
+  Blogroll:"Blogroll",
 
   // 表格通用列名,按钮，搜索框等
   Enter_keyword: 'Enter keyword',
   Reset: 'Reset',
   Username: 'Username',
   Solved: 'Solved',
-  AC: 'AC',
   OJ: 'OJ',
   Title: 'Title',
   Begin_Time: 'Begin Time',
@@ -229,7 +241,8 @@ export const m = {
 
   // /views/oj/problem/problemList.vue
   Problem_List: 'Problem List',
-  Problem_Bank: 'Problem Bank',
+  Problem_Bank: 'Remote Online Judge',
+  Problem_Tk: 'Problem Bank',
   All: 'All',
   My_OJ: 'Main',
   Level: 'Level',
@@ -238,7 +251,7 @@ export const m = {
   Pick_a_random_question: 'Pick a random question',
   Touch_Get_Status: 'Please touch or hover the mouse to the designated problem line to view the submission status',
   Good_luck_to_you: 'Good luck to you!',
-  
+
   // /views/oj/problem/Problem.vue
   Problem_Description: 'Problem Description',
   My_Submission: 'My Submission',
@@ -254,7 +267,6 @@ export const m = {
   No_tag: 'No tag',
   Statistic: 'Statistic',
   Solutions: 'Solutions',
-  Problem_Discussion: 'Discussion',
   Description: 'Description',
   Input: 'Input',
   Output: 'Output',
@@ -309,6 +321,7 @@ export const m = {
   Rejudge: 'Rejudge',
   Resubmitted_Successfully: 'Resubmitted Successfully!',
   Refresh: 'Refresh',
+  In_other_words: 'In other words',
   Enter_Problem_ID: 'Enter Problem ID',
   Enter_Author: 'Enter Author',
   Run_ID: 'Run ID',
@@ -326,6 +339,12 @@ export const m = {
 
   // /views/oj/status/SubmissionDetails.vue
   Test_point_details: 'Test point details',
+  Download_Explanation: 'Test point download instructions',
+  Download_tips_1: 'THE OJ provides the first non AC input / output data download of the record; Some questions do not open data download.',
+  Download_tips_2: 'Only 2 downloads per day, please pay attention to save',
+  Download_tips_3: 'Do not use this function to maliciously brush the AC number',
+  Download_Wrong_Testcase: 'Download Wrong Testcase',
+  Download_success: 'Download Successfully',
   Copy: 'Copy',
   Shared: 'Shared',
   Unshared: 'Unshared',
@@ -385,7 +404,7 @@ export const m = {
   Liked: 'Liked',
   Report_Reason: 'Report Reason',
   The_report_label_and_reason_cannot_be_empty: 'The report label and reason cannot be empty.',
-  
+
   // 404.vue
   Page_Not_Found:"Sorry, the page can't be found",
   Go_Home: 'Go Home',
@@ -396,21 +415,24 @@ export const m = {
   Running: 'Running',
   Scheduled: 'Scheduled',
   Ended: 'Ended',
+  After_Submit: 'After Submit ',
   No_contest: 'No contest',
   Contests: 'Contests',
   Public: 'Public',
   Private: 'Private',
   Protected: 'Protected',
   Public_Tips: 'Public - Any one can see and submit.',
-  Protected_Tips: 'Protected - Any one can see, but only users knowing contest password can submit.',
-  Private_Tips: 'Private - Only users knowing contest password can see and submit.',
+  Protected_Tips: 'Protected - Users need to register to participate in the competition.',
+  Private_Tips: 'Private - Only users knowing contest password required to enter the contest.',
   Contest_Outside_ScoreBoard: 'OutSide Contest ScoreBoard',
 
   // /views/oj/contest/ContestDetail.vue
   StartAt: 'StartAt',
   EndAt: 'EndAt',
-  Password_Required: 'Password Required',
-  To_Enter_Need_Password: 'To enter the Private contest, please input the password!',
+  Confirm_Info: 'Confirm Info',
+  To_Enter_Confirm_Info: 'To enter the Private contest, please iConfirm the Info!',
+  Enter_the_Confirm_Info :'Enter the Confirm Info',
+  Enter_the_Nickname_Length: 'Enter the nickname length 0-8',
   Enter_the_contest_password: 'Enter the contest password',
   Enter: 'Enter',
   Overview: 'Overview',
@@ -426,7 +448,7 @@ export const m = {
   Please_check_the_contest_announcement_for_details: 'Please check the contest announcement for details',
   Go_To_Group_Contest_List:'Go to Group Contest List',
   Group_Contest_Tag:'Group Contest',
-  Contains_Submission_After_Contest:'Contains Submission After Contest',
+  Contains_Submission_After_Contest:'After Contest',
 
   // /views/oj/contest/children/ACMContestRank.vue
   Contest_Rank: 'Contest Rank',
@@ -634,6 +656,7 @@ export const m = {
   Training_Auth: 'Training Auth',
   Training_Total_Problems: 'Total Problems',
   Record_List: 'Record List',
+  Password_Required:'Password Required',
   To_Enter_Training_Need_Password: 'To enter the Private training, please input the password!',
   Enter_the_training_password: 'Enter the training password',
   Register_training_successfully: 'Register training successfully',
@@ -684,7 +707,8 @@ export const m = {
   Exit_Group_Tips: 'Are you sure you want to exit the group? After exiting, you will no longer be able to view group resources!',
   Exit_Successfully: 'Exit Successfully',
   Disband_Group:'Disband Group',
-  Disband_Group_Tips:'Are you sure you want to disband the group?',
+  Disband_Group_Tips:'Are you sure you want to disband the team?',
+  Verify:'Disband the team and require email verification',
   Disband_Successfully:'Disband Successfully',
   Group_Number: 'Number',
   Group_Home: 'Home',
@@ -710,10 +734,11 @@ export const m = {
   Back_To_Admin_Contest_List:'Back to Admin Contest List',
   Back_To_Contest_List:'Back to Contest List',
   Back_Admin_Contest_Problem_List:'Back to Admin Contest Problem List',
-  
+
   // /views/oj/group/GroupDiscussionList.vue
   No_Discussion: 'No Discussion',
   Problem_Discussion:'Problem Discussion',
+  Problem_Update:'Problem Update',
 
   // /views/oj/group/GroupProblemList.vue
   Cancel_Admin:'Cancel Admin',
@@ -750,5 +775,6 @@ export const m = {
   Already_Public_Problem:'Already in the public problem bank',
   Applying_for_Publicity:'Applying for publicity',
   Group_Problem_Apply_Public_Tips:'Are you sure you want to apply for this problem to be added to the public bank?',
-  Cancel_Group_Problem_Apply_Public_Tips:'Do you want to cancel the application for this problem to be added to the public bank?'
+  Cancel_Group_Problem_Apply_Public_Tips:'Do you want to cancel the application for this problem to be added to the public bank?',
+  Problem_Explain: 'Problem Explain',
 }

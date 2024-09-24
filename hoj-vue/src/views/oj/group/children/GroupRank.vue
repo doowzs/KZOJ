@@ -41,7 +41,7 @@
         <vxe-table-column
           field="username"
           :title="$t('m.User')"
-          min-width="200"
+          min-width="120"
           show-overflow
           align="left"
         >
@@ -82,6 +82,18 @@
             </el-tag>
           </template>
         </vxe-table-column>
+        <vxe-table-column
+            field="realname"
+            :title="$t('m.RealName')"
+            min-width="80"
+            v-if="isSuperAdmin || isGroupAdmin"
+        >
+          <template v-slot="{ row }">
+              <span>
+                {{ row.realname }}
+              </span>
+          </template>
+        </vxe-table-column>
         <vxe-table-column field="ac" :title="$t('m.AC')" min-width="80">
           <template v-slot="{ row }">
             <span>
@@ -114,7 +126,7 @@
         @on-change="currentChange"
         show-sizer
         @on-page-size-change="onPageSizeChange"
-        :layout="'prev, pager, next, sizes'"
+        :layout="'total, prev, pager, next, jumper'"
     ></Pagination>
     </div>
 </template>
@@ -217,7 +229,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(['isAuthenticated', 'userInfo']),
+    ...mapGetters(['isAuthenticated', 'userInfo', 'isSuperAdmin', 'isGroupAdmin']),
   },
   watch: {
     $route(newVal, oldVal) {

@@ -23,6 +23,17 @@
         </template>
       </vxe-table-column>
       <vxe-table-column
+          min-width="150"
+          field="username"
+          show-overflow
+          v-if="isSuperAdmin || isGroupAdmin"
+          :title="$t('m.RealName')"
+      >
+        <template v-slot="{ row }">
+          {{ row.realname }}
+        </template>
+      </vxe-table-column>
+      <vxe-table-column
         min-width="150"
         field="gmtCreate"
         :title="$t('m.Created_Time')"
@@ -245,6 +256,7 @@ export default {
       'isSuperAdmin',
       'userAuth',
       'isGroupOwner',
+      'isGroupAdmin',
       'group',
     ]),
   },

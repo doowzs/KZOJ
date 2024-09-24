@@ -99,10 +99,10 @@
 
       <template
         v-if="
-          $route.name === 'GroupSubmissionList' || 
+          $route.name === 'GroupSubmissionList' ||
           $route.name === 'GroupSubmissionDetails' ||
             $route.name === 'GroupProblemDetails' ||
-            ($route.name != 'GroupTrainingList' 
+            ($route.name != 'GroupTrainingList'
              && $route.name.startsWith('GroupTraining'))
         "
       >
@@ -242,7 +242,7 @@
             </div>
             <div style="text-align: center">
               <span v-if="isGroupOwner || isSuperAdmin">
-                <el-button type="danger" size="small" @click="disbandGroup">
+                <el-button type="danger" size="small" @click="openVerifyDialog">
                   {{ $t('m.Disband_Group') }}
                 </el-button>
               </span>
@@ -324,6 +324,62 @@
         }}</el-button>
       </span>
     </el-dialog>
+
+    <el-dialog
+        :visible.sync="showVerifyDialog"
+        width="370px"
+    >
+      <el-form
+          :model="verifyForm"
+          :rules="rulesVerify"
+          ref="verifyForm"
+          label-position="left"
+          label-width="0px"
+          class="demo-ruleForm"
+      >
+        <h1 class="title">{{ $t('m.Verify') }}</h1>
+        <el-form-item prop="email" >
+          <el-input
+              v-model="verifyForm.email"
+              prefix-icon="el-icon-message"
+              :placeholder="$t('m.Register_Email')"
+              disabled
+          >
+            <el-button
+                slot="append"
+                icon="el-icon-message"
+                type="primary"
+                @click.native="getVerifyEmailCode"
+                :loading="btnEmailLoading"
+            >
+              <span v-show="btnEmailLoading">{{ countdownNum }}</span>
+            </el-button>
+          </el-input>
+        </el-form-item>
+        <el-form-item prop="code">
+          <el-input
+              v-model="verifyForm.code"
+              prefix-icon="el-icon-s-check"
+              :placeholder="$t('m.Register_Email_Captcha')"
+          ></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button
+              type="primary"
+              @click="disbandGroup"
+              :loading="btnVerifyLoading"
+              style="width: 100%"
+          >
+            {{  $t('m.OK') }}
+          </el-button>
+          <router-link to="/setting">
+            <el-link type="primary">
+              {{$t('m.Bind_Email_Address') }}
+            </el-link>
+          </router-link>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
   </div>
 </template>
 
@@ -335,6 +391,7 @@ import Announcement from '@/components/oj/group/Announcement.vue';
 import api from '@/common/api';
 import mMessage from '@/common/message';
 import Markdown from '@/components/oj/common/Markdown';
+import myMessage from "@/common/message";
 export default {
   name: 'GroupDetails',
   components: {
@@ -365,11 +422,19 @@ export default {
     };
     return {
       route_name: 'GroupDetails',
-      defaultAvatar: require('@/assets/default.jpg'),
+      defaultAvatar: require('@/assets/default.png'),
       showApplyDialog: false,
+      showVerifyDialog: false,
+      btnEmailLoading: false,
+      btnVerifyLoading:false,
+      countdownNum: null,
       appliaction: {
         code: '',
         reason: '',
+      },
+      verifyForm: {
+        email: '',
+        code: '',
       },
       rules: {
         code: [
@@ -381,6 +446,33 @@ export default {
         reason: [
           {
             validator: checkGroupReason,
+            trigger: 'blur',
+          },
+        ],
+      },
+      rulesVerify: {
+        email: [
+          {
+            required: true,
+            message: this.$i18n.t('m.Email_Check_Required'),
+            trigger: 'blur',
+          },
+          {
+            type: 'email',
+            message: this.$i18n.t('m.Email_Check_Format'),
+            trigger: 'blur',
+          },
+        ],
+        code: [
+          {
+            required: true,
+            message: this.$i18n.t('m.Code_Check_Required'),
+            trigger: 'blur',
+          },
+          {
+            min: 6,
+            max: 6,
+            message: this.$i18n.t('m.Code_Check_Length'),
             trigger: 'blur',
           },
         ],
@@ -403,9 +495,20 @@ export default {
     this.$store.dispatch('getGroup').then((res) => {
       this.changeDomTitle({ title: res.data.data.name });
     });
+    if (this.timeVerify != 60 && this.timeVerify != 0) {
+      this.btnEmailLoading = true;
+      this.countDownVerify();
+    }
+  },
+  mounted() {
+    this.verifyForm.email = this.$store.getters.userInfo.email || '';
   },
   methods: {
-    ...mapActions(['changeDomTitle']),
+    ...mapActions([
+      'changeDomTitle',
+      'startTimeOut',
+      'changeRegisterTimeOut',
+    ]),
     tabClick(tab) {
       let name = tab.name;
       if (name !== this.$route.name) {
@@ -465,32 +568,56 @@ export default {
           this.loading = false;
         });
     },
-    disbandGroup() {
-      this.$confirm(
-        this.$i18n.t('m.Disband_Group_Tips'),
-        this.$i18n.t('m.Warning'),
-        {
-          confirmButtonText: this.$i18n.t('m.OK'),
-          cancelButtonText: this.$i18n.t('m.Cancel'),
-          type: 'warning',
-        }
-      )
-        .then(() => {
-          this.loading = true;
-          api
-            .deleteGroup(this.$route.params.groupID)
-            .then((res) => {
-              this.loading = false;
-              mMessage.success(this.$i18n.t('m.Disband_Successfully'));
-              this.$router.push({
-                name: 'GroupList',
-              });
-            })
-            .catch(() => {});
-        })
-        .catch(() => {
-          this.loading = false;
+    // 计数
+    openVerifyDialog(){
+      this.showVerifyDialog = true;
+    },
+    countDownVerify() {
+      let i = this.timeVerify;
+      if (i == 0) {
+        this.btnEmailLoading = false;
+        return;
+      }
+      this.countdownNum = i;
+      setTimeout(() => {
+        this.countDownVerify();
+      }, 1000);
+    },
+    // 验证码
+    getVerifyEmailCode(){
+      this.btnEmailLoading = true;
+      api.getVerifyEmailCode(this.verifyForm.email).then((res)=>{
+        myMessage.success(this.$i18n.t('m.Change_Send_Email_Msg'));
+        this.$notify.success({
+          title: this.$i18n.t('m.Success'),
+          message: this.$i18n.t('m.Change_Send_Email_Msg'),
+          duration: 5000,
+          offset: 50
         });
+        this.btnEmailLoading = false;
+      },(_)=>{
+        this.btnEmailLoading = false;
+      })
+      myMessage.success(this.$i18n.t('m.Change_Send_Email_Msg'));
+    },
+    disbandGroup() {
+      this.$refs['verifyForm'].validate((valid) => {
+        if (valid) {
+          this.btnVerifyLoading = true;
+            api
+              .deleteGroup(this.verifyForm,this.$route.params.groupID)
+              .then((res) => {
+                this.btnVerifyLoading = false;
+                mMessage.success(this.$i18n.t('m.Disband_Successfully'));
+                this.$router.push({
+                  name: 'GroupList',
+                });
+              })
+              .catch(() => {
+                this.btnVerifyLoading = false;
+              });
+        }
+      });
     },
     toUserHome(username) {
       this.$router.push({
@@ -513,8 +640,17 @@ export default {
       'isGroupOwner',
       'userAuth',
       'isSuperAdmin',
-      'websiteConfig'
+      'websiteConfig',
+      'registerTimeOut',
     ]),
+    timeVerify: {
+      get() {
+        return this.registerTimeOut;
+      },
+      set(value) {
+        this.changeRegisterTimeOut({ timeVerify: value });
+      },
+    },
   },
   filters: {
     //文字数超出时，超出部分使用...
@@ -618,5 +754,24 @@ export default {
 }
 .info-rows > :last-child {
   margin-bottom: 0;
+}
+.container {
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  background-clip: padding-box;
+  margin: 180px auto;
+  width: 375px;
+  padding: 35px 35px 15px 35px;
+  background: #fff;
+  border: 1px solid #eaeaea;
+  box-shadow: 0 0 25px #cac6c6;
+}
+.title {
+  margin: 0px auto 40px auto;
+  text-align: center;
+  color: #1e9fff;
+  font-size: 25px;
+  font-weight: bold;
 }
 </style>

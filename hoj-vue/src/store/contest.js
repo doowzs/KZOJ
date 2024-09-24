@@ -5,7 +5,7 @@ import time from '@/common/time'
 const state = {
   now: moment(),
   intoAccess: false, // 比赛进入权限
-  submitAccess:false, // 保护比赛的提交权限
+  submitAccess:true, // 保护比赛的提交权限
   forceUpdate: false, // 强制实时榜单
   removeStar: false, // 榜单去除打星队伍
   concernedList:[], // 关注队伍
@@ -48,7 +48,7 @@ const getters = {
      // 未开始不可查看
     if(getters.contestStatus === CONTEST_STATUS.SCHEDULED) return true
 
-    if (state.contest.auth === CONTEST_TYPE.PRIVATE) {
+    if (state.contest.auth === CONTEST_TYPE.PRIVATE || state.contest.auth === CONTEST_TYPE.PROTECTED) {
      // 私有赛需要通过验证密码方可查看比赛
       return !state.intoAccess
     }
@@ -85,10 +85,17 @@ const getters = {
     return !rootGetters.isAuthenticated
   },
   // 是否需要显示密码验证框
+  registerFormVisible: (state, getters) => {
+    // 如果是公开赛，或已注册过，管理员都不用再显示
+    return state.contest.auth !== CONTEST_TYPE.PUBLIC &&!state.intoAccess && !getters.isContestAdmin
+  },
+
+  // 是否需要显示密码验证框
   passwordFormVisible: (state, getters) => {
     // 如果是公开赛，保护赛，或已注册过，管理员都不用再显示
-    return state.contest.auth !== CONTEST_TYPE.PUBLIC &&state.contest.auth !== CONTEST_TYPE.PROTECTED &&!state.intoAccess && !getters.isContestAdmin 
+    return state.contest.auth !== CONTEST_TYPE.PUBLIC &&state.contest.auth !== CONTEST_TYPE.PROTECTED &&!state.intoAccess && !getters.isContestAdmin
   },
+
   contestStartTime: (state) => {
     return moment(state.contest.startTime)
   },
@@ -149,7 +156,9 @@ const getters = {
       return 100;
     }
   },
-
+  isAllowEndSubmit:(state)=>{
+    return  state.contest.allowEndSubmit
+  },
   isShowContestSetting:(state, getters)=>{
     return getters.contestStatus === CONTEST_STATUS.ENDED && state.contest.allowEndSubmit
   }
@@ -265,7 +274,7 @@ const actions = {
   getContestAccess ({commit, rootState},contestType) {
     return new Promise((resolve, reject) => {
       api.getContestAccess(rootState.route.params.contestID).then(res => {
-        if(contestType.auth == CONTEST_TYPE.PRIVATE){
+        if(contestType.auth != CONTEST_TYPE.PUBLIC ){
           commit('contestIntoAccess', {intoAccess: res.data.data.access})
         }else{
           commit('contestSubmitAccess', {submitAccess: res.data.data.access})

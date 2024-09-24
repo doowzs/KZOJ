@@ -248,11 +248,19 @@
                         effect="dark"
                         :color="CONTEST_STATUS_REVERSE[contest.status]['color']"
                         size="medium"
+                        v-if="!contest.allowEndSubmit || contest.status!=1"
                       >
-                        <i class="fa fa-circle" aria-hidden="true"></i>
+                        <i  class="fa fa-circle" aria-hidden="true"></i>
                         {{
                           $t('m.' + CONTEST_STATUS_REVERSE[contest.status]['name'])
                         }}
+                      </el-tag>
+                      <el-tag
+                          v-if="contest.allowEndSubmit && contest.status===1"
+                          size="medium"
+                          color="#19be6b"
+                          effect="dark"
+                      ><i class="el-icon-star-on"> {{ $t('m.After_Submit') }}</i>
                       </el-tag>
                     </el-col>
                   </el-row>
@@ -307,8 +315,8 @@ export default {
       CONTEST_STATUS_REVERSE: {},
       CONTEST_STATUS: {},
       CONTEST_TYPE_REVERSE: {},
-      acmSrc: require('@/assets/acm.jpg'),
-      oiSrc: require('@/assets/oi.jpg'),
+      acmSrc: require('@/assets/acm.png'),
+      oiSrc: require('@/assets/oi.png'),
       loading: true,
     };
   },
@@ -421,7 +429,10 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(['isAuthenticated', 'userInfo']),
+    ...mapGetters([
+      'isAuthenticated',
+      'userInfo'
+    ]),
   },
   watch: {
     $route(newVal, oldVal) {

@@ -149,8 +149,8 @@
                     $t('m.Training_Introduction')
                   }}</span>
                 </div>
-                <Markdown 
-                  :isAvoidXss="groupID" 
+                <Markdown
+                  :isAvoidXss="groupID"
                   :content="training.description">
                 </Markdown>
               </el-card>
@@ -202,7 +202,7 @@ import myMessage from '@/common/message';
 import api from '@/common/api';
 import Markdown from '@/components/oj/common/Markdown';
 export default {
-  components: { 
+  components: {
     Markdown
   },
   data() {

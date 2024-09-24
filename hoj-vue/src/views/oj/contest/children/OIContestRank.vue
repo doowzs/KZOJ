@@ -86,6 +86,7 @@
                   ></el-switch>
                 </p>
               </template>
+
               <template v-if="isContestAdmin">
                 <el-button
                   type="primary"
@@ -384,13 +385,13 @@
       :page-sizes="[10, 30, 50, 100, 300, 500]"
       @on-change="getContestRankData"
       @on-page-size-change="getContestRankData(1)"
-      :layout="'prev, pager, next, sizes'"
+      :layout="'total, prev, pager, next, jumper'"
     ></Pagination>
   </el-card>
 </template>
 <script>
 import Avatar from "vue-avatar";
-import { mapActions } from "vuex";
+import {mapActions, mapGetters} from "vuex";
 import ContestRankMixin from "./contestRankMixin";
 import utils from "@/common/utils";
 const Pagination = () => import("@/components/oj/common/Pagination");
@@ -407,7 +408,7 @@ export default {
     return {
       total: 0,
       page: 1,
-      limit: 50,
+      limit: 30,
       contestID: "",
       dataRank: [],
       keyword: null,
@@ -490,6 +491,14 @@ export default {
     isMobileView() {
       return window.screen.width < 768;
     },
+    isContainsAfterContestJudge:{
+      get () {
+        return this.$store.state.contest.isContainsAfterContestJudge;
+      },
+      set (value) {
+        this.$store.commit('changeContainsAfterContestJudge', {value: value})
+      }
+    },
   },
   watch: {
     isContainsAfterContestJudge(newVal, OldVal) {
@@ -497,7 +506,13 @@ export default {
     },
   },
   methods: {
-    ...mapActions(["getContestProblems"]),
+    ...mapActions([
+        "getContestProblems"
+    ]),
+
+    ...mapGetters([
+      'isShowContestSetting',
+    ]),
 
     cellClassName({ row, rowIndex, column, columnIndex }) {
       if (row.username == this.userInfo.username) {

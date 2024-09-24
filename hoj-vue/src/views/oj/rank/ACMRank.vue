@@ -117,7 +117,7 @@
         @on-change="getRankData"
         show-sizer
         @on-page-size-change="getRankData(1)"
-        :layout="'prev, pager, next, sizes'"
+        :layout="'total, prev, pager, next, jumper'"
       ></Pagination>
     </el-col>
   </el-row>

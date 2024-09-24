@@ -47,4 +47,8 @@ export default {
 .submission-detail pre {
   padding-left: 50px !important;
 }
+pre {
+  white-space: pre-wrap;
+  tab-size: 4;
+}
 </style>

@@ -44,7 +44,6 @@ export default {
         styleActiveLine: true,
         autofocus: false,
         matchBrackets: true, //括号匹配
-        styleActiveLine: true,
         autoCloseBrackets: true,
         autoCloseTags: true,
       },

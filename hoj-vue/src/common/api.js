@@ -105,7 +105,7 @@ axios.interceptors.response.use(
           if (error.response.config.headers['Url-Type'] === 'admin') {
             router.push("/admin/login")
           } else {
-            store.commit('changeModalStatus', { mode: 'Login', visible: true });
+            router.push("/login");
           }
           store.commit('clearUserInfoAndToken');
           break;
@@ -227,6 +227,7 @@ const ojApi = {
       data
     })
   },
+
   checkUsernameOrEmail(username, email) {
     return ajax('/api/check-username-or-email', 'post', {
       data: {
@@ -260,6 +261,7 @@ const ojApi = {
       data
     })
   },
+
   resetPassword(data) {
     return ajax('/api/reset-password', 'post', {
       data
@@ -306,6 +308,7 @@ const ojApi = {
       }
     })
   },
+
   // 随机来一题
   pickone() {
     return ajax('/api/get-random-problem', 'get')
@@ -695,6 +698,11 @@ const ojApi = {
       params: { email }
     })
   },
+  getVerifyEmailCode(email){
+    return ajax("/api/get-verify-email-code", 'get',  {
+      params: { email }
+    })
+  },
   changeEmail(data) {
     return ajax("/api/change-email", 'post', {
       data
@@ -791,6 +799,21 @@ const ojApi = {
     })
   },
 
+  getExplainList(limit, searchParams) {
+    let params = {
+      limit
+    }
+    Object.keys(searchParams).forEach((element) => {
+      if (searchParams[element] !== '' && searchParams[element] !== null && searchParams[element] !== undefined) {
+        params[element] = searchParams[element]
+      }
+    })
+    return ajax("/api/get-Explain-list", 'get', {
+      params
+    })
+  },
+
+
   toLikeComment(cid, toLike, sourceId, sourceType) {
     return ajax("/api/comment-like", 'get', {
       params: {
@@ -854,8 +877,9 @@ const ojApi = {
     })
   },
 
-  deleteGroup(gid) {
+  deleteGroup(data, gid) {
     return ajax("/api/group", 'delete', {
+      data: data,
       params: { gid }
     })
   },
@@ -1265,7 +1289,7 @@ const ojApi = {
   // 站内消息
 
   getUnreadMsgCount() {
-    return ajax("/api/msg/unread", 'get')
+    return ajax("/api/msg/unread", 'get',{})
   },
 
   getMsgList(routerName, searchParams) {
@@ -1360,12 +1384,14 @@ const adminApi = {
   },
 
   // 获取用户列表
-  admin_getUserList(currentPage, limit, keyword, onlyAdmin) {
+  admin_getUserList(currentPage, limit, keyword, onlyAdmin,onlyStatus,showLoginTime) {
     let params = { currentPage, limit }
     if (keyword) {
       params.keyword = keyword
     }
     params.onlyAdmin = onlyAdmin
+    params.onlyStatus = onlyStatus
+    params.showLoginTime = showLoginTime
     return ajax('/api/admin/user/get-user-list', 'get', {
       params: params
     })
@@ -1571,6 +1597,27 @@ const adminApi = {
   admin_changeProblemAuth(data) {
     return ajax('/api/admin/problem/change-problem-auth', 'put', {
       data
+    })
+  },
+  admin_changeProblemType(data) {
+    return ajax('/api/admin/problem/change-problem-type', 'put', {
+      data
+    })
+  },
+  admin_changeProblemsAuth(ids,ProblemAuth) {
+    return ajax('/api/admin/problem/change-problems-auth', 'put', {
+      data: {
+        ids,
+        ProblemAuth
+      }
+    })
+  },
+  admin_changeProblemsType(ids,ProblemType) {
+    return ajax('/api/admin/problem/change-problems-type', 'put', {
+      data: {
+        ids,
+        ProblemType
+      }
     })
   },
   admin_getProblem(pid) {

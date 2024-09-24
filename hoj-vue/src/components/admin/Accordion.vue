@@ -64,6 +64,7 @@ export default {
 }
 
 .body {
+  font-family: "Inconsolata",monospace;
   background-color: #f9fafc;
   border-top: 1px solid rgb(34 36 38 / 15%);
   clear: both;

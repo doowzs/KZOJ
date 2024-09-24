@@ -70,7 +70,7 @@
           </template>
         </template>
       </vxe-table-column>
-      <vxe-table-column field="displayId" width="80" title="#">
+      <vxe-table-column field="displayId" width="90" title="#">
         <template v-slot="{ row }">
           <span style="vertical-align: top;" v-if="row.color">
             <svg
@@ -179,13 +179,13 @@ export default {
             }
             this.isGetStatusOk = false;
             api
-              .getUserProblemStatus(
-                pidList,
-                isContestProblemList,
-                this.$route.params.contestID,
-                null,
-                this.isContainsAfterContestJudge
-              )
+                .getUserProblemStatus(
+                    pidList,
+                    isContestProblemList,
+                    this.$route.params.contestID,
+                    null,
+                    this.isContainsAfterContestJudge
+                )
               .then((res) => {
                 let result = res.data.data;
                 for (let index = 0; index < this.problems.length; index++) {

@@ -229,21 +229,21 @@
             </el-col>
 
             <el-col
-            :md="8"
-            :xs="24"
-          >
-            <el-form-item
-              :label="$t('m.Allow_Submission_After_The_Contest_Ends')"
-              required
+                :md="8"
+                :xs="24"
             >
-              <el-switch
-                v-model="contest.allowEndSubmit"
-                :active-text="$t('m.Open')"
-                :inactive-text="$t('m.Close')"
+              <el-form-item
+                  :label="$t('m.Allow_Submission_After_The_Contest_Ends')"
+                  required
               >
-              </el-switch>
-            </el-form-item>
-          </el-col>
+                <el-switch
+                    v-model="contest.allowEndSubmit"
+                    :active-text="$t('m.Open')"
+                    :inactive-text="$t('m.Close')"
+                >
+                </el-switch>
+              </el-form-item>
+            </el-col>
 
             <el-col
               :md="8"
@@ -336,6 +336,7 @@
                   <el-option
                     :label="$t('m.Public')"
                     :value="0"
+                    @click.native="filterAccount"
                   ></el-option>
                   <el-option
                     :label="$t('m.Private')"
@@ -348,20 +349,27 @@
                 </el-select>
               </el-form-item>
             </el-col>
+
             <el-col
-              :md="8"
+              :md="5"
               :xs="24"
             >
               <el-form-item
                 :label="$t('m.Contest_Password')"
-                v-show="contest.auth != 0"
-                :required="contest.auth != 0"
+                v-show="contest.auth == 1"
+                :required="contest.auth == 1"
               >
                 <el-input
                   v-model="contest.pwd"
                   :placeholder="$t('m.Contest_Password')"
                 ></el-input>
               </el-form-item>
+            </el-col>
+            <el-col
+                :md="3"
+                :xs="24"
+            >
+              <p></p>
             </el-col>
             <el-col
               :md="8"
@@ -435,24 +443,29 @@
                   </el-form-item>
                 </el-col>
 
-                <div
-                  class="userPreview"
-                  v-if="formRule.number_from <= formRule.number_to"
+                <el-col
+                    :md="24"
+                    :xs="24"
                 >
-                  {{ $t('m.The_allowed_account_will_be') }}
-                  {{ formRule.prefix + formRule.number_from + formRule.suffix }},
-                  <span v-if="formRule.number_from + 1 < formRule.number_to">
+                  <div
+                      class="userPreview"
+                      v-if="formRule.number_from <= formRule.number_to"
+                  >
+                    {{ $t('m.The_allowed_account_will_be') }}
+                    {{ formRule.prefix + formRule.number_from + formRule.suffix }},
+                    <span v-if="formRule.number_from + 1 < formRule.number_to">
                     {{
-                      formRule.prefix +
+                        formRule.prefix +
                         (formRule.number_from + 1) +
                         formRule.suffix +
                         '...'
-                    }}
+                      }}
                   </span>
-                  <span v-if="formRule.number_from + 1 <= formRule.number_to">
+                    <span v-if="formRule.number_from + 1 <= formRule.number_to">
                     {{ formRule.prefix + formRule.number_to + formRule.suffix }}
                   </span>
-                </div>
+                  </div>
+                </el-col>
 
                 <el-col
                   :md="24"
@@ -473,6 +486,7 @@
                 </el-col>
               </el-form>
             </template>
+
             <el-col
               :md="24"
               :xs="24"
@@ -789,6 +803,9 @@ export default {
         this.disableRuleType = false;
       }
     },
+    filterAccount(){
+      this.contest.openAccountLimit = false;
+    },
     submit() {
       if (!this.contest.title) {
         mMessage.error(
@@ -824,7 +841,7 @@ export default {
         mMessage.error(this.$i18n.t("m.Contest_Duration_Check"));
         return;
       }
-      if (this.contest.auth != 0 && !this.contest.pwd) {
+      if (this.contest.auth == 1 && !this.contest.pwd) {
         mMessage.error(
           this.$i18n.t("m.Contest_Password") +
             " " +

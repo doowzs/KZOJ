@@ -265,12 +265,22 @@
             </el-col>
             <el-col :xs="4" :sm="4" :md="2" :lg="2" style="text-align: center">
               <el-tag
-                effect="dark"
-                :color="CONTEST_STATUS_REVERSE[contest.status]['color']"
-                size="medium"
+                  effect="dark"
+                  :color="CONTEST_STATUS_REVERSE[contest.status]['color']"
+                  size="medium"
+                  v-if="!contest.allowEndSubmit || contest.status!=1"
               >
-                <i class="fa fa-circle" aria-hidden="true"></i>
-                {{ $t('m.' + CONTEST_STATUS_REVERSE[contest.status]['name']) }}
+                <i  class="fa fa-circle" aria-hidden="true"></i>
+                {{
+                  $t('m.' + CONTEST_STATUS_REVERSE[contest.status]['name'])
+                }}
+              </el-tag>
+              <el-tag
+                  v-if="contest.allowEndSubmit && contest.status===1"
+                  size="medium"
+                  color="#19be6b"
+                  effect="dark"
+              ><i class="el-icon-star-on"> {{ $t('m.After_Submit') }}</i>
               </el-tag>
             </el-col>
           </el-row>
@@ -389,6 +399,7 @@ export default {
       currentPage: 1,
       limit: 10,
       contestList: [],
+      CONTEST_STATUS_REVERSE: {},
       loading: false,
       adminPage: false,
       createPage: false,
@@ -400,8 +411,8 @@ export default {
       createProblemPage: false,
       announcementPage: false,
       contestId: null,
-      acmSrc: require('@/assets/acm.jpg'),
-      oiSrc: require('@/assets/oi.jpg'),
+      acmSrc: require('@/assets/acm.png'),
+      oiSrc: require('@/assets/oi.png'),
     };
   },
   mounted() {
@@ -511,7 +522,11 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(['isAuthenticated', 'isSuperAdmin', 'isGroupAdmin']),
+    ...mapGetters([
+      'isAuthenticated',
+      'isSuperAdmin',
+      'isGroupAdmin']
+    ),
   },
 };
 </script>

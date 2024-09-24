@@ -81,7 +81,16 @@
         </span>
         <hr id="split" />
         <el-row :gutter="12">
-          <el-col :md="6" :sm="24">
+          <el-col :md="5" :sm="24">
+            <el-card shadow="always" class="time">
+              <p>
+                <i class="el-icon-date" aria-hidden="true"></i>
+                {{ $t('m.UserHome_Accompany') }}
+              </p>
+              <p class="data-number">{{ currentTime }}</p>
+            </el-card>
+          </el-col>
+          <el-col :md="5" :sm="24">
             <el-card shadow="always" class="submission">
               <p>
                 <i class="fa fa-th" aria-hidden="true"></i>
@@ -90,7 +99,7 @@
               <p class="data-number">{{ profile.total }}</p>
             </el-card>
           </el-col>
-          <el-col :md="6" :sm="24">
+          <el-col :md="5" :sm="24">
             <el-card shadow="always" class="solved">
               <p>
                 <i class="fa fa-check-circle" aria-hidden="true"></i>
@@ -99,7 +108,7 @@
               <p class="data-number">{{ profile.solvedList.length }}</p>
             </el-card>
           </el-col>
-          <el-col :md="6" :sm="24">
+          <el-col :md="5" :sm="24">
             <el-card shadow="always" class="score">
               <p>
                 <i class="fa fa-star" aria-hidden="true"></i>
@@ -108,7 +117,7 @@
               <p class="data-number">{{ getSumScore(profile.scoreList) }}</p>
             </el-card>
           </el-col>
-          <el-col :md="6" :sm="24">
+          <el-col :md="4" :sm="24">
             <el-card shadow="always" class="rating">
               <p>
                 <i class="fa fa-user-secret" aria-hidden="true"></i>
@@ -235,6 +244,7 @@ import 'vue-calendar-heatmap/dist/vue-calendar-heatmap.css'
 import { CalendarHeatmap } from 'vue-calendar-heatmap'
 import { PROBLEM_LEVEL } from '@/common/constants';
 import utils from '@/common/utils';
+import time from '@/common/time';
 import Markdown from '@/components/oj/common/Markdown';
 export default {
   components: {
@@ -244,6 +254,7 @@ export default {
   },
   data() {
     return {
+      currentTime: null,
       profile: {
         username: '',
         nickname: '',
@@ -251,6 +262,7 @@ export default {
         avatar: '',
         school: '',
         signature: '',
+        gmtCreate:'',
         total: 0,
         rating: 0,
         score: 0,
@@ -305,6 +317,7 @@ export default {
           more: this.$i18n.t('m.More')
     }
     this.init();
+
   },
   methods: {
     ...mapActions(['changeDomTitle']),
@@ -315,6 +328,10 @@ export default {
       api.getUserInfo(uid, username).then((res) => {
         this.changeDomTitle({ title: res.data.username });
         this.profile = res.data.data;
+        // 获取时间
+        const now = new Date();
+        const day = new Date(now).getTime() -new Date(res.data.data.gmtCreate).getTime();//日期转时间戳 ;
+        this.currentTime = Math.floor(day / 86400000);//时间戳获取天数
         this.$nextTick((_) => {
           addCodeBtn();
         });
@@ -322,14 +339,15 @@ export default {
       },(_)=>{
         this.loading = false;
       });
-
     },
+
     goProblem(problemID) {
       this.$router.push({
         name: 'ProblemDetails',
         params: { problemID: problemID },
       });
     },
+
     freshProblemDisplayID() {
       this.init();
       myMessage.success(this.$i18n.t('m.Update_Successfully'));
@@ -416,6 +434,11 @@ export default {
 }
 .score {
   background: #e6a23c;
+  color: #fff;
+  font-size: 14px;
+}
+.time {
+  background: #d5b5ef;
   color: #fff;
   font-size: 14px;
 }

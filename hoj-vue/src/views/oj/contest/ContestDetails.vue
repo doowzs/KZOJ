@@ -11,38 +11,38 @@
           <el-row style="margin-top: 10px;">
             <el-col :span="14" class="text-align:left">
               <el-tooltip
-                v-if="contest.auth != null && contest.auth != undefined"
-                :content="$t('m.' + CONTEST_TYPE_REVERSE[contest.auth]['tips'])"
-                placement="top"
+                  v-if="contest.auth != null && contest.auth != undefined"
+                  :content="$t('m.' + CONTEST_TYPE_REVERSE[contest.auth]['tips'])"
+                  placement="top"
               >
                 <el-tag
-                  :type.sync="CONTEST_TYPE_REVERSE[contest.auth]['color']"
-                  effect="plain"
-                  style="font-size:13px"
+                    :type.sync="CONTEST_TYPE_REVERSE[contest.auth]['color']"
+                    effect="plain"
+                    style="font-size:13px"
                 >
                   <i class="el-icon-collection-tag"></i>
                   {{ $t('m.' + CONTEST_TYPE_REVERSE[contest.auth]['name']) }}
                 </el-tag>
               </el-tooltip>
               <el-tooltip
-                v-if="contest.gid != null"
-                :content="$t('m.Go_To_Group_Contest_List')"
-                style="margin-left:10px;"
-                placement="top">
-                <el-button 
-                  size="small" 
-                  type="primary"
-                  @click="toGroupContestList(contest.gid)">
+                  v-if="contest.gid != null"
+                  :content="$t('m.Go_To_Group_Contest_List')"
+                  style="margin-left:10px;"
+                  placement="top">
+                <el-button
+                    size="small"
+                    type="primary"
+                    @click="toGroupContestList(contest.gid)">
                   <i class="fa fa-users"></i>
-                    {{ $t('m.Group_Contest_Tag')}}
+                  {{ $t('m.Group_Contest_Tag')}}
                 </el-button>
-             </el-tooltip>
+              </el-tooltip>
             </el-col>
             <el-col :span="10" style="text-align:right">
               <el-button size="small" plain v-if="contest.count != null">
                 <i
-                  class="el-icon-user-solid"
-                  style="color:rgb(48, 145, 242);"
+                    class="el-icon-user-solid"
+                    style="color:rgb(48, 145, 242);"
                 ></i
                 >x{{ contest.count }}
               </el-button>
@@ -54,7 +54,7 @@
               </template>
               <template v-else>
                 <el-tooltip
-                  :content="
+                    :content="
                     $t('m.Contest_Rank') +
                       '：' +
                       (contest.oiRankScoreType == 'Recent'
@@ -65,7 +65,7 @@
                             'm.Based_on_The_Highest_Score_Submitted_For_Each_Problem'
                           ))
                   "
-                  placement="top"
+                    placement="top"
                 >
                   <el-button size="small" :type="'warning'">
                     <i class="fa fa-trophy"></i>
@@ -93,9 +93,9 @@
           </div>
           <div class="slider">
             <el-slider
-              v-model="progressValue"
-              :format-tooltip="formatTooltip"
-              :step="timeStep"
+                v-model="progressValue"
+                :format-tooltip="formatTooltip"
+                :step="timeStep"
             ></el-slider>
           </div>
           <el-row>
@@ -108,13 +108,13 @@
           </el-row>
           <div class="contest-config" v-if="isShowContestSetting">
             <el-popover
-              trigger="hover"
-              placement="left-start"
+                trigger="hover"
+                placement="left-start"
             >
               <el-button
-                round
-                size="small"
-                slot="reference"
+                  round
+                  size="small"
+                  slot="reference"
               >
                 {{$t('m.Contest_Setting')}}
               </el-button>
@@ -123,94 +123,63 @@
                   <span>{{ $t('m.Contains_Submission_After_Contest') }}</span>
                   <el-switch v-model="isContainsAfterContestJudge"></el-switch>
                 </p>
-                </div>
-              </el-popover>
+              </div>
+            </el-popover>
           </div>
         </el-card>
       </el-col>
     </el-row>
     <div class="sub-menu">
-      <!-- 判断是否需要密码验证 -->
 
       <el-tabs @tab-click="tabClick" v-model="route_name">
         <el-tab-pane name="ContestDetails" lazy>
           <span slot="label"
-            ><i class="el-icon-s-home"></i>&nbsp;{{ $t('m.Overview') }}</span
+          ><i class="el-icon-s-home"></i>&nbsp;{{ $t('m.Overview') }}</span
           >
-          <el-card
-            v-if="passwordFormVisible"
-            class="password-form-card"
-            style="text-align:center;margin-bottom:15px"
-          >
-            <div slot="header">
-              <span class="panel-title" style="color: #e6a23c;"
-                ><i class="el-icon-warning">
-                  {{ $t('m.Password_Required') }}</i
-                ></span
-              >
-            </div>
-            <p class="password-form-tips">
-              {{ $t('m.To_Enter_Need_Password') }}
-            </p>
-            <el-form>
-              <el-input
-                v-model="contestPassword"
-                type="password"
-                :placeholder="$t('m.Enter_the_contest_password')"
-                @keydown.enter.native="checkPassword"
-                style="width:70%"
-              />
-              <el-button
-                type="primary"
-                @click="checkPassword"
-                style="float:right;"
-                >{{ $t('m.Enter') }}</el-button
-              >
-            </el-form>
-          </el-card>
+
           <el-card class="box-card">
-            <Markdown 
-              :isAvoidXss="contest.gid != null" 
-              :content="contest.description">
+            <Markdown
+                :isAvoidXss="contest.gid != null"
+                :content="contest.description">
             </Markdown>
           </el-card>
         </el-tab-pane>
 
         <el-tab-pane
-          name="ContestProblemList"
-          lazy
-          :disabled="contestMenuDisabled"
+            name="ContestProblemList"
+            lazy
+            :disabled="contestMenuDisabled"
         >
           <span slot="label"
-            ><i class="fa fa-list" aria-hidden="true"></i>&nbsp;{{
+          ><i class="fa fa-list" aria-hidden="true"></i>&nbsp;{{
               $t('m.Problem')
             }}</span
           >
           <transition name="el-zoom-in-bottom">
             <router-view
-              v-if="route_name === 'ContestProblemList'"
+                v-if="route_name === 'ContestProblemList'"
             ></router-view>
           </transition>
         </el-tab-pane>
 
         <el-tab-pane
-          name="ContestSubmissionList"
-          lazy
-          :disabled="contestMenuDisabled"
+            name="ContestSubmissionList"
+            lazy
+            :disabled="contestMenuDisabled"
         >
           <span slot="label"
-            ><i class="el-icon-menu"></i>&nbsp;{{ $t('m.Status') }}</span
+          ><i class="el-icon-menu"></i>&nbsp;{{ $t('m.Status') }}</span
           >
           <transition name="el-zoom-in-bottom">
             <router-view
-              v-if="route_name === 'ContestSubmissionList'"
+                v-if="route_name === 'ContestSubmissionList'"
             ></router-view>
           </transition>
         </el-tab-pane>
 
         <el-tab-pane name="ContestRank" lazy :disabled="contestMenuDisabled">
           <span slot="label"
-            ><i class="fa fa-bar-chart" aria-hidden="true"></i>&nbsp;{{
+          ><i class="fa fa-bar-chart" aria-hidden="true"></i>&nbsp;{{
               $t('m.NavBar_Rank')
             }}</span
           >
@@ -220,29 +189,29 @@
         </el-tab-pane>
 
         <el-tab-pane
-          name="ContestAnnouncementList"
-          lazy
-          :disabled="contestMenuDisabled"
+            name="ContestAnnouncementList"
+            lazy
+            :disabled="contestMenuDisabled"
         >
           <span slot="label"
-            ><i class="fa fa-bullhorn" aria-hidden="true"></i>&nbsp;{{
+          ><i class="fa fa-bullhorn" aria-hidden="true"></i>&nbsp;{{
               $t('m.Announcement')
             }}</span
           >
           <transition name="el-zoom-in-bottom">
             <router-view
-              v-if="route_name === 'ContestAnnouncementList'"
+                v-if="route_name === 'ContestAnnouncementList'"
             ></router-view>
           </transition>
         </el-tab-pane>
 
-        <el-tab-pane 
-          name="ContestComment" 
-          lazy 
-          :disabled="contestMenuDisabled"
-          v-if="websiteConfig.openContestComment">
+        <el-tab-pane
+            name="ContestComment"
+            lazy
+            :disabled="contestMenuDisabled"
+            v-if="websiteConfig.openContestComment">
           <span slot="label"
-            ><i class="fa fa-commenting" aria-hidden="true"></i>&nbsp;{{
+          ><i class="fa fa-commenting" aria-hidden="true"></i>&nbsp;{{
               $t('m.Comment')
             }}</span
           >
@@ -252,13 +221,13 @@
         </el-tab-pane>
 
         <el-tab-pane
-          name="ContestPrint"
-          lazy
-          :disabled="contestMenuDisabled"
-          v-if="contest.openPrint"
+            name="ContestPrint"
+            lazy
+            :disabled="contestMenuDisabled"
+            v-if="contest.openPrint"
         >
           <span slot="label"
-            ><i class="el-icon-printer"></i>&nbsp;{{ $t('m.Print') }}</span
+          ><i class="el-icon-printer"></i>&nbsp;{{ $t('m.Print') }}</span
           >
           <transition name="el-zoom-in-bottom">
             <router-view v-if="route_name === 'ContestPrint'"></router-view>
@@ -266,13 +235,13 @@
         </el-tab-pane>
 
         <el-tab-pane
-          name="ContestACInfo"
-          lazy
-          :disabled="contestMenuDisabled"
-          v-if="showAdminHelper"
+            name="ContestACInfo"
+            lazy
+            :disabled="contestMenuDisabled"
+            v-if="showAdminHelper"
         >
           <span slot="label"
-            ><i class="el-icon-s-help" aria-hidden="true"></i>&nbsp;{{
+          ><i class="el-icon-s-help" aria-hidden="true"></i>&nbsp;{{
               $t('m.Admin_Helper')
             }}</span
           >
@@ -282,61 +251,151 @@
         </el-tab-pane>
 
         <el-tab-pane
-          name="ContestAdminPrint"
-          lazy
-          :disabled="contestMenuDisabled"
-          v-if="isContestAdmin && contest.openPrint"
+            name="ContestAdminPrint"
+            lazy
+            :disabled="contestMenuDisabled"
+            v-if="isContestAdmin && contest.openPrint"
         >
           <span slot="label"
-            ><i class="el-icon-printer"></i>&nbsp;{{
+          ><i class="el-icon-printer"></i>&nbsp;{{
               $t('m.Admin_Print')
             }}</span
           >
           <transition name="el-zoom-in-bottom">
             <router-view
-              v-if="route_name === 'ContestAdminPrint'"
+                v-if="route_name === 'ContestAdminPrint'"
             ></router-view>
           </transition>
         </el-tab-pane>
 
         <el-tab-pane
-          name="ContestRejudgeAdmin"
-          lazy
-          :disabled="contestMenuDisabled"
-          v-if="isSuperAdmin"
+            name="ContestRejudgeAdmin"
+            lazy
+            :disabled="contestMenuDisabled"
+            v-if="isSuperAdmin"
         >
           <span slot="label"
-            ><i class="el-icon-refresh" aria-hidden="true"></i>&nbsp;{{
+          ><i class="el-icon-refresh" aria-hidden="true"></i>&nbsp;{{
               $t('m.Rejudge')
             }}</span
           >
           <transition name="el-zoom-in-bottom">
             <router-view
-              v-if="route_name === 'ContestRejudgeAdmin'"
+                v-if="route_name === 'ContestRejudgeAdmin'"
             ></router-view>
           </transition>
         </el-tab-pane>
 
         <el-tab-pane
-          name="ScrollBoard"
-          lazy
-          :disabled="contestMenuDisabled"
-          v-if="showScrollBoard"
+            name="ScrollBoard"
+            lazy
+            :disabled="contestMenuDisabled"
+            v-if="showScrollBoard"
         >
           <span slot="label"
-            ><i class="el-icon-video-camera-solid" aria-hidden="true"></i>&nbsp;{{
+          ><i class="el-icon-video-camera-solid" aria-hidden="true"></i>&nbsp;{{
               $t('m.ScrollBoard')
             }}</span
           >
           <transition name="el-zoom-in-bottom">
             <router-view
-              v-if="route_name === 'ScrollBoard'"
+                v-if="route_name === 'ScrollBoard'"
             ></router-view>
           </transition>
         </el-tab-pane>
 
       </el-tabs>
     </div>
+
+    <el-dialog
+        :visible.sync="registerFormVisible"
+        width="430px"
+    >
+      <div class="password-form-card"
+           style="text-align:center;">
+        <div slot="header">
+              <span class="panel-title" style="color: #e6a23c;"
+              ><i class="el-icon-warning">
+                  {{ $t('m.Confirm_Info') }}</i
+              ></span
+              >
+        </div>
+        <p class="password-form-tips">
+          {{ $t('m.To_Enter_Confirm_Info') }}
+        </p>
+        <el-form ref="formProfile" :model="formProfile">
+          <el-form-item :label="$t('m.RealName')" style="margin-left: 30px">
+            <el-input
+                v-model.trim="formProfile.realname"
+                :maxlength="50"
+                style="width:70%"
+            />
+          </el-form-item>
+          <el-form-item :label="$t('m.School')" style="margin-left: 30px">
+            <el-input
+                v-model.trim="formProfile.school"
+                :maxlength="50"
+                style="width:70%"
+            />
+          </el-form-item>
+          <el-form-item :label="$t('m.Class')" style="margin-left: 30px">
+            <el-select
+                v-model="formProfile.number"
+                :placeholder="$t('m.Select_Class')"
+                style="width:70%"
+            >
+              <el-option label="一年级" value="一年级"></el-option>
+              <el-option label="二年级" value="二年级"></el-option>
+              <el-option label="三年级" value="三年级"></el-option>
+              <el-option label="四年级" value="四年级"></el-option>
+              <el-option label="五年级" value="五年级"></el-option>
+              <el-option label="六年级" value="六年级"></el-option>
+              <el-option label="七年级" value="七年级"></el-option>
+              <el-option label="八年级" value="八年级"></el-option>
+              <el-option label="九年级" value="九年级"></el-option>
+              <el-option label="高一" value="高一"></el-option>
+              <el-option label="高二" value="高二"></el-option>
+              <el-option label="高三" value="高三"></el-option>
+              <el-option label="其他" value="其他"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item :label="$t('m.Gender')" style="margin-left: 30px">
+            <el-radio-group v-model="formProfile.gender">
+              <el-radio label="male" border size="small">{{
+                  $t('m.Male')
+                }}</el-radio>
+              <el-radio label="female" border size="small">{{
+                  $t('m.Female')
+                }}</el-radio>
+            </el-radio-group>
+          </el-form-item>
+
+          <el-form-item
+              :label="$t('m.Contest_Password')"
+              style="margin-left: 30px"
+              v-if="passwordFormVisible"
+          >
+            <el-input
+                v-model="contestPassword"
+                type="password"
+                :placeholder="$t('m.Enter_the_contest_password')"
+                @keydown.enter.native="checkPassword"
+                style="width:70%"
+            />
+          </el-form-item>
+        </el-form>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="toContestList">{{ $t('m.Cancel') }}</el-button>
+        <el-button
+            type="primary"
+            @click="checkPassword"
+            :loading="loadingSaveBtn"
+        >{{ $t('m.Enter') }}</el-button
+        >
+      </span>
+    </el-dialog>
+
   </div>
 </template>
 <script>
@@ -355,6 +414,7 @@ import {
 import myMessage from '@/common/message';
 import storage from '@/common/storage';
 import Markdown from "@/components/oj/common/Markdown";
+import utils from "@/common/utils";
 export default {
   name: 'ContestDetails',
   components: {
@@ -362,14 +422,21 @@ export default {
   },
   data() {
     return {
+      loadingSaveBtn: false,
       route_name: 'contestDetails',
       timer: null,
       CONTEST_STATUS: {},
       CONTEST_STATUS_REVERSE: {},
       CONTEST_TYPE_REVERSE: {},
       RULE_TYPE: {},
-      btnLoading: false,
       contestPassword: '',
+      formProfile: {
+        realname: '',
+        username: '',
+        gender: '',
+        number: '',
+        school: '',
+      },
     };
   },
   created() {
@@ -404,7 +471,6 @@ export default {
             cid: this.contestID,
             readAnnouncementList: readAnnouncementList,
           };
-
           api.getContestUserNotReadAnnouncement(data).then((res) => {
             let newAnnounceList = res.data.data;
             for (let i = 0; i < newAnnounceList.length; i++) {
@@ -412,14 +478,14 @@ export default {
               this.$notify({
                 title: newAnnounceList[i].title,
                 message:
-                  '<p style="text-align:center;"><i class="el-icon-time"> ' +
-                  time.utcToLocal(newAnnounceList[i].gmtCreate) +
-                  '</i></p>' +
-                  '<p style="text-align:center;color:#409eff">' +
-                  this.$i18n.t(
-                    'm.Please_check_the_contest_announcement_for_details'
-                  ) +
-                  '</p>',
+                    '<p style="text-align:center;"><i class="el-icon-time"> ' +
+                    time.utcToLocal(newAnnounceList[i].gmtCreate) +
+                    '</i></p>' +
+                    '<p style="text-align:center;color:#409eff">' +
+                    this.$i18n.t(
+                        'm.Please_check_the_contest_announcement_for_details'
+                    ) +
+                    '</p>',
                 type: 'warning',
                 dangerouslyUseHTMLString: true,
                 duration: 0,
@@ -435,6 +501,14 @@ export default {
       });
     });
   },
+  mounted() {
+    let profile = this.$store.getters.userInfo;
+    Object.keys(this.formProfile).forEach((element) => {
+      if (profile[element] !== undefined) {
+        this.formProfile[element] = profile[element];
+      }
+    });
+  },
   methods: {
     ...mapActions(['changeDomTitle']),
     formatTooltip(val) {
@@ -448,20 +522,31 @@ export default {
       }
     },
     checkPassword() {
-      if (this.contestPassword === '') {
-        myMessage.warning(this.$i18n.t('m.Enter_the_contest_password'));
+      if(this.contestEnded && !this.isAllowEndSubmit){ // 比赛结束,且不支持赛后提交
+        myMessage.error(this.$i18n.t('m.Contest_has_ended'));
         return;
       }
-      this.btnLoading = true;
+      // 比赛不能为空
+      if(this.formProfile.gender==='secrecy'){
+        myMessage.error(this.$i18n.t('m.Enter_the_Confirm_Info'));
+        return;
+      }
+      this.formProfile.realname = this.formProfile.realname.replace(/\s*/g,"");
+      this.formProfile.school = this.formProfile.school.replace(/\s*/g,"");
+      if (this.formProfile.realname ==='' || this.formProfile.school==='' || this.formProfile.number===null) {
+        myMessage.error(this.$i18n.t('m.Enter_the_Confirm_Info'));
+        return;
+      }
+      // 判断密码
+      if (this.contestPassword === '' && this.passwordFormVisible) {
+        myMessage.error(this.$i18n.t('m.Enter_the_contest_password'));
+        return;
+      }
       api.registerContest(this.contestID + '', this.contestPassword).then(
-        (res) => {
-          myMessage.success(this.$i18n.t('m.Register_contest_successfully'));
-          this.$store.commit('contestIntoAccess', { intoAccess: true });
-          this.btnLoading = false;
-        },
-        (res) => {
-          this.btnLoading = false;
-        }
+          (res) => {
+            this.$store.commit('contestIntoAccess', { intoAccess: true });
+            this.updateUserInfo();
+          }
       );
     },
     tabClick(tab) {
@@ -470,6 +555,14 @@ export default {
         this.$router.push({ name: name });
       }
     },
+    toContestList(){
+      if(this.contest.gid!=null){
+        this.toGroupContestList(this.contest.gid);
+      }else {
+        this.$router.push('/contest');
+      }
+
+    },
     toGroupContestList(gid){
       this.$router.push({
         name: 'GroupContestList',
@@ -477,6 +570,19 @@ export default {
           groupID: gid,
         },
       })
+    },
+    updateUserInfo() {
+      this.loadingSaveBtn = true;
+      api.changeUserInfo(this.formProfile).then(
+          (res) => {
+            myMessage.success(this.$i18n.t('m.Register_contest_successfully'));
+            this.$store.dispatch('setUserInfo', res.data.data);
+            this.loadingSaveBtn = false;
+          },
+          (_) => {
+            this.loadingSaveBtn = false;
+          }
+      );
     },
   },
   computed: {
@@ -495,8 +601,10 @@ export default {
       'isSuperAdmin',
       'ContestRealTimePermission',
       'passwordFormVisible',
+      'registerFormVisible',
       'userInfo',
       'websiteConfig',
+      'isAllowEndSubmit',
     ]),
     progressValue: {
       get: function() {

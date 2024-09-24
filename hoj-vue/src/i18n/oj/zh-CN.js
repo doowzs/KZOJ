@@ -10,7 +10,7 @@ export const m = {
   No_Access_There_is_no_open_discussion_area_on_the_website: '禁止访问：当前网站未开启讨论区！',
   No_Access_There_is_no_open_group_discussion_area_on_the_website: '禁止访问：当前网站未开启团队讨论区！',
   No_Access_There_is_no_open_contest_comment_area_on_the_website: '禁止访问：当前网站未开启比赛评论区！',
-
+  Welcome_to_Login: '欢迎登录KZ在线评测系统',
   // /components/oj/common/NavBar.vue 导航栏
   NavBar_Home: '首页',
   NavBar_Problem: '题目',
@@ -20,16 +20,19 @@ export const m = {
   NavBar_Rank: '排名',
   NavBar_ACM_Rank: 'ACM 排名',
   NavBar_OI_Rank: 'OI 排名',
+  NavBar_HOF_Rank: '名人堂',
   NavBar_Discussion: '讨论',
   NavBar_Group: '团队',
-  NavBar_About: '关于',
-  NavBar_Introduction: '简介',
-  NavBar_Developer: '开发者',
+  NavBar_Other: '其他',
+  NavBar_Introduction: '编译器',
+  NavBar_Typing: '打字练习',
+  NavBar_Developer: '简介',
   NavBar_Login: '登录',
   NavBar_Register: '注册',
   NavBar_UserHome: '我的首页',
   NavBar_Submissions: '我的提交',
   NavBar_Setting: '我的设置',
+  NavBar_Wiki: '知识学习',
   NavBar_Management: '后台管理',
   NavBar_Logout: '退出登录',
   Dialog_Login: '登录',
@@ -42,8 +45,9 @@ export const m = {
   NavBar_Contest_Own_Submission: '我的提交',
   NavBar_Contest_Rank: '比赛榜单',
   NavBar_Group_Home: '团队主页',
+  Code_Beauty: '格式化代码',
 
-  //  /components/oj/common/Login.vue 登录弹窗
+  //  /components/oj 登录弹窗
   Login_Username: '用户名',
   Login_Password: '密码',
   Login_Btn: '登录',
@@ -57,7 +61,7 @@ export const m = {
   Password_Check_Between: '请输入长度为6~20位的密码',
   Welcome_Back: '欢迎回来~',
 
-  // /components/oj/common/Register.vue 注册弹窗
+  // 注册弹窗
   Register_Username: '请输入用户名',
   Register_Password: '请输入密码',
   Register_Password_Again: '请再次输入密码',
@@ -65,6 +69,7 @@ export const m = {
   Register_Email_Captcha: '请输入邮件中的验证码',
   Register_Btn: '注册',
   Register_Already_Registed: '已有账号？立即登录！',
+  Bind_Email_Address: '未绑定邮箱？立即绑定！',
   The_username_already_exists: '用户名已存在',
   The_email_already_exists: '邮箱已存在',
   Password_does_not_match: '两次输入密码不一致',
@@ -77,7 +82,7 @@ export const m = {
   Register_Send_Email_Msg: '发送成功！如果长时间没收到邮件，请检查你的邮箱是否准确！',
   Thanks_for_registering: '感谢您的注册，您现在可以登录了',
 
-  // /components/oj/common/ResetPassword.vue 重置密码弹窗
+
   // /views/oj/user/SetNeWPassword.vue 设置新密码页
   Reset_Password_Email: '请输入您的邮箱',
   Reset_Password_Captcha: '请输入验证码',
@@ -109,7 +114,6 @@ export const m = {
   Update_Password: '更新密码',
   Update_Email: '更新邮箱',
   Update_Mobile: '更新手机号',
-  Captcha: '验证码',
   The_new_password_does_not_change: '新密码未变动',
   The_new_email_does_not_change: '新邮箱未变动',
   The_new_mobile_does_not_change: '新手机号未变动',
@@ -121,10 +125,12 @@ export const m = {
   Change_Send_Mobile_Msg: '发送成功！如果长时间没收到短信，请检查你的手机号是否准确！',
   Update_Successfully: '更新成功',
   Update_Failed: '更新失败',
+  Pass_Strength:"密码强度太弱，密码长度为6~20位数字和字母",
   Guess_robot: '您的操作太快啦，可能是机器操作！请再次验证！',
   The_current_password_cannot_be_empty: '当前密码不能为空',
   The_new_password_cannot_be_empty: '新密码不能为空',
   The_new_email_cannot_be_empty:'新邮箱不能为空',
+  Update_User_Tips: '你确定要修改该吗',
 
 
   // /components/oj/setting/UserInfo.vue
@@ -132,7 +138,8 @@ export const m = {
   Upload_avatar_hint: '将头像拖放到此处，或单击此处',
   CF_Username: 'Codeforces 用户名',
   School: '学校',
-  Student_Number: '学号',
+  Class: '年级',
+  Select_Class: '请选择年级',
   Blog: '博客',
   Github: 'Github',
   Gender: '性别',
@@ -154,6 +161,7 @@ export const m = {
   Not_set_yet: '这个家伙很懒，什么也没写…',
   UserHome_Solved: '已解决',
   UserHome_Submissions: '总交题数',
+  UserHome_Accompany: '陪伴天数',
   UserHome_Score: 'OI分数',
   UserHome_Rating: 'CF分数',
   List_Solved_Problems: '全部已解决问题列表',
@@ -164,24 +172,24 @@ export const m = {
   Difficulty_Statistics:'难度统计',
   Problems:'题',
   Calendar_Tooltip_Uint:'次提交',
-  Jan: '一月', 
-  Feb: '二月', 
-  Mar: '三月', 
-  Apr: '四月', 
+  Jan: '一月',
+  Feb: '二月',
+  Mar: '三月',
+  Apr: '四月',
   May: '五月',
-  Jun: '六月', 
+  Jun: '六月',
   Jul: '七月',
-  Aug: '八月', 
-  Sep: '九月', 
-  Oct: '十月', 
-  Nov: '十一月', 
+  Aug: '八月',
+  Sep: '九月',
+  Oct: '十月',
+  Nov: '十一月',
   Dec: '十二月',
-  Sun: '周日', 
-  Mon: '周一', 
-  Tue: '周二', 
-  Wed: '周三', 
-  Thu: '周四', 
-  Fri: '周五', 
+  Sun: '周日',
+  Mon: '周一',
+  Tue: '周二',
+  Wed: '周三',
+  Thu: '周四',
+  Fri: '周五',
   Sat: '周六',
   Less:'较少',
   More:'较多',
@@ -208,6 +216,9 @@ export const m = {
   Latest_Problem: '最新题目',
   Supported_Remote_Online_Judge: '支持的远程评测平台',
   Statistics_Submissions_In_The_Last_Week: '最近一周提交统计',
+  Pearls_Of_Wisdom:"一言",
+  Count_Down:"倒计时",
+  Blogroll:"友情链接",
 
 
   // 表格通用列名,按钮，搜索框等
@@ -215,7 +226,6 @@ export const m = {
   Reset: '重置',
   Username: '用户名',
   Solved: '已解决',
-  AC: 'AC',
   OJ: 'OJ',
   Title: '标题',
   Begin_Time: '开始时间',
@@ -230,7 +240,8 @@ export const m = {
 
   // /views/oj/problem/problemList.vue
   Problem_List: '题目列表',
-  Problem_Bank: '题库',
+  Problem_Bank: '远程',
+  Problem_Tk:'题库',
   All: '全部',
   My_OJ: '主题库',
   Level: '难度',
@@ -256,6 +267,7 @@ export const m = {
   Statistic: '题目统计',
   Solutions: '全部提交',
   Problem_Discussion: '题目讨论',
+  Problem_Update:'修改',
   Description: '题目描述',
   Input: '输入描述',
   Output: '输出描述',
@@ -311,6 +323,7 @@ export const m = {
   Rejudge: '重新评测',
   Resubmitted_Successfully: '重新提交成功！',
   Refresh: '刷新',
+  In_other_words: '换一句',
   Enter_Problem_ID: '请输入题目ID',
   Enter_Author: '请输入作者',
   Run_ID: 'Run ID',
@@ -329,6 +342,12 @@ export const m = {
 
   // /views/oj/status/SubmissionDetails.vue
   Test_point_details: '测试点详情',
+  Download_Explanation: '测试点下载说明',
+  Download_tips_1: '提供该记录第一个非AC的输入输出数据下载; 部分题目不开放数据下载。',
+  Download_tips_2: '每日只提供 2 次下载机会，请注意保存',
+  Download_tips_3: '请勿使用本功能恶意刷AC数',
+  Download_Wrong_Testcase: '测试数据下载',
+  Download_success: '下载成功',
   Copy: '复制',
   Shared: '分享',
   Unshared: '不分享',
@@ -399,22 +418,25 @@ export const m = {
   Running: '进行中',
   Scheduled: '筹备中',
   Ended: '已结束',
+  After_Submit: '赛后提交',
   No_contest: '暂无比赛',
   Contests: '比赛',
   Public: '公开赛',
   Private: '私有赛',
   Protected: '保护赛',
   Public_Tips: '公开赛 - 每个用户都可查看与提交',
-  Protected_Tips: '保护赛 - 每个用户都可查看，但是提交需要密码',
-  Private_Tips: '私有赛 - 用户需要密码才可查看与提交',
+  Protected_Tips: '保护赛 - 用户需要报名后才能参加比赛',
+  Private_Tips: '私有赛 - 用户需要密码才可参加比赛',
   Contest_Outside_ScoreBoard: '赛外榜单',
 
   // /views/oj/contest/ContestDetail.vue
   StartAt: '开始时间',
   EndAt: '结束时间',
-  Password_Required: '需要密码',
-  To_Enter_Need_Password: '请输入该比赛的密码，方可进入比赛',
+  Confirm_Info: '确认信息',
+  To_Enter_Confirm_Info: '请仔细确认信息，报名后方可进入比赛',
   Enter_the_contest_password: '请输入比赛密码',
+  Enter_the_Confirm_Info: '请填写完整比赛信息',
+  Enter_the_Nickname_Length: '请填写昵称长度0-8',
   Enter: '进入',
   Overview: '比赛简介',
   Announcement: '公告',
@@ -429,7 +451,7 @@ export const m = {
   Please_check_the_contest_announcement_for_details: '具体内容请查看比赛公告',
   Go_To_Group_Contest_List:'前往团队比赛列表',
   Group_Contest_Tag:'团队比赛',
-  Contains_Submission_After_Contest:'包含赛后的提交',
+  Contains_Submission_After_Contest:'赛后提交',
 
   // /views/oj/contest/children/ACMContestRank.vue
   Contest_Rank: '比赛排名',
@@ -437,7 +459,7 @@ export const m = {
   Chart: '图表',
   Table: '表格',
   Auto_Refresh: '自动刷新',
-  RealName: '真实姓名',
+  RealName: '姓名',
   Force_Update: '强制更新',
   Download_as_CSV: '以CSV格式导出排名',
   TotalTime: '总时间',
@@ -475,7 +497,6 @@ export const m = {
 
   // /views/oj/contest/children/ContestRejudgeAdmin.vue
   Contest_Rejudge: '比赛重新测评',
-  ID: 'ID',
   Rejudge_All: '重测',
   Contest_Rejudge_Tips: '您确定重测所有提交记录?',
   Rejudge_successfully: '重测成功',
@@ -636,8 +657,9 @@ export const m = {
   Training_Auth: '训练权限',
   Training_Total_Problems: '总题数',
   Record_List: '记录榜单',
+  Password_Required:'需要密码',
   To_Enter_Training_Need_Password: '请输入该私有训练的密码，方可进入',
-  Enter_the_training_password: '请输入私有训练的密码',  
+  Enter_the_training_password: '请输入私有训练的密码',
   Register_training_successfully: '验证训练密码成功！',
 
   // /views/oj/training/TrainingRank.vue
@@ -687,8 +709,9 @@ export const m = {
   Exit_Successfully: '退出成功',
   Disband_Group:'解散团队',
   Disband_Group_Tips:'您是否确定要解散该团队？',
+  Verify:'解散该团队,需要邮箱验证',
   Disband_Successfully:'解散成功',
-  
+
   Group_Number: '团队编号',
   Group_Home: '主页',
   Group_Problem: '题目',
@@ -706,13 +729,12 @@ export const m = {
 
   // /views/oj/group/GroupDiscussionList.vue
   No_Discussion: '暂无讨论',
-  Problem_Discussion:'题目讨论',
 
   // /views/oj/group/GroupProblemList.vue
   Cancel_Admin:'取消管理',
   Back_To_Problem_List:'返回题目列表',
   Back_To_Admin_Problem_List:'返回题目管理列表',
-  
+
   // /views/oj/group/GroupMemberList.vue
   Applying: '申请中',
   Refused: '已拒绝',
@@ -731,7 +753,7 @@ export const m = {
   Back_To_Admin_Training_List:'返回训练管理列表',
   Back_To_Training_List:'返回训练列表',
   Back_Admin_Training_Problem_List:'返回训练题目管理列表',
-  
+
   // /views/oj/group/GroupContestList.vue
   Back_To_Admin_Contest_List:'返回比赛管理列表',
   Back_To_Contest_List:'返回比赛列表',
@@ -739,7 +761,7 @@ export const m = {
 
   // /views/oj/group/GroupSetting.vue
   Add_From_Group_Problem: '从团队题库添加题目',
-  
+
   // /views/oj/group/GroupSetting.vue
   Group_Visible: '在团队列表显示',
   Group_Not_Visible: '在团队列表隐藏',
@@ -753,5 +775,7 @@ export const m = {
   Already_Public_Problem:'已在公开题库中',
   Applying_for_Publicity:'申请公开中',
   Group_Problem_Apply_Public_Tips:'您是否确定要申请该题目加入公开题库？',
-  Cancel_Group_Problem_Apply_Public_Tips:'您是否要取消申请该题目加入公开题库？'
+  Cancel_Group_Problem_Apply_Public_Tips:'您是否要取消申请该题目加入公开题库？',
+
+  Problem_Explain: '查看题解',
 }

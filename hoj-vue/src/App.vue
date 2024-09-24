@@ -1,116 +1,68 @@
 <template>
   <div id="app">
-    <el-backtop :right="10"></el-backtop>
+    <el-backtop :right="10" v-if="isLogin"></el-backtop>
     <div v-if="!isAdminView" class="full-height flex-column">
-      <NavBar></NavBar>
-      <div id="oj-content">
+      <NavBar v-if="isLogin"></NavBar>
+      <div v-if="isLogin" id="oj-content" >
         <transition name="el-zoom-in-bottom">
           <router-view></router-view>
         </transition>
       </div>
+      <transition v-else name="el-zoom-in-bottom">
+        <router-view></router-view>
+      </transition>
       <footer v-if="showFooter" class="fix-to-bottom">
         <div class="mundb-footer">
+
           <el-row>
+            <!--          名称+介绍-->
             <el-col
-              :md="6"
-              :xs="24"
+                :md="24"
+                :xs="24"
             >
               <h1>{{ websiteConfig.name }}</h1>
               <span
-                style="line-height:25px"
-                v-html="websiteConfig.description"
-                v-katex
-                v-highlight
+                  style="line-height:25px"
+                  v-html="websiteConfig.description"
+                  v-katex
+                  v-highlight
               >
               </span>
-            </el-col>
-            <el-col class="hr-none">
-              <el-divider></el-divider>
-            </el-col>
-            <el-col
-              :md="6"
-              :xs="24"
-            >
-              <h1>{{ $t('m.Service') }}</h1>
-              <p>
-                <a @click="goRoute('/status')">{{ $t('m.Judging_Queue') }}</a>
-              </p>
-              <p>
-                <a @click="goRoute('/developer')">{{ $t('m.System_Info') }}</a>
-              </p>
-            </el-col>
-            <el-col class="hr-none">
-              <el-divider></el-divider>
-            </el-col>
-            <el-col
-              :md="6"
-              :xs="24"
-            >
-              <h1>{{ $t('m.Development') }}</h1>
-              <p class="mb-1">
+              <div class="mundb-footer">
                 <a
-                  href="https://gitee.com/himitzh0730/hoj"
-                  target="_blank"
-                >{{
-                  $t('m.Open_Source')
-                }}</a>
-              </p>
-              <p class="mb-1"><a @click="goRoute('/#')">API</a></p>
-            </el-col>
-            <el-col class="hr-none">
-              <el-divider></el-divider>
-            </el-col>
-            <el-col
-              :md="6"
-              :xs="24"
-            >
-              <h1>{{ $t('m.Support') }}</h1>
-              <p>
-                <i
-                  class="fa fa-info-circle"
-                  aria-hidden="true"
-                ></i><a @click="goRoute('/introduction')"> {{ $t('m.NavBar_About') }}</a>
-              </p>
-              <p>
-                <i class="el-icon-document"></i>
+                    :href="websiteConfig.projectUrl"
+                    style="color:#1E9FFF"
+                    target="_blank"
+                >{{ websiteConfig.projectName }}</a>
+                is powered by HOJ
                 <a
-                  href="https://docs.hdoi.cn"
-                  target="_blank"
-                > {{ $t('m.Help') }}</a>
-              </p>
+                    style="color:#1E9FFF;margin-left: 10px"
+                    :href="websiteConfig.recordUrl"
+                    target="_blank"
+                >{{ websiteConfig.recordName }}</a>
+              </div>
+            </el-col>
+            <el-col>
+              <span style="margin-left:10px">
+                  <el-dropdown
+                      @command="changeWebLanguage"
+                      placement="top"
+                  >
+                    <span class="el-dropdown-link">
+                      <i
+                          class="fa fa-globe"
+                          aria-hidden="true"
+                      >
+                        {{ this.webLanguage == 'zh-CN' ? '简体中文' : 'English' }}</i><i class="el-icon-arrow-up el-icon--right"></i>
+                    </span>
+                    <el-dropdown-menu slot="dropdown">
+                      <el-dropdown-item command="zh-CN">简体中文</el-dropdown-item>
+                      <el-dropdown-item command="en-US">English</el-dropdown-item>
+                    </el-dropdown-menu>
+                  </el-dropdown>
+                </span>
             </el-col>
           </el-row>
-        </div>
-        <div class="mundb-footer">
-          <a
-            style="color:#1E9FFF"
-            :href="websiteConfig.recordUrl"
-            target="_blank"
-          >{{ websiteConfig.recordName }}</a>
-          Powered by
-          <a
-            :href="websiteConfig.projectUrl"
-            style="color:#1E9FFF"
-            target="_blank"
-          >{{ websiteConfig.projectName }}</a>
-          <span style="margin-left:10px">
-            <el-dropdown
-              @command="changeWebLanguage"
-              placement="top"
-            >
-              <span class="el-dropdown-link">
-                <i
-                  class="fa fa-globe"
-                  aria-hidden="true"
-                >
-                  {{ this.webLanguage == 'zh-CN' ? '简体中文' : 'English' }}</i><i class="el-icon-arrow-up el-icon--right"></i>
-              </span>
-              <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item command="zh-CN">简体中文</el-dropdown-item>
-                <el-dropdown-item command="en-US">English</el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown>
-          </span>
         </div>
       </footer>
     </div>
@@ -127,7 +79,6 @@
 <script>
 import NavBar from "@/components/oj/common/NavBar";
 import { mapActions, mapState, mapGetters } from "vuex";
-import { LOGO, MOTTO } from "@/common/logo";
 import storage from "@/common/storage";
 import utils from "@/common/utils";
 export default {
@@ -139,6 +90,7 @@ export default {
     return {
       isAdminView: false,
       showFooter: true,
+      isLogin:false,
     };
   },
   methods: {
@@ -147,6 +99,15 @@ export default {
       this.$router.push({
         path: path,
       });
+    },
+    goHome() {
+      if (this.token) {
+        if (this.$route.name === 'LoginHome') {
+          this.$router.push({
+            path: "/home",
+          });
+        }
+      }
     },
     changeWebLanguage(language) {
       this.$store.commit("changeWebLanguage", { language: language });
@@ -180,11 +141,11 @@ export default {
       }
     },
     autoRefreshUserInfo() {
-      this.$store.dispatch("setUserInfo", storage.get("userInfo"));
       let strogeToken = localStorage.getItem("token");
       if (document.hidden == false && this.token != strogeToken) {
         if (strogeToken) {
           this.$store.commit("changeUserToken", strogeToken);
+          this.$store.dispatch("setUserInfo", storage.get("userInfo"));
           // if(this.$route.path.startsWith('/admin')){
           //   this.$router.replace({
           //     path: "/home",
@@ -201,9 +162,9 @@ export default {
                 });
               }
             } else {
-              if (path != "/home") {
+              if (path != "/login") {
                 this.$router.replace({
-                  path: "/home",
+                  path: "/login",
                 });
               }
             }
@@ -220,10 +181,15 @@ export default {
       } else {
         this.isAdminView = false;
       }
-      if(newVal.name == 'ProblemDetails' || utils.isFocusModePage(newVal.name)){
+      if(newVal.name == 'ProblemDetails' || utils.isFocusModePage(newVal.name) || newVal.name == 'LoginHome'){
         this.showFooter = false;
       }else{
         this.showFooter = true;
+      }
+      if(newVal.name == 'LoginHome'){
+        this.isLogin = false;
+      }else{
+        this.isLogin = true;
       }
     },
     websiteConfig() {
@@ -232,7 +198,7 @@ export default {
   },
   computed: {
     ...mapState(["websiteConfig"]),
-    ...mapGetters(["webLanguage", "token", "isAuthenticated"]),
+    ...mapGetters(["webLanguage", "token"]),
   },
   created: function () {
     this.$nextTick(function () {
@@ -246,19 +212,14 @@ export default {
     } else {
       this.isAdminView = true;
     }
-
-    if(this.isAuthenticated){
-      this.$store.dispatch("refreshUserAuthInfo");
-    }
-
-    this.showFooter = !(this.$route.name == 'ProblemDetails'|| utils.isFocusModePage(this.$route.name));
+    this.showFooter = !(this.$route.name == 'ProblemDetails'|| utils.isFocusModePage(this.$route.name)|| this.$route.name == 'LoginHome') ;
+    this.isLogin = !(this.$route.name == 'LoginHome') ;
     window.addEventListener("visibilitychange", this.autoRefreshUserInfo);
   },
   mounted() {
-    console.log(LOGO);
-    console.log(MOTTO);
     this.autoChangeLanguge();
     this.getWebsiteConfig();
+    this.goHome();
   },
 };
 </script>
@@ -272,7 +233,7 @@ export default {
 body {
   background-color: #eff3f5 !important;
   font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB",
-    "Microsoft YaHei", "微软雅黑", Arial, sans-serif !important;
+  "Microsoft YaHei", "微软雅黑", Arial, sans-serif !important;
   color: #495060 !important;
   font-size: 12px !important;
 }
@@ -377,7 +338,7 @@ a:hover {
   margin: 10px 0;
 }
 .contest-rank-config{
-  text-align:right; 
+  text-align:right;
   margin-top: 15px;
 }
 .contest-scoreBoard-config{
@@ -391,7 +352,7 @@ a:hover {
 }
 @media screen and (max-width: 992px) {
   .contest-rank-config{
-    text-align:center; 
+    text-align:center;
     margin-bottom: 10px;
     margin-top: -1px;
   }
@@ -449,7 +410,7 @@ a:hover {
 }
 
 .bg-female {
-  background-color: rgb(255, 153, 203);
+  background-color: rgb(203, 161, 225);
 }
 .bg-star {
   background-color: #ffffcc;
@@ -724,8 +685,8 @@ footer a:hover {
 }
 footer h1 {
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC,
-    Hiragino Sans GB, Microsoft YaHei, Helvetica Neue, Helvetica, Arial,
-    sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
+  Hiragino Sans GB, Microsoft YaHei, Helvetica Neue, Helvetica, Arial,
+  sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
   font-weight: 300;
   color: #3d3d3d;
   line-height: 1.1;

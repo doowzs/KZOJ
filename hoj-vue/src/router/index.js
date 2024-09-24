@@ -18,7 +18,7 @@ Vue.use(VueRouter)
 const originalPush = VueRouter.prototype.push
 //修改原型对象中的push方法
 VueRouter.prototype.push = function push(location) {
-   return originalPush.call(this, location).catch(err => err)
+  return originalPush.call(this, location).catch(err => err)
 }
 
 let routes = new Set([...ojRoutes, ...adminRoutes]);
@@ -52,12 +52,12 @@ router.beforeEach((to, from, next) => {
         }else{ // 没有超级管理员权限 全部返回登录页，并且清除缓存
           if(to.path.split('/')[1]==='admin'){ //管理端
             next({
-              path: '/admin/login' 
+              path: '/admin/login'
             })
             mMessage.error(i18n.t('m.Please_login_first_by_admin_account'))
           }else{ // oj端
             next({
-              path: '/home' 
+              path: '/login'
             })
             store.commit('changeModalStatus',{mode: 'Login', visible: true})
             mMessage.error(i18n.t('m.Please_login_first'))
@@ -70,33 +70,30 @@ router.beforeEach((to, from, next) => {
         }else{ // 没有管理员权限 全部返回登录页，并且清除缓存
           if(to.path.split('/')[1]==='admin'){ // 管理端
             next({
-              path: '/admin/login' 
+              path: '/admin/login'
             })
             mMessage.error(i18n.t('m.Please_login_first_by_admin_account'))
           }else{
             next({
-              path: '/home' 
+              path: '/login'
             })
-            store.commit('changeModalStatus',{mode: 'Login', visible: true})
             mMessage.error(i18n.t('m.Please_login_first'))
             store.commit("clearUserInfoAndToken");
-          }  
+          }
         }
       }else{
         next()
       }
 
     } else { // 如果没有token
-
       if(to.path.split('/')[1]==='admin'){
         next({
           path: '/admin/login'  // 管理端无token认证返回登录页
         })
       }else{
         next({
-          path: '/home'  // 无token认证的一致返回到主页
+          path: '/login'  // 无token认证的一致返回到主页
         })
-        store.commit('changeModalStatus',{mode: 'Login', visible: true})
       }
       store.commit("clearUserInfoAndToken");
       mMessage.error(i18n.t('m.Please_login_first'))
@@ -108,7 +105,7 @@ router.beforeEach((to, from, next) => {
         case 'discussion':
           if(!webConfig.openPublicDiscussion){
             next({
-              path: '/home' 
+              path: '/login'
             })
             mMessage.error(i18n.t('m.No_Access_There_is_no_open_discussion_area_on_the_website'))
           }
@@ -116,7 +113,7 @@ router.beforeEach((to, from, next) => {
         case 'groupDiscussion':
           if(!webConfig.openGroupDiscussion){
             next({
-              path: '/home' 
+              path: '/login'
             })
             mMessage.error(i18n.t('m.No_Access_There_is_no_open_group_discussion_area_on_the_website'))
           }
@@ -124,7 +121,7 @@ router.beforeEach((to, from, next) => {
         case 'contestComment':
           if(!webConfig.openContestComment){
             next({
-              path: '/home' 
+              path: '/login'
             })
             mMessage.error(i18n.t('m.No_Access_There_is_no_open_contest_comment_area_on_the_website'))
           }
@@ -133,7 +130,7 @@ router.beforeEach((to, from, next) => {
     }
     next()
   }
-  
+
 })
 
 router.afterEach((to, from, next) => {

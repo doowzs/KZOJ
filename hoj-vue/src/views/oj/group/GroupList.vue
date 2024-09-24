@@ -286,7 +286,7 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :md="8" :xs="24" v-if="group.auth != 1">
+          <el-col :md="8" :xs="24" v-if="group.auth == 3">
             <el-form-item :label="$t('m.Group_Code')" required prop="code">
               <el-input
                 v-model="group.code"
@@ -353,8 +353,8 @@ export default {
       query: {
         keyword: '',
         auth: 0,
-        currentPage:1,
-        limit:15,
+        currentPage: 1,
+        limit:9,
         onlyMine: false,
       },
       total: 0,
@@ -445,13 +445,11 @@ export default {
       backupGroup: null,
       groupList: [],
       loading: false,
-      defaultAvatar: require('@/assets/default.jpg'),
+      defaultAvatar: require('@/assets/default.png'),
     };
   },
-  mounted() {
-    this.init();
-  },
   created() {
+    this.init();
     this.GROUP_TYPE_REVERSE = Object.assign({}, GROUP_TYPE_REVERSE);
   },
   methods: {
@@ -460,8 +458,11 @@ export default {
       this.query.auth = route.auth;
       this.query.keyword = route.keyword || '';
       this.query.onlyMine = route.onlyMine + '' == 'true' ? true : false;
-      this.query.currentPage = route.currentPage || 1;
-      this.query.limit = route.limit || 15;
+      this.query.currentPage = parseInt(route.currentPage) || 1;
+      if (this.query.currentPage < 1) {
+        this.query.currentPage = 1;
+      }
+      this.query.limit = route.limit || 9;
       this.getGroupList();
     },
     onPageSizeChange(pageSize) {
@@ -478,10 +479,12 @@ export default {
     },
     filterByAuth(auth) {
       this.query.auth = auth;
+      this.query.currentPage = 1;
       this.handleRouter();
     },
     handleOnlyMine(onlyMine) {
       this.query.onlyMine = onlyMine;
+      this.query.currentPage = 1;
       this.handleRouter();
     },
     handleAuth(auth) {

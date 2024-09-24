@@ -9,40 +9,40 @@
             </el-col>
             <el-col :xs="24" :sm="6">
               <vxe-input
-                v-model="query.keyword"
-                :placeholder="$t('m.Enter_keyword')"
-                type="search"
-                size="medium"
-                @search-click="filterByKeyword"
-                @keyup.enter.native="filterByKeyword"
-                class="filter-mt"
+                  v-model="query.keyword"
+                  :placeholder="$t('m.Enter_keyword')"
+                  type="search"
+                  size="medium"
+                  @search-click="filterByKeyword"
+                  @keyup.enter.native="filterByKeyword"
+                  class="filter-mt"
               ></vxe-input>
             </el-col>
             <el-col
-              :xs="12"
-              :sm="6"
-              style="text-align: center;padding-top: 6px;"
-              class="filter-mt"
+                :xs="12"
+                :sm="6"
+                style="text-align: center;padding-top: 6px;"
+                class="filter-mt"
             >
               <vxe-checkbox
-                v-model="tagVisible"
-                @change="changeTagVisible(tagVisible)"
-                >{{ $t('m.Show_Tags') }}</vxe-checkbox
+                  v-model="tagVisible"
+                  @change="changeTagVisible(tagVisible)"
+              >{{ $t('m.Show_Tags') }}</vxe-checkbox
               >
             </el-col>
             <el-col
-              :xs="12"
-              :sm="6"
-              style="text-align: center;"
-              class="filter-mt"
+                :xs="12"
+                :sm="6"
+                style="text-align: center;"
+                class="filter-mt"
             >
               <el-button
-                type="primary"
-                size="small"
-                icon="el-icon-refresh"
-                round
-                @click="onReset"
-                >{{ $t('m.Reset') }}</el-button
+                  type="primary"
+                  size="small"
+                  icon="el-icon-refresh"
+                  round
+                  @click="onReset"
+              >{{ $t('m.Reset') }}</el-button
               >
             </el-col>
           </el-row>
@@ -51,29 +51,48 @@
             <b class="problem-filter">{{ $t('m.Problem_Bank') }}</b>
             <div>
               <el-tag
-                size="medium"
-                class="filter-item"
-                :effect="query.oj === 'All' ? 'dark' : 'plain'"
-                @click="filterByOJ('All')"
-                >{{ $t('m.All') }}</el-tag
+                  size="medium"
+                  class="filter-item"
+                  v-for="(remoteOj, index) in REMOTE_OJ"
+                  :effect="query.oj == remoteOj.key ? 'dark' : 'plain'"
+                  :key="index"
+                  @click="filterByOJ(remoteOj.key)"
+              >{{ remoteOj.name }}</el-tag
+              >
+            </div>
+          </section>
+
+          <!-- 分类-->
+          <section>
+            <b class="problem-filter">{{ $t('m.Problem_Tk') }}</b>
+            <div>
+              <el-tag
+                  size="medium"
+                  class="filter-item"
+                  :effect="query.oj === 'All' ? 'dark' : 'plain'"
+                  @click="filterByOJ('All')"
+              >{{ $t('m.All') }}</el-tag
               >
               <el-tag
-                size="medium"
-                class="filter-item"
-                :effect="
+                  size="medium"
+                  class="filter-item"
+                  :effect="
                   query.oj === 'Mine' || query.oj === '' ? 'dark' : 'plain'
                 "
-                @click="filterByOJ('Mine')"
-                >{{ $t('m.My_OJ') }}</el-tag
+                  @click="filterByOJ('Mine')"
+              >{{ $t('m.My_OJ') }}</el-tag
               >
               <el-tag
-                size="medium"
-                class="filter-item"
-                v-for="(remoteOj, index) in REMOTE_OJ"
-                :effect="query.oj == remoteOj.key ? 'dark' : 'plain'"
-                :key="index"
-                @click="filterByOJ(remoteOj.key)"
-                >{{ remoteOj.name }}</el-tag
+                  size="medium"
+                  class="filter-item"filterByKeyword
+                  v-for="(problemBank, index) in Problem_Bank"
+                  v-if="((isAdminRole || isSuperAdmin || isProblemAdmin)&&problemBank.key=='Group')
+                  || ((isSuperAdmin || isProblemAdmin) && problemBank.key=='Contest')
+                  || (isSuperAdmin && problemBank.key=='Conceal')"
+                  :effect="query.oj == problemBank.key ? 'dark' : 'plain'"
+                  :key="index"
+                  @click="filterByOJ(problemBank.key)"
+              >{{ problemBank.name }}</el-tag
               >
             </div>
           </section>
@@ -82,25 +101,25 @@
             <b class="problem-filter">{{ $t('m.Level') }}</b>
             <div>
               <el-tag
-                size="medium"
-                class="filter-item"
-                :effect="
+                  size="medium"
+                  class="filter-item"
+                  :effect="
                   query.difficulty === 'All' || query.difficulty === ''
                     ? 'dark'
                     : 'plain'
                 "
-                @click="filterByDifficulty('All')"
-                >{{ $t('m.All') }}</el-tag
+                  @click="filterByDifficulty('All')"
+              >{{ $t('m.All') }}</el-tag
               >
               <el-tag
-                size="medium"
-                class="filter-item"
-                v-for="(value, key, index) in PROBLEM_LEVEL"
-                :effect="query.difficulty == key ? 'dark' : 'plain'"
-                :style="getLevelBlockColor(key)"
-                :key="index"
-                @click="filterByDifficulty(key)"
-                >{{ getLevelName(key) }}</el-tag
+                  size="medium"
+                  class="filter-item"
+                  v-for="(value, key, index) in PROBLEM_LEVEL"
+                  :effect="query.difficulty == key ? 'dark' : 'plain'"
+                  :style="getLevelBlockColor(key)"
+                  :key="index"
+                  @click="filterByDifficulty(key)"
+              >{{ getLevelName(key) }}</el-tag
               >
             </div>
           </section>
@@ -108,15 +127,15 @@
             <el-row>
               <b class="problem-filter">{{ $t('m.Tags') }}</b>
               <el-tag
-                :key="index"
-                v-for="(tag, index) in filterTagList"
-                closable
-                :color="tag.color ? tag.color : '#409eff'"
-                effect="dark"
-                :disable-transitions="false"
-                @close="removeTag(tag)"
-                size="medium"
-                class="filter-item"
+                  :key="index"
+                  v-for="(tag, index) in filterTagList"
+                  closable
+                  :color="tag.color ? tag.color : '#409eff'"
+                  effect="dark"
+                  :disable-transitions="false"
+                  @close="removeTag(tag)"
+                  size="medium"
+                  class="filter-item"
               >
                 {{ tag.name }}
               </el-tag>
@@ -124,32 +143,32 @@
           </template>
         </div>
         <vxe-table
-          border="inner"
-          stripe
-          ref="problemList"
-          auto-resize
-          :loading="loadings.table"
-          @cell-mouseenter="cellHover"
-          :data="problemList"
+            border="inner"
+            stripe
+            ref="problemList"
+            auto-resize
+            :loading="loadings.table"
+            @cell-mouseenter="cellHover"
+            :data="problemList"
         >
           <vxe-table-column title="" width="30" v-if="isAuthenticated">
             <template v-slot="{ row }">
               <template v-if="isGetStatusOk">
                 <el-tooltip
-                  :content="JUDGE_STATUS[row.myStatus]['name']"
-                  placement="top"
+                    :content="JUDGE_STATUS[row.myStatus]['name']"
+                    placement="top"
                 >
                   <template v-if="row.myStatus == 0">
                     <i
-                      class="el-icon-check"
-                      :style="getIconColor(row.myStatus)"
+                        class="el-icon-check"
+                        :style="getIconColor(row.myStatus)"
                     ></i>
                   </template>
 
                   <template v-else-if="row.myStatus != -10">
                     <i
-                      class="el-icon-minus"
-                      :style="getIconColor(row.myStatus)"
+                        class="el-icon-minus"
+                        :style="getIconColor(row.myStatus)"
                     ></i>
                   </template>
                 </el-tooltip>
@@ -157,83 +176,83 @@
             </template>
           </vxe-table-column>
           <vxe-table-column
-            field="problemId"
-            :title="$t('m.Problem_ID')"
-            width="150"
-            show-overflow
+              field="problemId"
+              :title="$t('m.Problem_ID')"
+              width="100"
+              show-overflow
           ></vxe-table-column>
 
           <vxe-table-column
-            field="title"
-            :title="$t('m.Problem')"
-            min-width="150"
-            show-overflow
+              field="title"
+              :title="$t('m.Problem')"
+              min-width="200"
+              show-overflow
           >
             <template v-slot="{ row }">
               <a @click="getProblemUri(row.problemId)" class="title-a">{{
-                row.title
-              }}</a>
+                  row.title
+                }}</a>
             </template>
           </vxe-table-column>
 
           <vxe-table-column
-            field="difficulty"
-            :title="$t('m.Level')"
-            min-width="100"
+              field="difficulty"
+              :title="$t('m.Level')"
+              min-width="100"
           >
             <template v-slot="{ row }">
               <span
-                class="el-tag el-tag--small"
-                :style="getLevelColor(row.difficulty)"
-                >{{ getLevelName(row.difficulty) }}</span
+                  class="el-tag el-tag--small"
+                  :style="getLevelColor(row.difficulty)"
+              >{{ getLevelName(row.difficulty) }}</span
               >
             </template>
           </vxe-table-column>
 
           <vxe-table-column
-            field="tag"
-            :title="$t('m.Tags')"
-            min-width="230"
-            visible="false"
+              field="tag"
+              :title="$t('m.Tags')"
+              min-width="230"
+              visible="false"
           >
             <template v-slot="{ row }">
               <span
-                class="el-tag el-tag--small"
-                :style="
+                  class="el-tag el-tag--small"
+                  :style="
                   'cursor: pointer;margin-right:7px;color:#FFF;background-color:' +
                     (tag.color ? tag.color : '#409eff')
                 "
-                v-for="tag in row.tags"
-                :key="tag.id"
-                @click="addTag(tag)"
-                >{{ tag.name }}</span
+                  v-for="tag in row.tags"
+                  :key="tag.id"
+                  @click="addTag(tag)"
+              >{{ tag.name }}</span
               >
             </template>
           </vxe-table-column>
           <vxe-table-column
-            field="total"
-            :title="$t('m.Total')"
-            min-width="80"
+              field="total"
+              :title="$t('m.Total')"
+              min-width="80"
           ></vxe-table-column>
           <vxe-table-column
-            field="ac"
-            :title="$t('m.AC_Rate')"
-            min-width="120"
-            align="center"
+              field="ac"
+              :title="$t('m.AC_Rate')"
+              min-width="120"
+              align="center"
           >
             <template v-slot="{ row }">
               <span>
                 <el-tooltip
-                  effect="dark"
-                  :content="row.ac + '/' + row.total"
-                  placement="top"
-                  style="margin-top:0"
+                    effect="dark"
+                    :content="row.ac + '/' + row.total"
+                    placement="top"
+                    style="margin-top:0"
                 >
                   <el-progress
-                    :text-inside="true"
-                    :stroke-width="20"
-                    :color="customColors"
-                    :percentage="getPassingRate(row.ac, row.total)"
+                      :text-inside="true"
+                      :stroke-width="20"
+                      :color="customColors"
+                      :percentage="getPassingRate(row.ac, row.total)"
                   ></el-progress>
                 </el-tooltip>
               </span>
@@ -242,12 +261,12 @@
         </vxe-table>
       </el-card>
       <Pagination
-        :total="total"
-        :page-size="limit"
-        @on-change="pushRouter"
-        :current.sync="query.currentPage"
-        @on-page-size-change="onPageSizeChange"
-        :layout="'prev, pager, next, sizes'"
+          :total="total"
+          :page-size="limit"
+          @on-change="pushRouter"
+          :current.sync="query.currentPage"
+          @on-page-size-change="onPageSizeChange"
+          :layout="'jumper, prev, pager, next, sizes'"
       ></Pagination>
     </el-col>
 
@@ -257,18 +276,18 @@
         <el-row v-for="(record, index) in problemRecord" :key="index">
           <el-col :xs="5" :sm="4" :md="6" :lg="4" style="margin-top: 10px;">
             <el-tag
-              effect="dark"
-              size="small"
-              :color="JUDGE_STATUS[record.status].rgb"
-              >{{ JUDGE_STATUS[record.status].short }}</el-tag
+                effect="dark"
+                size="small"
+                :color="JUDGE_STATUS[record.status].rgb"
+            >{{ JUDGE_STATUS[record.status].short }}</el-tag
             >
           </el-col>
           <el-col :xs="19" :sm="20" :md="18" :lg="20">
             <el-progress
-              :text-inside="true"
-              :stroke-width="20"
-              :percentage="record.count"
-              :color="JUDGE_STATUS[record.status].rgb"
+                :text-inside="true"
+                :stroke-width="20"
+                :percentage="record.count"
+                :color="JUDGE_STATUS[record.status].rgb"
             ></el-progress>
           </el-col>
         </el-row>
@@ -278,29 +297,29 @@
           <span class="taglist-title">{{ OJName + ' ' + $t('m.Tags') }}</span>
           <div style="margin: 10px 0;">
             <el-input
-              size="medium"
-              prefix-icon="el-icon-search"
-              :placeholder="$t('m.Search_Filter_Tag')"
-              v-model="searchTag"
-              @keyup.enter.native="filterSearchTag"
-              @input="filterSearchTag"
-              clearable
+                size="medium"
+                prefix-icon="el-icon-search"
+                :placeholder="$t('m.Search_Filter_Tag')"
+                v-model="searchTag"
+                @keyup.enter.native="filterSearchTag"
+                @input="filterSearchTag"
+                clearable
             >
             </el-input>
           </div>
         </div>
         <template v-if="searchTagClassificationList.length > 0" v-loading="loadings.tag">
-          <el-row :gutter="10" v-for="(item,index) in secondClassificationTemp" 
-              :key="index">
+          <el-row :gutter="10" v-for="(item,index) in secondClassificationTemp"
+                  :key="index">
             <el-col  v-for="(tagsAndClassification,i) in item" :key="i"
-              :span="query.oj == 'All' || (secondClassificationTemp.length==index+1 && item.length == i+1 && i%2 ==0)
+                     :span="query.oj == 'All' || (secondClassificationTemp.length==index+1 && item.length == i+1 && i%2 ==0)
               ?24:12">
               <el-collapse v-model="activeTagClassificationIdList" style="margin-top:10px">
-                  <el-collapse-item :title="getTagClassificationName(tagsAndClassification.classification)"
-                    v-if="tagsAndClassification.classification != null 
-                        || tagsAndClassification.tagList.length > 0 " 
-                    :name="tagsAndClassification.classification == null?-1:tagsAndClassification.classification.id">
-                    <el-button
+                <el-collapse-item :title="getTagClassificationName(tagsAndClassification.classification)"
+                                  v-if="tagsAndClassification.classification != null
+                        || tagsAndClassification.tagList.length > 0 "
+                                  :name="tagsAndClassification.classification == null?-1:tagsAndClassification.classification.id">
+                  <el-button
                       v-for="tag in tagsAndClassification.tagList"
                       :key="tag.id"
                       @click="addTag(tag)"
@@ -311,9 +330,9 @@
                         'color:#FFF;background-color:' +
                           (tag.color ? tag.color : '#409eff')
                       "
-                      >{{ tag.name }}
-                    </el-button>
-                  </el-collapse-item>
+                  >{{ tag.name }}
+                  </el-button>
+                </el-collapse-item>
               </el-collapse>
             </el-col>
           </el-row>
@@ -337,7 +356,7 @@ import {
   PROBLEM_LEVEL,
   JUDGE_STATUS,
   JUDGE_STATUS_RESERVE,
-  REMOTE_OJ,
+  REMOTE_OJ, Problem_Bank,
 } from '@/common/constants';
 import utils from '@/common/utils';
 import myMessage from '@/common/message';
@@ -351,6 +370,7 @@ export default {
   data() {
     return {
       PROBLEM_LEVEL: {},
+      Problem_Bank:{},
       JUDGE_STATUS: {},
       JUDGE_STATUS_RESERVE: {},
       REMOTE_OJ: {},
@@ -359,7 +379,7 @@ export default {
       currentProblemTitle: '',
       problemRecord: [],
       problemList: [],
-      limit: 30,
+      limit: 15,
       total: 100,
       isGetStatusOk: false,
       loadings: {
@@ -392,9 +412,9 @@ export default {
   created() {
     this.init();
   },
-
   mounted() {
     this.PROBLEM_LEVEL = Object.assign({}, PROBLEM_LEVEL);
+    this.Problem_Bank = Object.assign({}, Problem_Bank);
     this.JUDGE_STATUS_RESERVE = Object.assign({}, JUDGE_STATUS_RESERVE);
     this.JUDGE_STATUS = Object.assign({}, JUDGE_STATUS);
     this.REMOTE_OJ = Object.assign({}, REMOTE_OJ);
@@ -433,19 +453,18 @@ export default {
         this.query.tagId = [];
       }
       this.query.currentPage = parseInt(query.currentPage) || 1;
-      this.limit = parseInt(query.limit) || 30;
+      this.limit = parseInt(query.limit) || 15;
       if (this.query.currentPage < 1) {
         this.query.currentPage = 1;
       }
     },
-
     getData() {
       this.getProblemList();
     },
 
     pushRouter() {
       this.query.tagId = JSON.stringify(
-        this.filterTagList.map((tagJson) => tagJson.id)
+          this.filterTagList.map((tagJson) => tagJson.id)
       );
       this.query.limit = this.limit;
       this.$router.push({
@@ -459,8 +478,8 @@ export default {
     },
     getPercentage(partNumber, total) {
       return partNumber == 0
-        ? 0
-        : Math.round((partNumber / total) * 10000) / 100.0;
+          ? 0
+          : Math.round((partNumber / total) * 10000) / 100.0;
     },
     getPassingRate(ac, total) {
       if (!total) {
@@ -509,79 +528,78 @@ export default {
       }
       if (queryParams.oj == 'All') {
         queryParams.oj = '';
-      } else if (!queryParams.oj) {
-        queryParams.oj = 'Mine';
       }
       queryParams.tagId = queryParams.tagId + '';
       queryParams.limit = this.limit;
       this.loadings.table = true;
       api.getProblemList(queryParams).then(
-        (res) => {
-          this.total = res.data.data.total;
-          this.problemList = res.data.data.records;
-          if (this.isAuthenticated) {
-            // 如果已登录，则需要查询对当前页面题目列表中各个题目的提交情况
-            let pidList = [];
-            for (let index = 0; index < this.problemList.length; index++) {
-              pidList.push(this.problemList[index].pid);
+          (res) => {
+            this.total = res.data.data.total;
+            this.problemList = res.data.data.records;
+            if (this.isAuthenticated) {
+              // 如果已登录，则需要查询对当前页面题目列表中各个题目的提交情况
+              let pidList = [];
+              for (let index = 0; index < this.problemList.length; index++) {
+                pidList.push(this.problemList[index].pid);
+              }
+              if (pidList.length > 0) {
+                // 必须当前页有显示题目才发送查询请求
+                this.isGetStatusOk = false;
+                let isContestProblemList = false; // 为了与比赛题目区分
+                api
+                    .getUserProblemStatus(pidList, isContestProblemList)
+                    .then((res) => {
+                      let result = res.data.data;
+                      for (
+                          let index = 0;
+                          index < this.problemList.length;
+                          index++
+                      ) {
+                        this.problemList[index]['myStatus'] =
+                            result[this.problemList[index].pid].status;
+                      }
+                      this.isGetStatusOk = true;
+                    });
+              }
             }
-            if (pidList.length > 0) {
-              // 必须当前页有显示题目才发送查询请求
-              this.isGetStatusOk = false;
-              let isContestProblemList = false; // 为了与比赛题目区分
-              api
-                .getUserProblemStatus(pidList, isContestProblemList)
-                .then((res) => {
-                  let result = res.data.data;
-                  for (
-                    let index = 0;
-                    index < this.problemList.length;
-                    index++
-                  ) {
-                    this.problemList[index]['myStatus'] =
-                      result[this.problemList[index].pid].status;
-                  }
-                  this.isGetStatusOk = true;
-                });
-            }
+            this.loadings.table = false;
+          },
+          (res) => {
+            this.loadings.table = false;
           }
-          this.loadings.table = false;
-        },
-        (res) => {
-          this.loadings.table = false;
-        }
       );
     },
     getTagList(oj) {
-      if (oj == 'Mine') {
+
+      if(oj =='Conceal'||oj =='Contest'||oj =='Group'||oj == 'Mine'){
         oj = 'ME';
       }
       this.loadings.tag = true;
       api.getProblemTagsAndClassification(oj).then(
-        (res) => {
-          this.tagsAndClassificationList = res.data.data;
-          this.searchTagClassificationList = res.data.data;
-          this.filterTagList = [];
-          let tidLen = this.query.tagId.length;
-          let tagLen = this.tagsAndClassificationList.length;
-          for (let x = 0; x < tidLen; x++) {
-            for (let y = 0; y < tagLen; y++) {
-              let tmpTagAndClassification = this.tagsAndClassificationList[y].tagList;
-              let tmpLen = tmpTagAndClassification.length;
-              for(let z = 0; z <tmpLen; z++){
-                if (this.query.tagId[x] == tmpTagAndClassification[z].id) {
-                  this.filterTagList.push(tmpTagAndClassification[z]);
-                  break;
+          (res) => {
+            this.tagsAndClassificationList = res.data.data;
+            this.searchTagClassificationList = res.data.data;
+            this.filterTagList = [];
+            let tidLen = this.query.tagId.length;
+            let tagLen = this.tagsAndClassificationList.length;
+            for (let x = 0; x < tidLen; x++) {
+              for (let y = 0; y < tagLen; y++) {
+                let tmpTagAndClassification = this.tagsAndClassificationList[y].tagList;
+                let tmpLen = tmpTagAndClassification.length;
+                for(let z = 0; z <tmpLen; z++){
+                  if (this.query.tagId[x] == tmpTagAndClassification[z].id) {
+                    this.filterTagList.push(tmpTagAndClassification[z]);
+                    break;
+                  }
                 }
               }
             }
+            this.buildFilterTagList = true;
+            this.loadings.tag = false;
+          },
+          (res) => {
+            this.loadings.tag = false;
           }
-          this.buildFilterTagList = true;
-          this.loadings.tag = false;
-        },
-        (res) => {
-          this.loadings.tag = false;
-        }
       );
     },
     filterSearchTag() {
@@ -597,10 +615,10 @@ export default {
           }
           if(tmpTagList.length > 0){
             this.searchTagClassificationList.push(
-              {
-                classification: tagsAndClassification.classification,
-                tagList:tmpTagList
-              }
+                {
+                  classification: tagsAndClassification.classification,
+                  tagList:tmpTagList
+                }
             )
             this.activeTagClassificationIdList.push(tagsAndClassification.classification == null? -1:tagsAndClassification.classification.id);
           }
@@ -643,6 +661,7 @@ export default {
       this.query.currentPage = 1;
       this.pushRouter();
     },
+    // 过滤 OJ种类
     filterByOJ(oj) {
       this.query.oj = oj;
       if (oj != 'All') {
@@ -652,6 +671,7 @@ export default {
       this.getTagList(this.query.oj);
       this.pushRouter();
     },
+
     filterByKeyword() {
       this.query.currentPage = 1;
       this.pushRouter();
@@ -681,8 +701,8 @@ export default {
     },
     getIconColor(status) {
       return (
-        'font-weight: 600;font-size: 16px;color:' +
-        this.JUDGE_STATUS[status].rgb
+          'font-weight: 600;font-size: 16px;color:' +
+          this.JUDGE_STATUS[status].rgb
       );
     },
     getLevelBlockColor(difficulty) {
@@ -716,7 +736,13 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['isAuthenticated']),
+    ...mapGetters([
+        'isAuthenticated',
+        'isSuperAdmin',
+        'isAdminRole',
+        'isProblemAdmin'
+        ],
+    ),
     OJName() {
       if (this.query.oj == 'Mine' || !this.$route.query.oj) {
         return this.$i18n.t('m.My_OJ');

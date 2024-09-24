@@ -137,11 +137,10 @@
         </vxe-table-column>
       </vxe-table>
 
-      <div class="panel-options">
+      <div class="panel-options" v-if="showPagination">
         <el-pagination
-          v-if="showPagination"
           class="page"
-          layout="prev, pager, next, sizes"
+          :layout="'prev, pager, next, sizes'"
           @current-change="currentChange"
           :page-size="query.limit"
           :total="total"
