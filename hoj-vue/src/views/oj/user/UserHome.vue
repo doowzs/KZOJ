@@ -229,6 +229,78 @@
               </template>
             </div>
           </el-tab-pane>
+          <el-tab-pane :label="$t('m.UserHome_Solved_Problems_Recent')">
+            <div id="problems">
+              <el-card class="level-card"
+                v-if="profile.recentSolvedGroupByDifficulty != null">
+                <div class="card-title" style="font-size: 1rem;">
+                  <i class="el-icon-set-up" style="color:#409eff">
+                  </i>
+                  {{ $t('m.Difficulty_Statistics') }}
+                </div>
+                <el-collapse accordion>
+                  <el-collapse-item v-for="(level, key) in PROBLEM_LEVEL" :key="key">
+                    <template slot="title">
+                      <div style="width: 100%;text-align: left;">
+                        <el-tag
+                        effect="dark"
+                        :style="getLevelColor(key)"
+                        size="medium">
+                        {{ getLevelName(key) }}
+                        </el-tag>
+                        <span class="card-p-count">
+                          {{ getProblemListCount(profile.recentSolvedGroupByDifficulty[key])}} {{$t('m.Problems')}}
+                        </span>
+                      </div>
+                    </template>
+                    <div class="btns">
+                      <div
+                        class="problem-btn"
+                        v-for="(value, index) in profile.recentSolvedGroupByDifficulty[key]"
+                        :key="index"
+                      >
+                        <el-button 
+                          round
+                          :style="getLevelColor(key)"
+                          @click="goProblem(value.problemId)" 
+                          size="small">{{
+                          value.problemId
+                        }}</el-button>
+                      </div>
+                    </div>
+                  </el-collapse-item>
+                </el-collapse>
+              </el-card>
+
+              <template v-if="profile.recentSolvedList.length">
+                  <el-divider><i class="el-icon-circle-check"></i></el-divider>
+                  <div>
+                    {{ $t('m.List_Solved_Problems_Recent') }}
+                    <el-button
+                      type="primary"
+                      icon="el-icon-refresh"
+                      circle
+                      size="mini"
+                      @click="freshProblemDisplayID"
+                    ></el-button>
+                  </div>
+                  <div class="btns">
+                    <div
+                      class="problem-btn"
+                      v-for="problemID of profile.recentSolvedList"
+                      :key="problemID"
+                    >
+                      <el-button round @click="goProblem(problemID)" size="small">{{
+                        problemID
+                      }}</el-button>
+                    </div>
+                  </div>
+              </template>
+              <template v-else>
+                <p>{{ $t('m.UserHome_Not_Data') }}</p>
+              </template>
+            </div>
+          </el-tab-pane>
         </el-tabs>
       </div>
     </el-card>
@@ -267,7 +339,9 @@ export default {
         rating: 0,
         score: 0,
         solvedList: [],
-        solvedGroupByDifficulty:null,
+        solvedGroupByDifficulty: null,
+        recentSolvedList: [],
+        recentSolvedGroupByDifficulty: null,
         calendarHeatLocale:null,
         calendarHeatmapValue:[],
         calendarHeatmapEndDate:'',
@@ -328,6 +402,11 @@ export default {
       api.getUserInfo(uid, username).then((res) => {
         this.changeDomTitle({ title: res.data.username });
         this.profile = res.data.data;
+        // 2024-09-24 添加近60天的做题情况，向后兼容
+        if (!this.profile.recentSolvedList) {
+          this.profile.recentSolvedList = [];
+          this.profile.recentSolvedGroupByDifficulty = null;
+        }
         // 获取时间
         const now = new Date();
         const day = new Date(now).getTime() -new Date(res.data.data.gmtCreate).getTime();//日期转时间戳 ;

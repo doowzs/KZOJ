@@ -146,26 +146,46 @@ public class AccountManager {
         }
         QueryWrapper<UserAcproblem> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("uid", userHomeInfo.getUid())
-                .select("distinct pid", "submit_id")
+                .select("distinct pid", "submit_id", "gmt_create")
                 .orderByAsc("submit_id");
 
         List<UserAcproblem> acProblemList = userAcproblemEntityService.list(queryWrapper);
         List<Long> pidList = acProblemList.stream().map(UserAcproblem::getPid).collect(Collectors.toList());
 
-        List<String> disPlayIdList = new LinkedList<>();
+        // 2024-09-24 筛选最近60天内的做题情况
+        Date recentStartTime = new Date(new Date().getTime() - 60L * 24 * 3600 * 1000);
+        List<Long> recentPidList = acProblemList.stream()
+            .filter((ac) -> ac.getGmtCreate().after(recentStartTime))
+            .map(UserAcproblem::getPid).collect(Collectors.toList());
 
         if (pidList.size() > 0) {
             QueryWrapper<Problem> problemQueryWrapper = new QueryWrapper<>();
             problemQueryWrapper.select("id", "problem_id", "difficulty");
             problemQueryWrapper.in("id", pidList);
             List<Problem> problems = problemEntityService.list(problemQueryWrapper);
-            Map<Integer, List<UserHomeProblemVO>> map = problems.stream()
+            userHomeInfo.setSolvedList(
+                problems.stream()
+                    .map(Problem::getProblemId)
+                    .collect(Collectors.toList()));
+            userHomeInfo.setSolvedGroupByDifficulty(
+                problems.stream()
                     .map(this::convertProblemVO)
-                    .collect(Collectors.groupingBy(UserHomeProblemVO::getDifficulty));
-            userHomeInfo.setSolvedGroupByDifficulty(map);
-            disPlayIdList = problems.stream().map(Problem::getProblemId).collect(Collectors.toList());
+                    .collect(Collectors.groupingBy(UserHomeProblemVO::getDifficulty)));
+            userHomeInfo.setRecentSolvedList(
+                problems.stream()
+                    .filter((p) -> recentPidList.contains(p.getId()))
+                    .map(Problem::getProblemId)
+                    .collect(Collectors.toList()));
+            userHomeInfo.setRecentSolvedGroupByDifficulty(
+                problems.stream()
+                    .filter((p) -> recentPidList.contains(p.getId()))
+                    .map(this::convertProblemVO)
+                    .collect(Collectors.groupingBy(UserHomeProblemVO::getDifficulty)));
+        } else {
+            userHomeInfo.setSolvedList(new LinkedList<>());
+            userHomeInfo.setRecentSolvedList(new LinkedList<>());
         }
-        userHomeInfo.setSolvedList(disPlayIdList);
+
         QueryWrapper<Session> sessionQueryWrapper = new QueryWrapper<>();
         sessionQueryWrapper.eq("uid", userHomeInfo.getUid())
                 .orderByDesc("gmt_create")

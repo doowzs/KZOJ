@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import top.hcode.hoj.utils.Constants;
 import top.hcode.hoj.utils.RedisUtils;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -56,9 +57,10 @@ public class UserRecordEntityServiceImpl extends ServiceImpl<UserRecordMapper, U
         return judgeMapper.getLastYearUserJudgeList(uid, username);
     }
 
+    // 2024-09-24 更新OIRankList统计方式
     @Override
-    public IPage<OIRankVO> getOIRankList(Page<OIRankVO> page, List<String> uidList) {
-        return userRecordMapper.getOIRankList(page, uidList);
+    public IPage<OIRankVO> getOIRankList(Page<OIRankVO> page, List<String> uidList, Date startTime) {
+        return userRecordMapper.getOIRankList(page, uidList, startTime);
     }
 
     @Override

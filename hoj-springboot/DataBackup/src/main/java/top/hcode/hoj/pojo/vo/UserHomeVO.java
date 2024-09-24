@@ -62,8 +62,15 @@ public class UserHomeVO {
     @ApiModelProperty(value = "已解决题目列表")
     private List<String> solvedList;
 
+    // 2024-09-24 筛选最近60天的做题情况
+    @ApiModelProperty(value = "已解决题目列表")
+    private List<String> recentSolvedList;
+
     @ApiModelProperty(value = "难度=>[P1000,P1001]")
     private Map<Integer, List<UserHomeProblemVO>> solvedGroupByDifficulty;
+
+    @ApiModelProperty(value = "难度=>[P1000,P1001]")
+    private Map<Integer, List<UserHomeProblemVO>> recentSolvedGroupByDifficulty;
 
     @ApiModelProperty(value = "最近上线时间")
     private Date recentLoginTime;

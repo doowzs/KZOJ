@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import top.hcode.hoj.pojo.vo.OIRankVO;
 import top.hcode.hoj.pojo.vo.UserHomeVO;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -27,7 +28,7 @@ public interface UserRecordEntityService extends IService<UserRecord> {
 
     List<Judge> getLastYearUserJudgeList(String uid, String username);
 
-    IPage<OIRankVO> getOIRankList(Page<OIRankVO> page, List<String> uidList);
+    IPage<OIRankVO> getOIRankList(Page<OIRankVO> page, List<String> uidList, Date startTime);
 
     IPage<ACMRankVO> getACMRankList(Page<ACMRankVO> page, List<String> uidList);
 
