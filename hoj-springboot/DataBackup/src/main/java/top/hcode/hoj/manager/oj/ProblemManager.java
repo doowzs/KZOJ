@@ -98,7 +98,8 @@ public class ProblemManager {
         boolean isAdmin = SecurityUtils.getSubject().hasRole("admin");
         boolean problemAdmin = SecurityUtils.getSubject().hasRole("problem_admin");
         // 团队题库权限
-        if (oj != null  && oj.equals("Group")  && !(isRoot||isAdmin||problemAdmin)) {
+        // 2024-09-24 允许所有人访问团队题目
+        if (false && oj != null  && oj.equals("Group")  && !(isRoot||isAdmin||problemAdmin)) {
             throw new StatusForbiddenException("您的权限不够，无权查看！");
         }
         // 比赛题库权限
@@ -274,11 +275,13 @@ public class ProblemManager {
             throw new StatusForbiddenException("该题号对应题目并非公开题目，不支持访问！");
         }
         AccountProfile userRolesVo = (AccountProfile) SecurityUtils.getSubject().getPrincipal();
-        if (problem.getIsGroup() && !isRoot) {
+        
+        // 2024-09-24 允许所有人访问团队题目
+        if (false && problem.getIsGroup() && !isRoot) {
             if (gid == null){
                 throw new StatusForbiddenException("题目为团队所属，此处不支持访问，请前往团队查看！");
             }
-            if(!groupValidator.isGroupMember(userRolesVo.getUid(), problem.getGid())) {
+            if (!groupValidator.isGroupMember(userRolesVo.getUid(), problem.getGid())) {
                 throw new StatusForbiddenException("对不起，您并非该题目所属的团队内成员，无权查看题目！");
             }
         }

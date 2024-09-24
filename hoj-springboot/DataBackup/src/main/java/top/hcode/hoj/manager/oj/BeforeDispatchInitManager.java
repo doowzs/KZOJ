@@ -98,7 +98,8 @@ public class BeforeDispatchInitManager {
 
         boolean isRoot = SecurityUtils.getSubject().hasRole("root");
 
-        if (problem.getIsGroup()) {
+        // 2024-09-24 允许所有人访问团队题目
+        if (false && problem.getIsGroup()) {
             if (gid == null){
                 throw new StatusForbiddenException("提交失败，该题目为团队所属，请你前往指定团队内提交！");
             }

@@ -86,7 +86,7 @@
                   size="medium"
                   class="filter-item"filterByKeyword
                   v-for="(problemBank, index) in Problem_Bank"
-                  v-if="((isAdminRole || isSuperAdmin || isProblemAdmin)&&problemBank.key=='Group')
+                  v-if="((true || isAdminRole || isSuperAdmin || isProblemAdmin)&&problemBank.key=='Group')
                   || ((isSuperAdmin || isProblemAdmin) && problemBank.key=='Contest')
                   || (isSuperAdmin && problemBank.key=='Conceal')"
                   :effect="query.oj == problemBank.key ? 'dark' : 'plain'"
