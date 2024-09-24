@@ -12,7 +12,7 @@ import java.util.Date;
 
 /**
  * <p>
- *
+ * 2024-09-24 更新OIRankScore计算规则
  * </p>
  *
  * @author Himit_ZH
@@ -25,6 +25,11 @@ import java.util.Date;
 public class Problem implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    private static final Integer[] oiRankScores = {3, 8, 15, 25, 40, 60, 85};
+
+    public static Integer getOiRankScore(int difficulty) {
+        return oiRankScores[Math.min(difficulty, 6)];
+    }
 
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
@@ -146,6 +151,10 @@ public class Problem implements Serializable {
 
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date gmtModified;
+
+    public Integer getOiRankScore() {
+        return getOiRankScore(this.difficulty);
+    }
 
 
 }

@@ -289,10 +289,7 @@
                       row.oiRankScore != null
                           ? row.oiRankScore
                           : $t('m.Unknown')
-                    }}<br />
-                    {{
-                      $t('m.OI_Rank_Calculation_Rule')
-                    }}：(score*0.1+difficulty*2)
+                    }}
                   </div>
                   <el-tag
                       effect="plain"

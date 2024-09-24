@@ -242,7 +242,8 @@ public class RejudgeManager {
                 } else if (score < 0) {
                     score = 0;
                 }
-                oiRankScore = (int) Math.round(problem.getDifficulty() * 2 + 0.1 * score);
+                // 2024-09-24 更新OIRankScore计算规则
+                oiRankScore = (int) Math.round(1.0 * score / problem.getIoScore() * problem.getOiRankScore());
                 judgeUpdateWrapper.set("score", score)
                         .set("oi_rank_score", oiRankScore);
             } else {

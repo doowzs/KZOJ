@@ -144,49 +144,56 @@ export const PROBLEM_LEVEL={
       'zh-CN' : '入门',
       'en-US' : 'very easy',
     },
-    color:'#eb5a65'
+    color:'#eb5a65',
+    score: 5
   },
   '1':{
     name:{
       'zh-CN': '普及-',
       'en-US': 'easy',
     },
-    color:'#e7a03c'
+    color:'#e7a03c',
+    score: 8
   },
   '2':{
     name:{
       'zh-CN': '普及/提高-',
       'en-US': 'normal',
     },
-    color:'#fed54d'
+    color:'#fed54d',
+    score: 15
   },
   '3':{
     name:{
       'zh-CN': '普及+/提高',
       'en-US': 'mid',
     },
-    color:'#72c140'
+    color:'#72c140',
+    score: 25
   },
   '4':{
     name:{
       'zh-CN': '提高+/省选-',
       'en-US': 'hard',
     },
-    color:'#5296d5'
+    color:'#5296d5',
+    score: 40
   },
   '5':{
     name:{
       'zh-CN': '省选/NOI-',
       'en-US': 'very hard',
     },
-    color:'#9243c8'
+    color:'#9243c8',
+    score: 60
   },
   '6':{
     name:{
       'zh-CN': 'NOI/NOI+/CTSC',
       'en-US': 'very hard',
     },
-    color:'#111d65'
+    color:'#111d65',
+    score: 85
   },
 }
 

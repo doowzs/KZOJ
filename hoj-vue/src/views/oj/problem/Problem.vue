@@ -182,21 +182,21 @@
                       >{{
                           getLevelName(problemData.problem.difficulty)
                         }}</span></span>
-                      <br/>
                     </template>
                     <template v-if="problemData.problem.type == 1">
-                      <span>{{ $t('m.Score') }}：{{ problemData.problem.ioScore }}
+                      <span style="margin-left:1rem;">
+                        {{ $t('m.Problem_Score') }}：{{ problemData.problem.ioScore }}
                       </span>
                       <span
                           v-if="!contestID"
-                          style="margin-left:5px;"
+                          style="margin-left:1rem;"
                       >
                         {{ $t('m.OI_Rank_Score') }}：{{
                           calcOIRankScore(
                               problemData.problem.ioScore,
                               problemData.problem.difficulty
                           )
-                        }}(0.1*{{ $t('m.Score') }}+2*{{ $t('m.Level') }})
+                        }}
                       </span>
                       <br/>
                     </template>
@@ -394,14 +394,7 @@
                             <div slot="content">
                               {{ $t('m.Problem_Score') }}：{{
                                 row.score != null ? row.score : $t('m.Unknown')
-                              }}<br/>{{ $t('m.OI_Rank_Score') }}：{{
-                                row.oiRankScore != null
-                                    ? row.oiRankScore
-                                    : $t('m.Unknown')
-                              }}<br/>
-                              {{
-                                $t('m.OI_Rank_Calculation_Rule')
-                              }}：(score*0.1+difficulty*2)
+                              }}
                             </div>
                             <el-tag
                                 effect="plain"
@@ -1929,7 +1922,7 @@ export default {
       });
     },
     calcOIRankScore(score, difficulty) {
-      return Math.round(0.1 * score + 2 * difficulty);
+      return [3, 8, 15, 25, 40, 60, 85][Math.min(difficulty, 6)];
     },
 
     onCopy(event) {

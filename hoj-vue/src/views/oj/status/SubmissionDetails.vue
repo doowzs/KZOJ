@@ -121,10 +121,7 @@
                     row.score != null ? row.score : $t('m.Nothing')
                   }}<br />{{ $t('m.OI_Rank_Score') }}：{{
                     row.oiRankScore != null ? row.oiRankScore : $t('m.Nothing')
-                  }}<br />
-                  {{
-                    $t('m.OI_Rank_Calculation_Rule')
-                  }}：(score*0.1+diffculty*2)
+                  }}
                 </div>
                 <span>{{ row.score }}</span>
               </el-tooltip>
