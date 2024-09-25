@@ -678,20 +678,21 @@ export default {
     },
     pickone() {
       api.pickone().then((res) => {
-        myMessage.success(this.$i18n.t('m.Good_luck_to_you'));
-        this.$router.push({
+        const route = this.$router.resolve({
           name: 'ProblemDetails',
           params: { problemID: res.data.data.problemId },
         });
+        window.open(route.href, "_blank");
       });
     },
     getProblemUri(problemId) {
-      this.$router.push({
+      const route = this.$router.resolve({
         name: 'ProblemDetails',
         params: {
           problemID: problemId,
         },
       });
+      window.open(route.href, "_blank");
     },
     getLevelColor(difficulty) {
       return utils.getLevelColor(difficulty);
