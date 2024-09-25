@@ -192,10 +192,10 @@
           </div>
           <div  class="item">
             <p class="textcolor down">
-              2024年-CSP一轮认证倒计时 {{this.countDown[0]}} 天
+              2024年-CSP二轮认证倒计时 {{this.countDown[0]}} 天
             </p>
             <p class="textcolor down">
-              2024年-CSP二轮认证倒计时 {{this.countDown[1]}} 天
+              2024年-NOIP倒计时 {{this.countDown[1]}} 天
             </p>
           </div>
         </el-card>
@@ -682,10 +682,10 @@ export default {
     },
     getCountDown(){
       const now = new Date();
-      const day = new Date("Sat Sep 21 2024 00:00:00 GMT+0800 (中国标准时间)").getTime() -new Date(now).getTime();//日期转时间戳 ;
+      const day = new Date("Sat Oct 26 2024 00:00:00 GMT+0800 (中国标准时间)").getTime() -new Date(now).getTime();//日期转时间戳 ;
       this.countDown[0] = Math.floor(day / 86400000)+1;//时间戳获取天数
       if(this.countDown[0]  <=0) this.countDown[0] = 0;
-      const day2 = new Date("Sat Oct 26 2024 00:00:00 GMT+0800 (中国标准时间)").getTime() -new Date(now).getTime();//日期转时间戳 ;
+      const day2 = new Date("Sat Nov 30 2024 00:00:00 GMT+0800 (中国标准时间)").getTime() -new Date(now).getTime();//日期转时间戳 ;
       this.countDown[1] = Math.floor(day2 / 86400000)+1;//时间戳获取天数
       if(this.countDown[1]  <=0) this.countDown[1] = 0;
     },
