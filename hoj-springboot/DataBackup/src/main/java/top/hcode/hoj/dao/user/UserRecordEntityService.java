@@ -28,7 +28,7 @@ public interface UserRecordEntityService extends IService<UserRecord> {
 
     List<Judge> getLastYearUserJudgeList(String uid, String username);
 
-    IPage<OIRankVO> getOIRankList(Page<OIRankVO> page, List<String> uidList, Date startTime);
+    IPage<OIRankVO> getOIRankList(Page<OIRankVO> page, List<String> uidList);
 
     IPage<ACMRankVO> getACMRankList(Page<ACMRankVO> page, List<String> uidList);
 

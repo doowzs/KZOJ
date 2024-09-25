@@ -37,12 +37,12 @@
             , (
                 SELECT COUNT(DISTINCT pid)
                 FROM user_acproblem
-                WHERE uid = ui.uuid AND gmt_create >= #{startTime}
+                WHERE uid = ui.uuid
             ) AS ac
             , (
                 SELECT COUNT(uid)
                 FROM judge
-                WHERE uid = ui.uuid AND gmt_create >= #{startTime}
+                WHERE uid = ui.uuid
             ) AS total, ss.score AS score
         FROM user_info ui, (SELECT DISTINCT ur.uid AS uid FROM user_role ur
         WHERE ur.role_id!=1000 AND ur.role_id!=1001 AND ur.role_id!=1008) t,(
@@ -54,7 +54,7 @@
                         GROUP BY pid, uid
                     ) s
                 ON s.uid = u.uuid
-                WHERE u.status = 0 AND gmt_create >= #{startTime}
+                WHERE u.status = 0
                 GROUP BY u.uuid
             ) ss
         <where>

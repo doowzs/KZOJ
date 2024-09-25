@@ -29,8 +29,7 @@ public interface UserRecordMapper extends BaseMapper<UserRecord> {
 
     List<ACMRankVO> getRecent7ACRank();
 
-    // 2024-09-24 更新OIRankList统计方式
-    IPage<OIRankVO> getOIRankList(Page<OIRankVO> page, @Param("uidList") List<String> uidList, @Param("startTime") Date startTime);
+    IPage<OIRankVO> getOIRankList(Page<OIRankVO> page, @Param("uidList") List<String> uidList);
 
     UserHomeVO getUserHomeInfo(@Param("uid") String uid, @Param("username") String username);
 

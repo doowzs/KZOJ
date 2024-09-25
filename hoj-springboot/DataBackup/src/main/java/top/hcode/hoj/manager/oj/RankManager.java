@@ -15,7 +15,6 @@ import top.hcode.hoj.dao.user.UserRecordEntityService;
 import top.hcode.hoj.utils.Constants;
 import top.hcode.hoj.utils.RedisUtils;
 
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -110,14 +109,13 @@ public class RankManager {
     }
 
 
-    // 2024-09-24 更新OIRankList的统计方式
     private IPage<OIRankVO> getOIRankList(int limit, int currentPage, List<String> uidList) {
+
         IPage<OIRankVO> data = null;
-        Date startTime = new Date(new Date().getTime() - 60L * 24 * 3600 * 1000);
         if (uidList != null) {
             Page<OIRankVO> page = new Page<>(currentPage, limit);
             if (uidList.size() > 0) {
-                data = userRecordEntityService.getOIRankList(page, uidList, startTime);
+                data = userRecordEntityService.getOIRankList(page, uidList);
             } else {
                 data = page;
             }
@@ -126,7 +124,7 @@ public class RankManager {
             data = (IPage<OIRankVO>) redisUtils.get(key);
             if (data == null) {
                 Page<OIRankVO> page = new Page<>(currentPage, limit);
-                data = userRecordEntityService.getOIRankList(page, null, startTime);
+                data = userRecordEntityService.getOIRankList(page, null);
                 redisUtils.set(key, data, cacheRankSecond);
             }
         }
