@@ -7,7 +7,7 @@
         (SELECT COUNT( DISTINCT pid ) FROM user_acproblem WHERE uid = u.uuid) AS ac,
         (SELECT COUNT(uid) FROM judge WHERE uid=u.uuid AND cid=0 AND gid is null) AS total
         FROM user_info u,(SELECT DISTINCT ur.uid AS uid FROM user_role ur
-        WHERE ur.role_id!=1000 AND ur.role_id!=1001 AND ur.role_id!=1008) t
+        WHERE ur.role_id!=1000) t
         <where>
             u.status = 0 and t.uid = u.uuid
             <if test="uidList!=null">
@@ -26,7 +26,7 @@
         WHERE uid =u.uuid
         and DATE(gmt_create) >= DATE_SUB(CURDATE(),INTERVAL 7 DAY)) AS ac
         FROM user_info u, (SELECT DISTINCT ur.uid AS uid FROM user_role ur
-            WHERE ur.role_id!=1000 AND ur.role_id!=1001 AND ur.role_id!=1008) t
+            WHERE ur.role_id!=1000) t
         WHERE u.status = 0 AND t.uid = u.uuid
         ORDER BY ac DESC,u.gmt_create DESC LIMIT 10
     </select>
@@ -45,7 +45,7 @@
                 WHERE uid = ui.uuid
             ) AS total, ss.score AS score
         FROM user_info ui, (SELECT DISTINCT ur.uid AS uid FROM user_role ur
-        WHERE ur.role_id!=1000 AND ur.role_id!=1001 AND ur.role_id!=1008) t,(
+        WHERE ur.role_id!=1000) t,(
                 SELECT u.uuid AS uid, COALESCE(SUM(s.score),0) AS score
                 FROM user_info u left join (
                         SELECT MAX(oi_rank_score) AS score, uid, pid
