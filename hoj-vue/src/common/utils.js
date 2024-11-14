@@ -183,7 +183,7 @@ function getFocusModeOriPage(routeName){
 }
 
 function supportFocusMode(routeName){
-  return routeName != 'ProblemDetails';
+  return false;
 }
 function getSwitchFoceusModeRouteName(routeName){
   for(let keyName in FOCUS_MODE_ROUTE_NAME){
