@@ -51,19 +51,6 @@
               ><i class="fa fa-users navbar-icon"></i
               >{{ $t("m.NavBar_Group") }}</el-menu-item
             >
-
-            <el-submenu index="about">
-              <template slot="title"
-                ><i class="el-icon-info"></i
-                >{{ $t("m.NavBar_Other") }}</template
-              >
-              <el-menu-item index="/introduction">{{
-                $t("m.NavBar_Introduction")
-              }}</el-menu-item>
-              <el-menu-item index="/developer">{{
-                $t("m.NavBar_Developer")
-              }}</el-menu-item>
-            </el-submenu>
           </template>
           <template v-else-if="mode == 'training'">
             <el-menu-item index="/home"
@@ -90,7 +77,8 @@
               ><i class="el-icon-s-home"></i
               >{{ $t("m.NavBar_Back_Home") }}</el-menu-item
             >
-            <el-menu-item :index="'/contest/' + $route.params.contestID"
+            <el-menu-item
+              :index="'/contest/' + $route.params.contestID + '/problems'"
               ><i class="el-icon-trophy"></i
               >{{ $t("m.NavBar_Contest_Home") }}</el-menu-item
             >
