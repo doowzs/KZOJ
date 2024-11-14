@@ -43,7 +43,7 @@ export const m = {
   NavBar_Back_Home:'Back Home',
   NavBar_Training_Home:'Training Home',
   NavBar_Contest_Home: 'Contest Home',
-  NavBar_Contest_Own_Submission: 'My Submission',
+  NavBar_Contest_Submission: 'Submissions',
   NavBar_Contest_Rank: 'Contest Rank',
   NavBar_Group_Home: 'Group Home',
   // 新年许愿墙

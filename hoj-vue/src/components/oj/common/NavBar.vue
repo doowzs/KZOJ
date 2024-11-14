@@ -5,8 +5,8 @@
         <el-menu
           :default-active="activeMenuName"
           :style="{
-            'margin-left': mode == 'default' ? '3%' : '1%',
-            'margin-right': mode == 'default' ? '3%' : '1%',
+            'margin-left': '3%',
+            'margin-right': '3%',
           }"
           mode="horizontal"
           router
@@ -83,22 +83,13 @@
             >
             <el-menu-item
               :index="'/contest/' + $route.params.contestID + '/problems'"
-              ><i class="el-icon-trophy"></i
-              >{{ $t("m.NavBar_Contest_Home") }}</el-menu-item
-            >
-            <el-menu-item
-              :index="'/contest/' + $route.params.contestID + '/problems'"
               ><i class="fa fa-list navbar-icon"></i
               >{{ $t("m.Problem_List") }}</el-menu-item
             >
             <el-menu-item
-              :index="
-                '/contest/' +
-                $route.params.contestID +
-                '/submissions?onlyMine=true'
-              "
+              :index="'/contest/' + $route.params.contestID + '/submissions'"
               ><i class="el-icon-menu"></i
-              >{{ $t("m.NavBar_Contest_Own_Submission") }}</el-menu-item
+              >{{ $t("m.NavBar_Contest_Submission") }}</el-menu-item
             >
             <el-menu-item
               :index="'/contest/' + $route.params.contestID + '/rank'"
