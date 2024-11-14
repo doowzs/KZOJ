@@ -89,7 +89,16 @@
             <el-menu-item
               :index="'/contest/' + $route.params.contestID + '/submissions'"
               ><i class="el-icon-menu"></i
-              >{{ $t("m.NavBar_Contest_Submission") }}</el-menu-item
+              >{{ $t("m.NavBar_Contest_All_Submission") }}</el-menu-item
+            >
+            <el-menu-item
+              :index="
+                '/contest/' +
+                $route.params.contestID +
+                '/submissions?onlyMine=true'
+              "
+              ><i class="el-icon-menu"></i
+              >{{ $t("m.NavBar_Contest_Own_Submission") }}</el-menu-item
             >
             <el-menu-item
               :index="'/contest/' + $route.params.contestID + '/rank'"
