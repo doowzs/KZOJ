@@ -1,5 +1,15 @@
 <template>
   <div :class="bodyClass">
+    <!--    比赛，训练Menu-->
+    <ProblemHorizontalMenu
+      v-if="showProblemHorizontalMenu"
+      :pid.sync="problemData.problem.id"
+      :cid="contestID"
+      :tid="trainingID"
+      ref="problemHorizontalMenu"
+      :gid="groupID"
+    >
+    </ProblemHorizontalMenu>
     <div id="problem-main">
       <!--problem main-->
       <el-row class="problem-box" :id="'problem-box' + '-' + $route.name">
@@ -943,16 +953,6 @@
         </el-col>
       </el-row>
     </div>
-    <!--    比赛，训练Menu-->
-    <ProblemHorizontalMenu
-      v-if="showProblemHorizontalMenu"
-      :pid.sync="problemData.problem.id"
-      :cid="contestID"
-      :tid="trainingID"
-      ref="problemHorizontalMenu"
-      :gid="groupID"
-    >
-    </ProblemHorizontalMenu>
     <!--统计dialog-->
     <el-dialog :visible.sync="graphVisible" width="400px">
       <div id="pieChart-detail">
@@ -1402,11 +1402,11 @@ export default {
           right.style.width = "100%";
         }
 
-        let problemLeftHight = totalHeight - (headerHeight + 64);
+        let problemLeftHight = totalHeight - (headerHeight + 85);
         if (this.showProblemHorizontalMenu) {
-          let footerMenuHeight =
-            document.getElementById("problem-footer").offsetHeight;
-          problemLeftHight = problemLeftHight - footerMenuHeight;
+          let headerMenuHeight =
+            document.getElementById("problem-header").offsetHeight;
+          problemLeftHight = problemLeftHight - headerMenuHeight;
         }
         let jsRHeaderHeight =
           document.getElementById("js-right-header").offsetHeight;

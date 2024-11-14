@@ -1,49 +1,33 @@
 <template>
-  <el-card
-    shadow="always"
-    id="problem-footer"
-  >
+  <el-card shadow="never" id="problem-header">
     <div class="dataNav">
-      <button
-        class="dataNavPrev"
-        @click="navPrev"
-      ><i class="el-icon-arrow-left"></i></button>
-      <ul
-        class="dataNavList"
-        id="problem-footer-list"
-      >
-        <span
-          v-for="(item, index) in navList"
-          :key="index"
-        >
-          <el-tooltip
-            effect="dark"
-            placement="top"
-          >
+      <button class="dataNavPrev" @click="navPrev">
+        <i class="el-icon-arrow-left"></i>
+      </button>
+      <ul class="dataNavList" id="problem-header-list">
+        <span v-for="(item, index) in navList" :key="index">
+          <el-tooltip effect="dark" placement="bottom">
             <div slot="content">
-              <div style="text-align:center">
-                {{item.problemId+'. '+item.title}}
+              <div style="text-align: center">
+                {{ item.problemId + ". " + item.title }}
               </div>
               <template v-if="item.status != null">
-                <div style="text-align:center">
-                  {{JUDGE_STATUS[item.status].name}}
+                <div style="text-align: center">
+                  {{ JUDGE_STATUS[item.status].name }}
                   <template v-if="item.score != null">
-                    ({{ item.score}} pts)
+                    ({{ item.score }} pts)
                   </template>
                 </div>
               </template>
             </div>
             <li
               class="dataNavListItem"
-              :class="pid == item.pid?'is-active':''"
+              :class="pid == item.pid ? 'is-active' : ''"
               @click="goProblem(item.problemId)"
-              :style="{transform:'translateX(-'+move+'px)'}"
+              :style="{ transform: 'translateX(-' + move + 'px)' }"
             >
               <template v-if="item.status == 0">
-                <i
-                  class="el-icon-check"
-                  :style="getIconColor(item.status)"
-                ></i>
+                <i class="el-icon-check" :style="getIconColor(item.status)"></i>
               </template>
               <template v-else-if="item.status == -5">
                 <i
@@ -52,29 +36,21 @@
                 ></i>
               </template>
               <template v-else-if="item.status == -2">
-                <i
-                  class="el-icon-minus"
-                  :style="getIconColor(item.status)"
-                ></i>
+                <i class="el-icon-minus" :style="getIconColor(item.status)"></i>
               </template>
               <template v-else-if="item.status != null">
-                <i
-                  class="el-icon-close"
-                  :style="getIconColor(item.status)"
-                ></i>
+                <i class="el-icon-close" :style="getIconColor(item.status)"></i>
               </template>
-              {{item.problemId}}
+              {{ item.problemId }}
             </li>
           </el-tooltip>
         </span>
       </ul>
-      <button
-        class="dataNavNext"
-        @click="navNext"
-      ><i class="el-icon-arrow-right"></i></button>
+      <button class="dataNavNext" @click="navNext">
+        <i class="el-icon-arrow-right"></i>
+      </button>
     </div>
   </el-card>
-
 </template>
 
 <script>
@@ -129,10 +105,10 @@ export default {
     },
     calcMoveLen() {
       this.dataNavListRealWidth = document.getElementById(
-        "problem-footer-list"
+        "problem-header-list"
       ).scrollWidth;
       this.dataNavListViewWidth = document.getElementById(
-        "problem-footer-list"
+        "problem-header-list"
       ).offsetWidth;
       this.moveLen = this.dataNavListViewWidth / 2;
       let num = Math.floor((this.dataNavListViewWidth - 70) / 100);
@@ -145,7 +121,7 @@ export default {
     recalcMoveLen() {
       try {
         this.dataNavListViewWidth = document.getElementById(
-          "problem-footer-list"
+          "problem-header-list"
         ).offsetWidth;
         if (
           this.move >
@@ -206,14 +182,14 @@ export default {
     $route() {
       this.getFullScreenProblemList();
     },
-    pid(){
+    pid() {
       // 避免pid传递过慢，导致当前题目移动居中失败，需要监听pid变化再次判断
       let num = Math.floor((this.dataNavListViewWidth - 70) / 100);
       let index = this.getCurrentProblemInListIndex();
       if (index != -1 && index > num) {
         this.move = this.moveLen + (index - num) * 100;
       }
-    }
+    },
   },
 };
 </script>
@@ -223,8 +199,11 @@ ul {
   margin: 0;
 }
 @media screen and (min-width: 1050px) {
-  #problem-footer {
-    margin: 0 -1%;
+  #problem-header {
+    margin-top: -5px;
+    margin-bottom: 15px;
+    padding-left: 10px;
+    padding-right: 10px;
   }
 }
 /deep/.el-card__body {
@@ -235,6 +214,9 @@ ul {
   overflow: hidden;
   font-weight: bolder;
 }
+.dataNavList {
+  padding-inline-start: 0px;
+}
 .dataNav .dataNavList {
   display: flex;
   overflow: hidden;
@@ -244,8 +226,7 @@ ul {
   height: 35px;
   width: 100px;
   min-width: 100px;
-  margin: auto 0;
-  border-radius: 5px;
+  margin: auto 2px;
   font-size: 13px;
   text-align: center;
   color: #7e8690;
@@ -259,7 +240,7 @@ ul {
 .dataNavListItem:hover,
 .dataNavListItem.is-active {
   color: #2e95fb !important;
-  background: linear-gradient(2100deg, #f2f7fc 0%, #fefefe 100%) !important;
+  background: linear-gradient(0deg, #f2f7fc 0%, #fefefe 100%) !important;
   border-bottom: 2px solid #2e95fb !important;
   outline: 0 !important;
   transition: all 0.2s ease;
