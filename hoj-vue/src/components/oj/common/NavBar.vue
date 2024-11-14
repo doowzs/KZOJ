@@ -4,6 +4,10 @@
       <div id="header">
         <el-menu
           :default-active="activeMenuName"
+          :style="{
+            'margin-left': mode == 'default' ? '3%' : '1%',
+            'margin-right': mode == 'default' ? '3%' : '1%',
+          }"
           mode="horizontal"
           router
           active-text-color="#2196f3"
@@ -11,12 +15,12 @@
         >
           <div class="logo">
             <el-image
-              style="width: 139px; height: 50px"
+              style="width: 90px; height: 50px"
               :src="imgUrl"
               fit="scale-down"
             ></el-image>
           </div>
-          <template v-if="mode == 'defalut'">
+          <template v-if="mode == 'default'">
             <el-menu-item index="/home"
               ><i class="el-icon-s-home"></i
               >{{ $t("m.NavBar_Home") }}</el-menu-item
@@ -134,42 +138,6 @@
 
           <template v-else>
             <el-dropdown
-              class="drop-menu"
-              @command="handleRoute"
-              placement="bottom"
-              trigger="hover"
-            >
-              <span class="el-dropdown-link">
-                {{ userInfo.realname }}<i class="el-icon-caret-bottom"></i>
-              </span>
-
-              <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item command="/user-home">{{
-                  $t("m.NavBar_UserHome")
-                }}</el-dropdown-item>
-                <el-dropdown-item command="/status?onlyMine=true">{{
-                  $t("m.NavBar_Submissions")
-                }}</el-dropdown-item>
-                <el-dropdown-item command="/setting">{{
-                  $t("m.NavBar_Setting")
-                }}</el-dropdown-item>
-                <el-dropdown-item v-if="isAdminRole" command="/admin">{{
-                  $t("m.NavBar_Management")
-                }}</el-dropdown-item>
-                <el-dropdown-item divided command="/logout">{{
-                  $t("m.NavBar_Logout")
-                }}</el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown>
-            <avatar
-              :username="userInfo.username"
-              :inline="true"
-              :size="30"
-              color="#FFF"
-              :src="avatar"
-              class="drop-avatar"
-            ></avatar>
-            <el-dropdown
               class="drop-msg"
               @command="handleRoute"
               placement="bottom"
@@ -227,6 +195,43 @@
                     <MsgSvg :total="unreadMessage.mine"></MsgSvg>
                   </span>
                 </el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+
+            <avatar
+              :username="userInfo.username"
+              :inline="true"
+              :size="30"
+              color="#FFF"
+              :src="avatar"
+              class="drop-avatar"
+            ></avatar>
+            <el-dropdown
+              class="drop-menu"
+              @command="handleRoute"
+              placement="bottom"
+              trigger="hover"
+            >
+              <span class="el-dropdown-link">
+                {{ userInfo.realname }}<i class="el-icon-caret-bottom"></i>
+              </span>
+
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item command="/user-home">{{
+                  $t("m.NavBar_UserHome")
+                }}</el-dropdown-item>
+                <el-dropdown-item command="/status?onlyMine=true">{{
+                  $t("m.NavBar_Submissions")
+                }}</el-dropdown-item>
+                <el-dropdown-item command="/setting">{{
+                  $t("m.NavBar_Setting")
+                }}</el-dropdown-item>
+                <el-dropdown-item v-if="isAdminRole" command="/admin">{{
+                  $t("m.NavBar_Management")
+                }}</el-dropdown-item>
+                <el-dropdown-item divided command="/logout">{{
+                  $t("m.NavBar_Logout")
+                }}</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </template>
@@ -609,7 +614,7 @@ export default {
   },
   data() {
     return {
-      mode: "defalut",
+      mode: "default",
       centerDialogVisible: false,
       mobileNar: false,
       opendrawer: false,
@@ -706,7 +711,7 @@ export default {
       if (this.$route.meta.fullScreenSource) {
         this.mode = this.$route.meta.fullScreenSource;
       } else {
-        this.mode = "defalut";
+        this.mode = "default";
       }
     },
     getTrainingHomePath() {
@@ -827,10 +832,8 @@ export default {
 
 .logo {
   cursor: pointer;
-  margin-left: 2%;
-  margin-right: 2%;
   float: left;
-  width: 139px;
+  width: 90px;
   height: 42px;
   margin-top: 5px;
 }
@@ -842,8 +845,6 @@ export default {
   font-size: 18px;
 }
 .drop-menu {
-  float: right;
-  margin-right: 30px;
   position: relative;
   font-weight: 500;
   right: 10px;
@@ -852,13 +853,15 @@ export default {
 }
 .drop-avatar {
   float: right;
-  margin-right: 15px;
+  margin-left: 0.5rem;
+  margin-right: 1rem;
   position: relative;
   margin-top: 16px;
 }
 .drop-msg {
   float: right;
   font-size: 25px;
+  margin-left: auto;
   margin-right: 10px;
   position: relative;
   margin-top: 13px;
@@ -869,6 +872,7 @@ export default {
 .btn-menu {
   font-size: 16px;
   float: right;
+  margin-left: auto;
   margin-right: 10px;
   margin-top: 12px;
 }
@@ -885,6 +889,9 @@ export default {
 }
 .el-submenu__title i {
   color: #495060 !important;
+}
+.el-menu {
+  display: flex;
 }
 .el-menu-item {
   padding: 0 13px;
