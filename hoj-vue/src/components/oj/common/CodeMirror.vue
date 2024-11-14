@@ -185,39 +185,6 @@
               </el-popover>
             </el-tooltip>
           </span>
-          <!--          专注模式-->
-          <template v-if="supportFocusMode">
-            <span v-if="!openFocusMode" class="hidden-sm-and-down">
-              <el-tooltip
-                :content="$t('m.Enter_Focus_Mode')"
-                placement="bottom"
-              >
-                <el-button
-                  icon="el-icon-full-screen"
-                  @click="switchFocusMode(true)"
-                  size="small"
-                ></el-button>
-              </el-tooltip>
-            </span>
-            <span v-else class="hidden-sm-and-down">
-              <el-tooltip :content="$t('m.Exit_Focus_Mode')" placement="bottom">
-                <el-button @click="switchFocusMode(false)" size="small">
-                  <svg
-                    focusable="false"
-                    viewBox="0 0 1024 1024"
-                    fill="currentColor"
-                    width="0.95em"
-                    height="0.95em"
-                    aria-hidden="true"
-                  >
-                    <path
-                      d="M463.04 863.32h-88.51V641.14H152.35v-88.87H463.4l-.36 311.05zM863.32 463.4H552.27l.31-311.05h88.56v222.18h222.18v88.87z"
-                    ></path>
-                  </svg>
-                </el-button>
-              </el-tooltip>
-            </span>
-          </template>
         </div>
       </el-col>
     </el-row>
@@ -594,10 +561,6 @@ export default {
       type: Boolean,
       default: false,
     },
-    openFocusMode: {
-      type: Boolean,
-      default: false,
-    },
     submitDisabled: {
       type: Boolean,
       default: false,
@@ -875,9 +838,6 @@ export default {
     getUserLastAccepetedCode() {
       this.$emit("getUserLastAccepetedCode");
     },
-    switchFocusMode(isOpen) {
-      this.$emit("switchFocusMode", isOpen);
-    },
   },
   computed: {
     editor() {
@@ -893,9 +853,6 @@ export default {
         statusName: JUDGE_STATUS[this.testJudgeRes.status].name,
         color: JUDGE_STATUS[this.testJudgeRes.status].rgb,
       };
-    },
-    supportFocusMode() {
-      return utils.supportFocusMode(this.$route.name);
     },
   },
   watch: {

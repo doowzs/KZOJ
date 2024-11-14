@@ -174,7 +174,7 @@ export default {
     goTrainingProblem(event) {
       if (this.groupID) {
         this.$router.push({
-          name: "GroupTrainingFullProblemDetails",
+          name: "GroupTrainingProblemDetails",
           params: {
             trainingID: this.$route.params.trainingID,
             problemID: event.row.problemId,
@@ -183,7 +183,7 @@ export default {
         });
       } else {
         this.$router.push({
-          name: "TrainingFullProblemDetails",
+          name: "TrainingProblemDetails",
           params: {
             trainingID: this.$route.params.trainingID,
             problemID: event.row.problemId,

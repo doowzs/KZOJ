@@ -202,7 +202,7 @@ export default {
     },
     goContestProblem(event) {
       this.$router.push({
-        name: "ContestFullProblemDetails",
+        name: "ContestProblemDetails",
         params: {
           contestID: this.$route.params.contestID,
           problemID: event.row.displayId,

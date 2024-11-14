@@ -170,29 +170,7 @@ function getLevelName(difficulty) {
   }
 }
 function isFocusModePage(routeName){
-  for(let keyName in FOCUS_MODE_ROUTE_NAME){
-    if(keyName == routeName){
-      return true;
-    }
-  }
-  return false;
-}
-
-function getFocusModeOriPage(routeName){
-  return FOCUS_MODE_ROUTE_NAME[routeName]
-}
-
-function supportFocusMode(routeName){
-  return false;
-}
-function getSwitchFoceusModeRouteName(routeName){
-  for(let keyName in FOCUS_MODE_ROUTE_NAME){
-    if(keyName == routeName){
-      return FOCUS_MODE_ROUTE_NAME[keyName];
-    }else if(FOCUS_MODE_ROUTE_NAME[keyName] == routeName){
-      return keyName;
-    }
-  }
+  return FOCUS_MODE_ROUTE_NAME.indexOf(routeName) >= 0;
 }
 
 export default {
@@ -210,7 +188,4 @@ export default {
   getLevelColor:getLevelColor,
   getLevelName:getLevelName,
   isFocusModePage:isFocusModePage,
-  getFocusModeOriPage:getFocusModeOriPage,
-  supportFocusMode:supportFocusMode,
-  getSwitchFoceusModeRouteName:getSwitchFoceusModeRouteName
 }

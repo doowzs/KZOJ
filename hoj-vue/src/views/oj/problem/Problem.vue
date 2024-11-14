@@ -715,8 +715,6 @@
               @changeTheme="onChangeTheme"
               @changeLang="onChangeLang"
               @getUserLastAccepetedCode="getUserLastAccepetedCode"
-              @switchFocusMode="switchFocusMode"
-              :openFocusMode.sync="openFocusMode"
               :openTestCaseDrawer.sync="openTestCaseDrawer"
               :problemTestCase="problemData.problem.examples"
               :pid="problemData.problem.id"
@@ -1105,7 +1103,6 @@ export default {
       fileContent: "",
       fileName: "",
       openTestCaseDrawer: false,
-      openFocusMode: false,
       showProblemHorizontalMenu: false,
     };
   },
@@ -1478,10 +1475,9 @@ export default {
       } catch (e) {}
     },
     init() {
-      if (this.$route.name === "ContestFullProblemDetails") {
+      if (this.$route.name === "ContestProblemDetails") {
         this.$store.dispatch("getContest");
       }
-      this.openFocusMode = utils.isFocusModePage(this.$route.name);
       if (this.$route.params.contestID) {
         this.contestID = this.$route.params.contestID;
       }
@@ -1498,8 +1494,7 @@ export default {
       }*/
 
       let func =
-        this.$route.name === "ContestProblemDetails" ||
-        this.$route.name === "ContestFullProblemDetails"
+        this.$route.name === "ContestProblemDetails"
           ? "getContestProblem"
           : "getProblem";
       this.loading.problem = true;
@@ -1968,18 +1963,6 @@ int main() {
     openTestJudgeDrawer() {
       this.openTestCaseDrawer = !this.openTestCaseDrawer;
     },
-    switchFocusMode(isOpen) {
-      this.openFocusMode = isOpen;
-      this.$router.push({
-        name: utils.getSwitchFoceusModeRouteName(this.$route.name),
-        params: {
-          trainingID: this.trainingID,
-          contestID: this.contestID,
-          problemID: this.problemID,
-          groupID: this.groupID,
-        },
-      });
-    },
     beforeLeaveDo(cid) {
       clearInterval(this.refreshStatus);
       storage.set(buildProblemCodeAndSettingKey(this.problemID, cid), {
@@ -2080,7 +2063,7 @@ int main() {
   },
   beforeRouteLeave(to, from, next) {
     this.beforeLeaveDo(from.params.contestID);
-    if (this.$route.name === "ContestFullProblemDetails") {
+    if (this.$route.name === "ContestProblemDetails") {
       this.$store.commit("clearContest");
     }
     next();

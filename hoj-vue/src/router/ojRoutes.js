@@ -78,8 +78,8 @@ const ojRoutes = [
     meta: { title: "Problem Details", requireAuth: true },
   },
   {
-    name: "TrainingFullProblemDetails",
-    path: "/training/:trainingID/problem/:problemID/full-screen",
+    name: "TrainingProblemDetails",
+    path: "/training/:trainingID/problem/:problemID",
     component: Problem,
     meta: {
       title: "Training Problem Details",
@@ -88,8 +88,8 @@ const ojRoutes = [
     },
   },
   {
-    name: "ContestFullProblemDetails",
-    path: "/contest/:contestID/problem/:problemID/full-screen",
+    name: "ContestProblemDetails",
+    path: "/contest/:contestID/problem/:problemID",
     component: Problem,
     meta: {
       title: "Contest Problem Details",
@@ -98,8 +98,8 @@ const ojRoutes = [
     },
   },
   {
-    name: "GroupFullProblemDetails",
-    path: "/group/:groupID/problem/:problemID/full-screen",
+    name: "GroupProblemDetails",
+    path: "/group/:groupID/problem/:problemID",
     component: Problem,
     meta: {
       title: "Group Problem Details",
@@ -108,8 +108,8 @@ const ojRoutes = [
     },
   },
   {
-    name: "GroupTrainingFullProblemDetails",
-    path: "/group/:groupID/training/:trainingID/problem/:problemID/full-screen",
+    name: "GroupTrainingProblemDetails",
+    path: "/group/:groupID/training/:trainingID/problem/:problemID",
     component: Problem,
     meta: {
       title: "Group Training Problem Details",
@@ -139,16 +139,6 @@ const ojRoutes = [
         component: TrainingProblemList,
         meta: {
           title: "Training Problem",
-          fullScreenSource: "training",
-          requireAuth: true,
-        },
-      },
-      {
-        name: "TrainingProblemDetails",
-        path: "problem/:problemID",
-        component: Problem,
-        meta: {
-          title: "Training Problem Details",
           fullScreenSource: "training",
           requireAuth: true,
         },
@@ -219,16 +209,6 @@ const ojRoutes = [
         component: ContestProblemList,
         meta: {
           title: "Contest Problem",
-          fullScreenSource: "contest",
-          requireAuth: true,
-        },
-      },
-      {
-        name: "ContestProblemDetails",
-        path: "problem/:problemID/",
-        component: Problem,
-        meta: {
-          title: "Contest Problem Details",
           fullScreenSource: "contest",
           requireAuth: true,
         },
@@ -411,12 +391,6 @@ const ojRoutes = [
         meta: { title: "Group Problem", requireAuth: true },
       },
       {
-        name: "GroupProblemDetails",
-        path: "problem/:problemID/",
-        component: Problem,
-        meta: { title: "Group Problem Details", requireAuth: true },
-      },
-      {
         path: "training",
         name: "GroupTrainingList",
         component: GroupTrainingList,
@@ -433,15 +407,6 @@ const ojRoutes = [
             path: "problems",
             component: TrainingProblemList,
             meta: { title: "Group Training Problem", requireAuth: true },
-          },
-          {
-            name: "GroupTrainingProblemDetails",
-            path: "problem/:problemID/",
-            component: Problem,
-            meta: {
-              title: "Group Training Problem Details",
-              requireAuth: true,
-            },
           },
           {
             name: "GroupTrainingRank",
