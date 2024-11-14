@@ -114,7 +114,7 @@
       </div>
       <div class="body-article">
         <Markdown
-            :isAvoidXss="discussion.role != 'root'&&discussion.role != 'admin'"
+            :isAvoidXss="true"
             :content="discussion.content">
         </Markdown>
       </div>
