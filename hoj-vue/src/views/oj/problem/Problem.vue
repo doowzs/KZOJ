@@ -1435,12 +1435,14 @@ export default {
               .getElementById("js-left" + "-" + this.$route.name)
               .setAttribute(
                 "style",
-                "height:" + problemLeftHight + "px !important"
+                "height:" +
+                  problemLeftHight +
+                  "px !important; padding-bottom: 1rem;"
               );
           } else {
             document
               .getElementById("js-left" + "-" + this.$route.name)
-              .setAttribute("style", "height: auto");
+              .setAttribute("style", "height: auto; padding-bottom: 1rem;");
           }
         } else if (this.activeName == "mySubmission") {
           document
