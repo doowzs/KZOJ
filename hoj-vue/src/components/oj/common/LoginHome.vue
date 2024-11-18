@@ -1,109 +1,71 @@
 <template>
   <div class="login">
-<!--    登陆-->
+    <!--    登陆-->
     <el-form
-        :model="formLogin"
-        :rules="rulesLogin"
-        ref="formLogin"
-        label-position="left"
-        label-width="0px"
-        class="demo-ruleForm login-container"
-        v-if="mode==='Login'"
+      :model="formLogin"
+      :rules="rulesLogin"
+      ref="formLogin"
+      label-position="left"
+      label-width="0px"
+      class="demo-ruleForm login-container"
+      v-if="mode === 'Login'"
     >
-      <h1 class="title">{{ $t('m.Welcome_to_Login') }}</h1>
+      <h1 class="title">{{ $t("m.Welcome_to_Login") }}</h1>
       <el-form-item prop="username">
         <el-input
-            v-model="formLogin.username"
-            prefix-icon="el-icon-user-solid"
-            :placeholder="$t('m.Login_Username')"
-            @keyup.enter.native="handleLogin"
+          v-model="formLogin.username"
+          prefix-icon="el-icon-user-solid"
+          :placeholder="$t('m.Login_Username')"
+          @keyup.enter.native="handleLogin"
         ></el-input>
       </el-form-item>
       <el-form-item prop="password">
         <el-input
-            v-model="formLogin.password"
-            prefix-icon="el-icon-lock"
-            type="password"
-            :placeholder="$t('m.Login_Password')"
-            @keyup.enter.native="handleLogin"
+          v-model="formLogin.password"
+          prefix-icon="el-icon-lock"
+          type="password"
+          :placeholder="$t('m.Login_Password')"
+          @keyup.enter.native="handleLogin"
         ></el-input>
       </el-form-item>
       <el-form-item style="width: 100%">
         <el-button
-            type="primary"
-            style="width: 100%"
-            @click="handleLogin"
-            v-if="!needVerify"
-            :loading="btnLoginLoading"
-        >{{ $t('m.Login_Btn') }}
+          type="primary"
+          style="width: 100%"
+          @click="handleLogin"
+          :loading="btnLoginLoading"
+          >{{ $t("m.Login_Btn") }}
         </el-button>
-        <el-popover
-            placement="bottom"
-            width="350"
-            v-model="loginSlideBlockVisible"
-            trigger="click"
-            v-else
-        >
-          <el-button
-              type="primary"
-              style="width: 100%"
-              :loading="btnLoginLoading"
-              slot="reference">{{
-              $t('m.Login_Btn')
-            }}</el-button>
-          <slide-verify
-              :l="42"
-              :r="10"
-              :w="325"
-              :h="100"
-              :accuracy="3"
-              @success="handleLogin"
-              :slider-text="$t('m.Slide_Verify')"
-              ref="slideBlock"
-              v-if="!verify.loginSuccess"
-          >
-          </slide-verify>
-          <el-alert
-              :title="$t('m.Slide_Verify_Success')"
-              type="success"
-              :description="verify.loginMsg"
-              v-show="verify.loginSuccess"
-              :center="true"
-              :closable="false"
-              show-icon
-          >
-          </el-alert>
-        </el-popover>
         <el-link
-            v-if="websiteConfig.register"
-            type="primary"
-            @click="switchMode('Register')"
-        >{{ $t('m.Login_No_Account') }}</el-link
+          v-if="websiteConfig.register"
+          type="primary"
+          @click="switchMode('Register')"
+          >{{ $t("m.Login_No_Account") }}</el-link
         >
         <el-link
-            type="primary"
-            @click="switchMode('ResetPwd')"
-            style="float: right"
-        >{{ $t('m.Login_Forget_Password') }}</el-link
+          type="primary"
+          @click="switchMode('ResetPwd')"
+          style="float: right"
+          >{{ $t("m.Login_Forget_Password") }}</el-link
         >
       </el-form-item>
     </el-form>
-<!--    找回密码-->
+    <!--    找回密码-->
     <el-form
-        :model="formResetPassword"
-        :rules="rulesResetPwd"
-        ref="formResetPassword"
-        v-if="mode==='ResetPwd'"
-        label-position="left"
-        label-width="0px"
-        class="demo-ruleForm login-container"
+      :model="formResetPassword"
+      :rules="rulesResetPwd"
+      ref="formResetPassword"
+      v-if="mode === 'ResetPwd'"
+      label-position="left"
+      label-width="0px"
+      class="demo-ruleForm login-container"
     >
-      <h1 class="title">{{ $t('m.Welcome_to_Login') }}</h1>
+      <h1 class="title">{{ $t("m.Welcome_to_Login") }}</h1>
       <el-form-item prop="email">
         <el-input
-            v-model="formResetPassword.email"
-            prefix-icon="el-icon-message"
-            :placeholder="$t('m.Reset_Password_Email')"
+          v-model="formResetPassword.email"
+          prefix-icon="el-icon-message"
+          :placeholder="$t('m.Reset_Password_Email')"
         >
         </el-input>
       </el-form-item>
@@ -111,9 +73,9 @@
         <div id="captcha">
           <div id="captchaCode">
             <el-input
-                v-model="formResetPassword.captcha"
-                prefix-icon="el-icon-s-check"
-                :placeholder="$t('m.Reset_Password_Captcha')"
+              v-model="formResetPassword.captcha"
+              prefix-icon="el-icon-s-check"
+              :placeholder="$t('m.Reset_Password_Captcha')"
             ></el-input>
           </div>
           <div id="captchaImg">
@@ -125,70 +87,70 @@
       </el-form-item>
       <el-form-item>
         <el-button
-            type="primary"
-            @click="handleResetPwd"
-            :loading="btnResetPwdLoading"
-            :disabled="btnResetPwdDisabled"
-            style="width: 100%"
+          type="primary"
+          @click="handleResetPwd"
+          :loading="btnResetPwdLoading"
+          :disabled="btnResetPwdDisabled"
+          style="width: 100%"
         >
           {{ resetText }}
         </el-button>
         <el-link type="primary" @click="switchMode('Login')">{{
-            $t('m.Remember_Passowrd_To_Login')
-          }}</el-link>
+          $t("m.Remember_Passowrd_To_Login")
+        }}</el-link>
       </el-form-item>
     </el-form>
-<!--    注册-->
+    <!--    注册-->
     <el-form
-        :model="registerForm"
-        :rules="rulesRegister"
-        ref="registerForm"
-        v-if="mode==='Register'"
-        label-position="left"
-        label-width="0px"
-        class="demo-ruleForm login-container"
+      :model="registerForm"
+      :rules="rulesRegister"
+      ref="registerForm"
+      v-if="mode === 'Register'"
+      label-position="left"
+      label-width="0px"
+      class="demo-ruleForm login-container"
     >
-      <h1 class="title">{{ $t('m.Welcome_to_Login') }}</h1>
+      <h1 class="title">{{ $t("m.Welcome_to_Login") }}</h1>
       <el-form-item prop="username">
         <el-input
-            v-model="registerForm.username"
-            prefix-icon="el-icon-user-solid"
-            :placeholder="$t('m.Register_Username')"
-            @keyup.enter.native="handleRegister"
-            width="100%"
+          v-model="registerForm.username"
+          prefix-icon="el-icon-user-solid"
+          :placeholder="$t('m.Register_Username')"
+          @keyup.enter.native="handleRegister"
+          width="100%"
         ></el-input>
       </el-form-item>
       <el-form-item prop="password">
         <el-input
-            v-model="registerForm.password"
-            prefix-icon="el-icon-lock"
-            :placeholder="$t('m.Register_Password')"
-            @keyup.enter.native="handleRegister"
-            type="password"
+          v-model="registerForm.password"
+          prefix-icon="el-icon-lock"
+          :placeholder="$t('m.Register_Password')"
+          @keyup.enter.native="handleRegister"
+          type="password"
         ></el-input>
       </el-form-item>
       <el-form-item prop="passwordAgain">
         <el-input
-            v-model="registerForm.passwordAgain"
-            prefix-icon="el-icon-lock"
-            :placeholder="$t('m.Register_Password_Again')"
-            @keyup.enter.native="handleRegister"
-            type="password"
+          v-model="registerForm.passwordAgain"
+          prefix-icon="el-icon-lock"
+          :placeholder="$t('m.Register_Password_Again')"
+          @keyup.enter.native="handleRegister"
+          type="password"
         ></el-input>
       </el-form-item>
       <el-form-item prop="email">
         <el-input
-            v-model="registerForm.email"
-            prefix-icon="el-icon-message"
-            :placeholder="$t('m.Register_Email')"
-            @keyup.enter.native="handleRegister"
+          v-model="registerForm.email"
+          prefix-icon="el-icon-message"
+          :placeholder="$t('m.Register_Email')"
+          @keyup.enter.native="handleRegister"
         >
           <el-button
-              slot="append"
-              icon="el-icon-message"
-              type="primary"
-              @click.native="sendRegisterEmail"
-              :loading="btnEmailLoading"
+            slot="append"
+            icon="el-icon-message"
+            type="primary"
+            @click.native="sendRegisterEmail"
+            :loading="btnEmailLoading"
           >
             <span v-show="btnEmailLoading">{{ countdownNum }}</span>
           </el-button>
@@ -196,25 +158,23 @@
       </el-form-item>
       <el-form-item prop="code">
         <el-input
-            v-model="registerForm.code"
-            prefix-icon="el-icon-s-check"
-            :placeholder="$t('m.Register_Email_Captcha')"
-            @keyup.enter.native="handleRegister"
+          v-model="registerForm.code"
+          prefix-icon="el-icon-s-check"
+          :placeholder="$t('m.Register_Email_Captcha')"
+          @keyup.enter.native="handleRegister"
         ></el-input>
       </el-form-item>
       <el-form-item>
         <el-button
-            type="primary"
-            @click="handleRegister()"
-            :loading="btnRegisterLoading"
-            style="width: 100%"
+          type="primary"
+          @click="handleRegister()"
+          :loading="btnRegisterLoading"
+          style="width: 100%"
         >
-          {{ $t('m.Register_Btn') }}
+          {{ $t("m.Register_Btn") }}
         </el-button>
-        <el-link
-            type="primary"
-            @click="switchMode('Login')"
-        >{{$t('m.Register_Already_Registed') }}
+        <el-link type="primary" @click="switchMode('Login')"
+          >{{ $t("m.Register_Already_Registed") }}
         </el-link>
       </el-form-item>
     </el-form>
@@ -222,67 +182,67 @@
 </template>
 
 <script>
-import {mapGetters, mapActions} from 'vuex';
-import api from '@/common/api';
-import mMessage from '@/common/message';
+import { mapGetters, mapActions } from "vuex";
+import api from "@/common/api";
+import mMessage from "@/common/message";
 import myMessage from "@/common/message";
 
 export default {
-  name: 'LoginHome',
+  name: "LoginHome",
   data() {
     const CheckEmailNotExist = (rule, value, callback) => {
       api.checkUsernameOrEmail(undefined, value).then(
-          (res) => {
-            if (res.data.data.email === false) {
-              callback(new Error(this.$i18n.t('m.The_email_does_not_exists')));
-            } else {
-              callback();
-            }
-          },
-          (_) => callback()
+        (res) => {
+          if (res.data.data.email === false) {
+            callback(new Error(this.$i18n.t("m.The_email_does_not_exists")));
+          } else {
+            callback();
+          }
+        },
+        (_) => callback()
       );
     };
     const CheckUsernameNotExist = (rule, value, callback) => {
       api.checkUsernameOrEmail(value, undefined).then(
-          (res) => {
-            if (res.data.data.username === true) {
-              callback(new Error(this.$i18n.t('m.The_username_already_exists')));
-            } else {
-              callback();
-            }
-          },
-          (_) => callback()
+        (res) => {
+          if (res.data.data.username === true) {
+            callback(new Error(this.$i18n.t("m.The_username_already_exists")));
+          } else {
+            callback();
+          }
+        },
+        (_) => callback()
       );
     };
     const unCheckEmailNotExist = (rule, value, callback) => {
       api.checkUsernameOrEmail(undefined, value).then(
-          (res) => {
-            if (res.data.data.email === true) {
-              callback(new Error(this.$i18n.t('m.The_email_already_exists')));
-            } else {
-              callback();
-            }
-          },
-          (_) => callback()
+        (res) => {
+          if (res.data.data.email === true) {
+            callback(new Error(this.$i18n.t("m.The_email_already_exists")));
+          } else {
+            callback();
+          }
+        },
+        (_) => callback()
       );
     };
     const CheckPassword = (rule, value, callback) => {
-      if (this.registerForm.password !== '') {
+      if (this.registerForm.password !== "") {
         // 对第二个密码框再次验证
-        this.$refs.registerForm.validateField('passwordAgain');
+        this.$refs.registerForm.validateField("passwordAgain");
       }
       callback();
     };
 
     const CheckAgainPassword = (rule, value, callback) => {
       if (value !== this.registerForm.password) {
-        callback(new Error(this.$i18n.t('m.Password_does_not_match')));
+        callback(new Error(this.$i18n.t("m.Password_does_not_match")));
       }
       callback();
     };
     return {
-      mode : 'Login',
-      resetText: 'Send Password Reset Email',
+      mode: "Login",
+      resetText: "Send Password Reset Email",
       btnResetPwdLoading: false,
       btnResetPwdDisabled: false,
       btnLoginLoading: false,
@@ -290,53 +250,47 @@ export default {
       btnEmailLoading: false,
       countdownNum: null,
       sendEmailError: false,
-      verify: {
-        loginSuccess: false,
-        loginMsg: '',
-      },
-      needVerify: false,
       formLogin: {
-        username: '',
-        password: '',
+        username: "",
+        password: "",
       },
       formResetPassword: {
-        captcha: '',
-        email: '',
-        captchaKey: '',
+        captcha: "",
+        email: "",
+        captchaKey: "",
       },
       registerForm: {
-        username: '',
-        password: '',
-        passwordAgain: '',
-        email: '',
-        code: '',
+        username: "",
+        password: "",
+        passwordAgain: "",
+        email: "",
+        code: "",
       },
-      captchaSrc: '',
-      loginSlideBlockVisible: false,
+      captchaSrc: "",
       rulesLogin: {
         username: [
           {
             required: true,
-            message: this.$i18n.t('m.Username_Check_Required'),
-            trigger: 'blur',
+            message: this.$i18n.t("m.Username_Check_Required"),
+            trigger: "blur",
           },
           {
             max: 20,
-            message: this.$i18n.t('m.Username_Check_Max'),
-            trigger: 'blur',
+            message: this.$i18n.t("m.Username_Check_Max"),
+            trigger: "blur",
           },
         ],
         password: [
           {
             required: true,
-            message: this.$i18n.t('m.Password_Check_Required'),
-            trigger: 'blur',
+            message: this.$i18n.t("m.Password_Check_Required"),
+            trigger: "blur",
           },
           {
             min: 6,
             max: 20,
-            message: this.$i18n.t('m.Password_Check_Between'),
-            trigger: 'blur',
+            message: this.$i18n.t("m.Password_Check_Between"),
+            trigger: "blur",
           },
         ],
       },
@@ -345,8 +299,8 @@ export default {
         captcha: [
           {
             required: true,
-            message: this.$i18n.t('m.Code_Check_Required'),
-            trigger: 'blur',
+            message: this.$i18n.t("m.Code_Check_Required"),
+            trigger: "blur",
             min: 1,
             max: 8,
           },
@@ -354,11 +308,11 @@ export default {
         email: [
           {
             required: true,
-            message: this.$i18n.t('m.Email_Check_Required'),
-            type: 'email',
-            trigger: 'blur',
+            message: this.$i18n.t("m.Email_Check_Required"),
+            type: "email",
+            trigger: "blur",
           },
-          { validator: CheckEmailNotExist, trigger: 'blur' },
+          { validator: CheckEmailNotExist, trigger: "blur" },
         ],
       },
 
@@ -366,71 +320,71 @@ export default {
         username: [
           {
             required: true,
-            message: this.$i18n.t('m.Username_Check_Required'),
-            trigger: 'blur',
+            message: this.$i18n.t("m.Username_Check_Required"),
+            trigger: "blur",
           },
           {
             validator: unCheckEmailNotExist,
-            trigger: 'blur',
-            message: this.$i18n.t('m.The_username_already_exists'),
+            trigger: "blur",
+            message: this.$i18n.t("m.The_username_already_exists"),
           },
           {
             max: 20,
-            message: this.$i18n.t('m.Username_Check_Max'),
-            trigger: 'blur',
+            message: this.$i18n.t("m.Username_Check_Max"),
+            trigger: "blur",
           },
         ],
 
         email: [
           {
             required: true,
-            message: this.$i18n.t('m.Email_Check_Required'),
-            trigger: 'blur',
+            message: this.$i18n.t("m.Email_Check_Required"),
+            trigger: "blur",
           },
           {
-            type: 'email',
-            message: this.$i18n.t('m.Email_Check_Format'),
-            trigger: 'blur',
+            type: "email",
+            message: this.$i18n.t("m.Email_Check_Format"),
+            trigger: "blur",
           },
           {
             validator: unCheckEmailNotExist,
-            message: this.$i18n.t('m.The_email_already_exists'),
-            trigger: 'blur',
+            message: this.$i18n.t("m.The_email_already_exists"),
+            trigger: "blur",
           },
         ],
         password: [
           {
             required: true,
-            message: this.$i18n.t('m.Password_Check_Required'),
-            trigger: 'blur',
+            message: this.$i18n.t("m.Password_Check_Required"),
+            trigger: "blur",
           },
           {
             min: 6,
             max: 20,
-            message: this.$i18n.t('m.Password_Check_Between'),
-            trigger: 'blur',
+            message: this.$i18n.t("m.Password_Check_Between"),
+            trigger: "blur",
           },
-          { validator: CheckPassword, trigger: 'blur' },
+          { validator: CheckPassword, trigger: "blur" },
         ],
         passwordAgain: [
           {
             required: true,
-            message: this.$i18n.t('m.Password_Again_Check_Required'),
-            trigger: 'blur',
+            message: this.$i18n.t("m.Password_Again_Check_Required"),
+            trigger: "blur",
           },
-          { validator: CheckAgainPassword, trigger: 'change' },
+          { validator: CheckAgainPassword, trigger: "change" },
         ],
         code: [
           {
             required: true,
-            message: this.$i18n.t('m.Code_Check_Required'),
-            trigger: 'blur',
+            message: this.$i18n.t("m.Code_Check_Required"),
+            trigger: "blur",
           },
           {
             min: 6,
             max: 6,
-            message: this.$i18n.t('m.Code_Check_Length'),
-            trigger: 'blur',
+            message: this.$i18n.t("m.Code_Check_Length"),
+            trigger: "blur",
           },
         ],
       },
@@ -438,65 +392,47 @@ export default {
   },
   methods: {
     ...mapActions([
-      'changeModalStatus',
-      'changeResetTimeOut',
-      'startTimeOut',
-      'changeRegisterTimeOut',
+      "changeModalStatus",
+      "changeResetTimeOut",
+      "startTimeOut",
+      "changeRegisterTimeOut",
     ]),
     switchMode(mode) {
       // 清空规则
-      if(this.mode==='Login'){
-        this.$refs['formLogin'].resetFields();
+      if (this.mode === "Login") {
+        this.$refs["formLogin"].resetFields();
       }
-      if(this.mode==='ResetPwd'){
-        this.$refs['formResetPassword'].resetFields();
+      if (this.mode === "ResetPwd") {
+        this.$refs["formResetPassword"].resetFields();
       }
-      if(this.mode==='Register'){
-        this.$refs['registerForm'].resetFields();
+      if (this.mode === "Register") {
+        this.$refs["registerForm"].resetFields();
       }
       // 切换
       this.mode = mode;
-      if(this.mode==='ResetPwd'){
-        this.resetText = this.$i18n.t('m.Send_Password_Reset_Email');
+      if (this.mode === "ResetPwd") {
+        this.resetText = this.$i18n.t("m.Send_Password_Reset_Email");
         this.getCaptcha();
       }
     },
-    enterHandleLogin() {
-      if (this.needVerify) {
-        this.visible.loginSlideBlock = true;
-      } else {
-        this.handleLogin();
-      }
-    },
     handleLogin(times) {
-      if (this.needVerify) {
-        this.verify.loginSuccess = true;
-        let time = (times / 1000).toFixed(1);
-        this.verify.loginMsg = 'Total time ' + time + 's';
-        setTimeout(() => {
-          this.loginSlideBlockVisible = false;
-          this.verify.loginSuccess = false;
-        }, 1000);
-      }
-      this.$refs['formLogin'].validate((valid) => {
+      this.$refs["formLogin"].validate((valid) => {
         if (valid) {
           this.btnLoginLoading = true;
           let formData = Object.assign({}, this.formLogin);
           api.login(formData).then(
-              (res) => {
-                this.btnLoginLoading = false;
-                this.changeModalStatus({visible: false});
-                const jwt = res.headers['authorization'];
-                this.$store.commit('changeUserToken', jwt);
-                this.$store.dispatch('setUserInfo', res.data.data);
-                this.$store.dispatch('incrLoginFailNum', true);
-                this.$router.push("/home")
-                mMessage.success(this.$i18n.t('m.Welcome_Back'));
-              },
-              (_) => {
-                this.$store.dispatch('incrLoginFailNum', false);
-                this.btnLoginLoading = false;
-              }
+            (res) => {
+              this.btnLoginLoading = false;
+              this.changeModalStatus({ visible: false });
+              const jwt = res.headers["authorization"];
+              this.$store.commit("changeUserToken", jwt);
+              this.$store.dispatch("setUserInfo", res.data.data);
+              this.$router.push("/home");
+              mMessage.success(this.$i18n.t("m.Welcome_Back"));
+            },
+            (_) => {
+              this.btnLoginLoading = false;
+            }
           );
         }
       });
@@ -511,10 +447,10 @@ export default {
     },
     countDown() {
       let i = this.timeReset;
-      this.resetText = i + 's, ' + this.$i18n.t('m.Waiting_Can_Resend_Email');
+      this.resetText = i + "s, " + this.$i18n.t("m.Waiting_Can_Resend_Email");
       if (i == 0) {
         this.btnResetPwdDisabled = false;
-        this.resetText = this.$i18n.t('m.Send_Password_Reset_Email');
+        this.resetText = this.$i18n.t("m.Send_Password_Reset_Email");
         return;
       }
       setTimeout(() => {
@@ -522,38 +458,42 @@ export default {
       }, 1000);
     },
     handleResetPwd() {
-      this.$refs['formResetPassword'].validate((valid) => {
+      this.$refs["formResetPassword"].validate((valid) => {
         if (valid) {
-          if(!this.formResetPassword.password.match(/^(?=.*\d)(?=.*[a-zA-Z]).{6,20}$/)){
-            myMessage.warning(this.$i18n.t('m.Pass_Strength'));
+          if (
+            !this.formResetPassword.password.match(
+              /^(?=.*\d)(?=.*[a-zA-Z]).{6,20}$/
+            )
+          ) {
+            myMessage.warning(this.$i18n.t("m.Pass_Strength"));
             return;
           }
-          this.resetText = 'Waiting...';
-          mMessage.info(this.$i18n.t('m.The_system_is_processing'));
+          this.resetText = "Waiting...";
+          mMessage.info(this.$i18n.t("m.The_system_is_processing"));
           this.btnResetPwdLoading = true;
           this.btnResetPwdDisabled = true;
           api.applyResetPassword(this.formResetPassword).then(
-              (res) => {
-                mMessage.message(
-                    'success',
-                    this.$i18n.t('m.ResetPwd_Send_Email_Msg'),
-                    10000
-                );
-                this.countDown();
-                this.startTimeOut({ name: 'resetTimeOut' });
-                this.btnResetPwdLoading = false;
-                this.formResetPassword.captcha = '';
-                this.formResetPassword.captchaKey = '';
-                this.getCaptcha();
-              },
-              (err) => {
-                this.formResetPassword.captcha = '';
-                this.formResetPassword.captchaKey = '';
-                this.btnResetPwdLoading = false;
-                this.btnResetPwdDisabled = false;
-                this.resetText = this.$i18n.t('m.Send_Password_Reset_Email');
-                this.getCaptcha();
-              }
+            (res) => {
+              mMessage.message(
+                "success",
+                this.$i18n.t("m.ResetPwd_Send_Email_Msg"),
+                10000
+              );
+              this.countDown();
+              this.startTimeOut({ name: "resetTimeOut" });
+              this.btnResetPwdLoading = false;
+              this.formResetPassword.captcha = "";
+              this.formResetPassword.captchaKey = "";
+              this.getCaptcha();
+            },
+            (err) => {
+              this.formResetPassword.captcha = "";
+              this.formResetPassword.captchaKey = "";
+              this.btnResetPwdLoading = false;
+              this.btnResetPwdDisabled = false;
+              this.resetText = this.$i18n.t("m.Send_Password_Reset_Email");
+              this.getCaptcha();
+            }
           );
         }
       });
@@ -573,82 +513,83 @@ export default {
       }, 1000);
     },
     sendRegisterEmail() {
-      var emailReg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      var emailReg =
+        /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       if (!emailReg.test(this.registerForm.email)) {
-        mMessage.error(this.$i18n.t('m.Email_Check_Format'));
+        mMessage.error(this.$i18n.t("m.Email_Check_Format"));
         return;
       }
       this.btnEmailLoading = true;
-      this.countdownNum = 'Waiting...';
+      this.countdownNum = "Waiting...";
       if (this.registerForm.email) {
-        mMessage.info(this.$i18n.t('m.The_system_is_processing'));
+        mMessage.info(this.$i18n.t("m.The_system_is_processing"));
         api.getRegisterEmail(this.registerForm.email).then(
-            (res) => {
-              if (res.data.msg != null) {
-                mMessage.message(
-                    'success',
-                    this.$i18n.t('m.Register_Send_Email_Msg'),
-                    5000
-                );
-                this.$notify.success({
-                  title: this.$i18n.t('m.Success'),
-                  message: this.$i18n.t('m.Register_Send_Email_Msg'),
-                  duration: 5000,
-                  offset: 50
-                });
-                this.countDownRegister();
-                this.startTimeOut({ name: 'registerTimeOut' });
-              }
-            },
-            (res) => {
-              this.btnEmailLoading = false;
-              this.countdownNum = null;
+          (res) => {
+            if (res.data.msg != null) {
+              mMessage.message(
+                "success",
+                this.$i18n.t("m.Register_Send_Email_Msg"),
+                5000
+              );
+              this.$notify.success({
+                title: this.$i18n.t("m.Success"),
+                message: this.$i18n.t("m.Register_Send_Email_Msg"),
+                duration: 5000,
+                offset: 50,
+              });
+              this.countDownRegister();
+              this.startTimeOut({ name: "registerTimeOut" });
             }
+          },
+          (res) => {
+            this.btnEmailLoading = false;
+            this.countdownNum = null;
+          }
         );
       }
     },
     handleRegister() {
-      this.$refs['registerForm'].validate((valid) => {
+      this.$refs["registerForm"].validate((valid) => {
         if (valid) {
-          if(!this.registerForm.password.match(/^(?=.*\d)(?=.*[a-zA-Z]).{6,20}$/)){
-            myMessage.warning(this.$i18n.t('m.Pass_Strength'));
+          if (
+            !this.registerForm.password.match(/^(?=.*\d)(?=.*[a-zA-Z]).{6,20}$/)
+          ) {
+            myMessage.warning(this.$i18n.t("m.Pass_Strength"));
             return;
           }
           const _this = this;
           let formData = Object.assign({}, this.registerForm);
-          delete formData['passwordAgain'];
+          delete formData["passwordAgain"];
           this.btnRegisterLoading = true;
           api.register(formData).then(
-              (res) => {
-                mMessage.success(this.$i18n.t('m.Thanks_for_registering'));
-                this.switchMode('Login');
-                this.btnRegisterLoading = false;
-              },
-              (res) => {
-                this.registerForm.code = '';
-                this.btnRegisterLoading = false;
-              }
+            (res) => {
+              mMessage.success(this.$i18n.t("m.Thanks_for_registering"));
+              this.switchMode("Login");
+              this.btnRegisterLoading = false;
+            },
+            (res) => {
+              this.registerForm.code = "";
+              this.btnRegisterLoading = false;
+            }
           );
         }
       });
     },
-
   },
   computed: {
     ...mapGetters([
-      'modalStatus',
-      'loginFailNum',
-      'websiteConfig',
-      'isAuthenticated',
-      'resetTimeOut',
-      'registerTimeOut',
+      "modalStatus",
+      "websiteConfig",
+      "isAuthenticated",
+      "resetTimeOut",
+      "registerTimeOut",
     ]),
     visible: {
       get() {
         return this.modalStatus.visible;
       },
       set(value) {
-        this.changeModalStatus({visible: value});
+        this.changeModalStatus({ visible: value });
       },
     },
     timeReset: {
@@ -666,15 +607,6 @@ export default {
       set(value) {
         this.changeRegisterTimeOut({ timeRegister: value });
       },
-    },
-  },
-  watch: {
-    loginFailNum(newVal, oldVal) {
-      if (newVal >= 5) {
-        this.needVerify = true;
-      } else {
-        this.needVerify = false;
-      }
     },
   },
   created() {

@@ -1,6 +1,6 @@
+import api from '@/common/api'
 import { USER_TYPE } from '@/common/constants'
 import storage from '@/common/storage'
-import api from '@/common/api'
 const state = {
   userInfo:  storage.get('userInfo'),
   token: localStorage.getItem('token'),
@@ -56,14 +56,6 @@ const mutations = {
     state.token = token
     localStorage.setItem("token",token)
   },
-  incrLoginFailNum(state,{success}){
-    if(!success){
-      state.loginFailNum +=1
-    }else{
-      state.loginFailNum = 0
-    }
-  },
-  
   clearUserInfoAndToken(state){
     state.token = ''
     state.userInfo = {}
@@ -88,9 +80,6 @@ const actions = {
       commit('changeUserInfo', {
         userInfo: userInfo
       })
-  },
-  incrLoginFailNum({commit},success){
-    commit('incrLoginFailNum',{success:success})
   },
   clearUserInfoAndToken ({commit}) {
     commit('clearUserInfoAndToken')
