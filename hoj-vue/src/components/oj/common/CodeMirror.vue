@@ -865,6 +865,9 @@ export default {
     theme(newVal, oldVal) {
       this.editor.setOption("theme", newVal);
     },
+    problemTestCase(newVal, oldVal) {
+      this.userInput = null;
+    },
     userInput(newVal, oldVal) {
       this.expectedOutput = null;
       for (let example of this.problemTestCase) {
