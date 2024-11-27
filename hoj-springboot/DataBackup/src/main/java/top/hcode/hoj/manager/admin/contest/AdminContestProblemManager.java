@@ -298,12 +298,9 @@ public class AdminContestProblemManager {
         Problem problem = problemEntityService.getById(pid);
         String displayName = problem.getTitle();
 
-        // 修改成比赛题目
-        boolean updateProblem = problemEntityService.saveOrUpdate(problem.setAuth(3));
-
         boolean isOk = contestProblemEntityService.saveOrUpdate(new ContestProblem()
                 .setCid(cid).setPid(pid).setDisplayTitle(displayName).setDisplayId(displayId));
-        if (!isOk || !updateProblem) {
+        if (!isOk) {
             throw new StatusFailException("添加失败");
         }
 
@@ -351,13 +348,10 @@ public class AdminContestProblemManager {
         // 比赛中题目显示默认为原标题
         String displayName = problem.getTitle();
 
-        // 修改成比赛题目
-        boolean updateProblem = problemEntityService.saveOrUpdate(problem.setAuth(3));
-
         boolean isOk = contestProblemEntityService.saveOrUpdate(new ContestProblem()
                 .setCid(cid).setPid(problem.getId()).setDisplayTitle(displayName).setDisplayId(displayId));
 
-        if (!isOk || !updateProblem) {
+        if (!isOk) {
             throw new StatusFailException("添加失败");
         }
 
