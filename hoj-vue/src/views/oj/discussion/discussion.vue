@@ -5,31 +5,29 @@
         <h1 class="title" id="sharetitle">
           <span>{{ discussion.title }}</span>
           <el-button
-              type="primary"
-              size="mini"
-              style="margin-left:5px;vertical-align:middle;"
-              v-if="discussion.pid && !isExplain"
-              @click="toProblem(discussion.pid)"
-          >{{ $t('m.Go_to_problem') }}</el-button
+            type="primary"
+            size="mini"
+            style="margin-left: 5px; vertical-align: middle"
+            v-if="discussion.pid && !isExplain"
+            @click="toProblem(discussion.pid)"
+            >{{ $t("m.Go_to_problem") }}</el-button
           >
         </h1>
         <div class="title-msg">
           <span>
             <a
-                class="c999"
-                @click="getInfoByUsername(discussion.uid, discussion.author)"
-                :title="discussion.author"
+              class="c999"
+              @click="getInfoByUsername(discussion.uid, discussion.author)"
+              :title="discussion.author"
             >
-              <el-tooltip
-                  :disabled = "true"
-                  placement="top">
+              <el-tooltip :disabled="true" placement="top">
                 <avatar
-                    :username="discussion.author"
-                    :inline="true"
-                    :size="26"
-                    color="#FFF"
-                    class="user-avatar"
-                    :src="discussion.avatar"
+                  :username="discussion.author"
+                  :inline="true"
+                  :size="26"
+                  color="#FFF"
+                  class="user-avatar"
+                  :src="discussion.avatar"
                 ></avatar>
               </el-tooltip>
               <span class="user-name">{{ discussion.author }}</span>
@@ -41,91 +39,88 @@
             </span>
           </span>
           <span
-              class="role-root role"
-              title="Super Administrator"
-              v-if="discussion.role == 'root'"
-          >SPA</span
+            class="role-root role"
+            title="Super Administrator"
+            v-if="discussion.role == 'root'"
+            >SPA</span
           >
           <span
-              class="role-admin role"
-              title="Administrator"
-              v-if="discussion.role == 'admin'"
-          >ADM</span
+            class="role-admin role"
+            title="Administrator"
+            v-if="discussion.role == 'admin'"
+            >ADM</span
           >
-          <span class="c999" style="padding:0 6px;"
-          ><i class="el-icon-folder-opened"> {{ $t('m.Category') }}：</i
-          ><a
+          <span class="c999" style="padding: 0 6px"
+            ><i class="el-icon-folder-opened"> {{ $t("m.Category") }}：</i
+            ><a
               class="c999"
               @click="toAllDiscussionByCid(discussion.categoryId)"
-          >{{ discussion.categoryName }}</a
-          ></span
+              >{{ discussion.categoryName }}</a
+            ></span
           >
           <span class="c999"
-          ><i class="fa fa-thumbs-o-up"></i
-          ><span> {{ $t('m.Likes') }}：{{ discussion.likeNum }}</span></span
+            ><i class="fa fa-thumbs-o-up"></i
+            ><span> {{ $t("m.Likes") }}：{{ discussion.likeNum }}</span></span
           >
           <span class="c999">
             <i class="fa fa-eye"></i>
-            <span>{{ $t('m.Views') }}：{{ discussion.viewNum }}</span>
+            <span>{{ $t("m.Views") }}：{{ discussion.viewNum }}</span>
           </span>
 
           <a
-              @click="showReportDialog = true"
-              class="report"
-              :title="$t('m.Report')"
-          ><i class="fa fa-envira"></i><span>{{ $t('m.Report') }}</span></a
+            @click="showReportDialog = true"
+            class="report"
+            :title="$t('m.Report')"
+            ><i class="fa fa-envira"></i><span>{{ $t("m.Report") }}</span></a
           >
           <a
-              @click="toLikeDiscussion(discussion.id, true)"
-              class="like"
-              :title="$t('m.Like')"
-              v-if="!discussion.hasLike"
+            @click="toLikeDiscussion(discussion.id, true)"
+            class="like"
+            :title="$t('m.Like')"
+            v-if="!discussion.hasLike"
           >
             <i class="fa fa-thumbs-o-up"></i>
-            <span>{{ $t('m.Like') }}</span></a
+            <span>{{ $t("m.Like") }}</span></a
           >
           <a
-              @click="toLikeDiscussion(discussion.id, false)"
-              class="like"
-              :title="$t('m.Liked')"
-              v-else
+            @click="toLikeDiscussion(discussion.id, false)"
+            class="like"
+            :title="$t('m.Liked')"
+            v-else
           >
-            <i class="fa fa-thumbs-up"></i> <span>{{ $t('m.Liked') }}</span></a
+            <i class="fa fa-thumbs-up"></i> <span>{{ $t("m.Liked") }}</span></a
           >
 
           <span>
-            <i class="fa fa-clock-o"> {{ $t('m.Release_Time') }}：</i>
+            <i class="fa fa-clock-o"> {{ $t("m.Release_Time") }}：</i>
             <span>
               <el-tooltip
-                  :content="discussion.gmtCreate | localtime"
-                  placement="top"
+                :content="discussion.gmtCreate | localtime"
+                placement="top"
               >
                 <span>{{ discussion.gmtCreate | fromNow }}</span>
               </el-tooltip>
             </span>
           </span>
 
-          <span style="padding:0 6px;" v-show="userInfo.uid == discussion.uid"
-          ><a style="color:#8fb0c9" @click="showEditDiscussionDialog = true"
-          ><i class="el-icon-edit-outline"> {{ $t('m.Edit') }}</i></a
-          ></span
+          <span style="padding: 0 6px" v-show="userInfo.uid == discussion.uid"
+            ><a style="color: #8fb0c9" @click="showEditDiscussionDialog = true"
+              ><i class="el-icon-edit-outline"> {{ $t("m.Edit") }}</i></a
+            ></span
           >
         </div>
       </div>
       <div class="body-article">
-        <Markdown
-            :isAvoidXss="true"
-            :content="discussion.content">
-        </Markdown>
+        <Markdown :isAvoidXss="true" :content="discussion.content"> </Markdown>
       </div>
     </div>
     <!--举报-->
     <el-dialog
-        :title="$t('m.Report')"
-        :visible.sync="showReportDialog"
-        width="350px"
-        :append-to-body="true"
-        v-if="!discussion.stats"
+      :title="$t('m.Report')"
+      :visible.sync="showReportDialog"
+      width="350px"
+      :append-to-body="true"
+      v-if="!discussion.stats"
     >
       <el-form label-position="top" :model="report">
         <el-form-item :label="$t('m.Tags')" required>
@@ -140,64 +135,64 @@
         </el-form-item>
         <el-form-item :label="$t('m.Report_Reason')" required>
           <el-input
-              type="textarea"
-              v-model="report.content"
-              :placeholder="$t('m.Report_Reason')"
-              maxlength="200"
-              show-word-limit
-              :rows="4"
+            type="textarea"
+            v-model="report.content"
+            :placeholder="$t('m.Report_Reason')"
+            maxlength="200"
+            show-word-limit
+            :rows="4"
           >
           </el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button type="danger" @click.native="showReportDialog = false">{{
-            $t('m.Cancel')
-          }}</el-button>
+          $t("m.Cancel")
+        }}</el-button>
         <el-button type="primary" @click.native="submitReport">{{
-            $t('m.OK')
-          }}</el-button>
+          $t("m.OK")
+        }}</el-button>
       </span>
     </el-dialog>
 
     <!--编辑讨论对话框-->
     <el-dialog
-        :title="discussionDialogTitle"
-        :visible.sync="showEditDiscussionDialog"
-        :fullscreen="true"
-        @open="onOpenEditDialog"
-        :modal = "false"
+      :title="discussionDialogTitle"
+      :visible.sync="showEditDiscussionDialog"
+      :fullscreen="true"
+      @open="onOpenEditDialog"
+      :modal="false"
     >
       <el-form label-position="top" :model="discussion">
         <el-form-item :label="$t('m.Discussion_title')" required>
           <el-input
-              v-model="discussion.title"
-              :placeholder="$t('m.Discussion_title')"
-              class="title-input"
+            v-model="discussion.title"
+            :placeholder="$t('m.Discussion_title')"
+            class="title-input"
           >
           </el-input>
         </el-form-item>
         <el-form-item :label="$t('m.Discussion_Desc')" required>
           <el-input
-              v-model="discussion.description"
-              :placeholder="$t('m.Discussion_Desc')"
-              class="title-input"
+            v-model="discussion.description"
+            :placeholder="$t('m.Discussion_Desc')"
+            class="title-input"
           >
           </el-input>
         </el-form-item>
         <el-form-item :label="$t('m.Discussion_Category')" required>
           <el-select v-model="discussion.categoryId" placeholder="---" disabled>
             <el-option
-                :label="discussion.categoryName"
-                :value="discussion.categoryId"
+              :label="discussion.categoryName"
+              :value="discussion.categoryId"
             >
             </el-option>
           </el-select>
         </el-form-item>
         <el-form-item
-            :label="$t('m.Discussion_top')"
-            required
-            v-if="isAdminRole"
+          :label="$t('m.Discussion_top')"
+          required
+          v-if="isAdminRole"
         >
           <el-switch v-model="discussion.topPriority"> </el-switch>
         </el-form-item>
@@ -207,28 +202,31 @@
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button
-            type="danger"
-            @click.native="showEditDiscussionDialog = false"
-        >{{ $t('m.Cancel') }}</el-button
+          type="danger"
+          @click.native="showEditDiscussionDialog = false"
+          >{{ $t("m.Cancel") }}</el-button
         >
         <el-button type="primary" @click.native="submitDiscussion">{{
-            $t('m.OK')
-          }}</el-button>
+          $t("m.OK")
+        }}</el-button>
       </span>
     </el-dialog>
-    <comment v-if="!discussion.stats" :did="$route.params.discussionID || discussionID"></comment>
+    <comment
+      v-if="!discussion.stats"
+      :did="$route.params.discussionID || discussionID"
+    ></comment>
   </div>
 </template>
 
 <script>
-import api from '@/common/api';
-import myMessage from '@/common/message';
-import { addCodeBtn } from '@/common/codeblock';
-import Avatar from 'vue-avatar';
-import { mapGetters, mapActions } from 'vuex';
-const Editor = () => import('@/components/admin/Editor.vue');
-const comment = () => import('@/components/oj/comment/comment');
-import Markdown from '@/components/oj/common/Markdown';
+import api from "@/common/api";
+import myMessage from "@/common/message";
+import { addCodeBtn } from "@/common/codeblock";
+import Avatar from "vue-avatar";
+import { mapGetters, mapActions } from "vuex";
+const Editor = () => import("@/components/admin/Editor.vue");
+const comment = () => import("@/components/oj/comment/comment");
+import Markdown from "@/components/oj/common/Markdown";
 export default {
   components: {
     comment,
@@ -236,15 +234,15 @@ export default {
     Markdown,
     Editor,
   },
-  props:{
+  props: {
     discussionID: 0,
-    isExplain:false,
+    isExplain: false,
   },
   data() {
     return {
       discussion: {
-        author: 'XingYi',
-        avatar: '',
+        author: "XingYi",
+        avatar: "",
         stats: 1,
       },
       query: {
@@ -252,11 +250,11 @@ export default {
         did: null,
       },
       showEditDiscussionDialog: false,
-      discussionDialogTitle: 'Edit Discussion',
+      discussionDialogTitle: "Edit Discussion",
       showReportDialog: false,
       report: {
         tagList: [],
-        content: '',
+        content: "",
       },
       loading: false,
     };
@@ -265,36 +263,37 @@ export default {
     this.init();
   },
   methods: {
-    ...mapActions(['changeDomTitle']),
+    ...mapActions(["changeDomTitle"]),
     init() {
       this.routeName = this.$route.name;
-      this.discussionID = this.$route.params.discussionID || this.discussionID || '';
+      this.discussionID =
+        this.$route.params.discussionID || this.discussionID || "";
       this.loading = true;
       api.getDiscussion(this.discussionID).then(
-          (res) => {
-            this.discussion = res.data.data;
-            this.changeDomTitle({ title: this.discussion.title });
-            this.$nextTick((_) => {
-              addCodeBtn();
-            });
-            this.loading = false;
-          },
-          (err) => {
-            this.loading = false;
-          }
+        (res) => {
+          this.discussion = res.data.data;
+          this.changeDomTitle({ title: this.discussion.title });
+          this.$nextTick((_) => {
+            addCodeBtn();
+          });
+          this.loading = false;
+        },
+        (err) => {
+          this.loading = false;
+        },
       );
     },
 
     getInfoByUsername(uid, username) {
       this.$router.push({
-        path: '/user-home',
+        path: "/user-home",
         query: { uid, username },
       });
     },
 
     toAllDiscussionByCid(cid) {
       this.$router.push({
-        path: '/discussion',
+        path: "/discussion",
         query: { cid },
       });
     },
@@ -303,12 +302,12 @@ export default {
       let groupID = this.$route.params.groupID;
       if (groupID) {
         this.$router.push({
-          name: 'GroupProblemDetails',
+          name: "GroupProblemDetails",
           params: { problemID: pid, groupID: groupID },
         });
       } else {
         this.$router.push({
-          name: 'ProblemDetails',
+          name: "ProblemDetails",
           params: { problemID: pid },
         });
       }
@@ -316,16 +315,16 @@ export default {
 
     toLikeDiscussion(did, toLike) {
       if (!this.isAuthenticated) {
-        myMessage.warning(this.$i18n.t('m.Please_login_first'));
+        myMessage.warning(this.$i18n.t("m.Please_login_first"));
         return;
       }
       api.toLikeDiscussion(did, toLike).then((res) => {
         if (toLike) {
           this.discussion.likeNum++;
           this.discussion.hasLike = true;
-          myMessage.success(this.$i18n.t('m.Like_Successfully'));
+          myMessage.success(this.$i18n.t("m.Like_Successfully"));
         } else {
-          myMessage.success(this.$i18n.t('m.Cancel_Like_Successfully'));
+          myMessage.success(this.$i18n.t("m.Cancel_Like_Successfully"));
           this.discussion.likeNum--;
           this.discussion.hasLike = false;
         }
@@ -338,25 +337,25 @@ export default {
       delete discussion.viewNum;
       delete discussion.likeNum;
       api.updateDiscussion(discussion).then((res) => {
-        myMessage.success(this.$i18n.t('m.Update_Successfully'));
+        myMessage.success(this.$i18n.t("m.Update_Successfully"));
         this.showEditDiscussionDialog = false;
         this.init();
       });
     },
     submitReport() {
       if (!this.isAuthenticated) {
-        myMessage.warning(this.$i18n.t('m.Please_login_first'));
+        myMessage.warning(this.$i18n.t("m.Please_login_first"));
         return;
       }
       if (this.report.tagList.length == 0 && !this.report.content) {
         myMessage.warning(
-            this.$i18n.t('m.The_report_label_and_reason_cannot_be_empty')
+          this.$i18n.t("m.The_report_label_and_reason_cannot_be_empty"),
         );
         return;
       }
-      var reportMsg = '';
+      var reportMsg = "";
       for (let i = 0; i < this.report.tagList.length; i++) {
-        reportMsg += '#' + this.report.tagList[i] + '# ';
+        reportMsg += "#" + this.report.tagList[i] + "# ";
       }
       reportMsg += this.report.content;
       let discussionReport = {
@@ -365,13 +364,13 @@ export default {
         did: this.discussionID,
       };
       api.toReportDiscussion(discussionReport).then((res) => {
-        myMessage.success(this.$i18n.t('m.Send_successfully'));
+        myMessage.success(this.$i18n.t("m.Send_successfully"));
         this.showReportDialog = false;
       });
     },
   },
   computed: {
-    ...mapGetters(['isAuthenticated', 'isAdminRole', 'userInfo']),
+    ...mapGetters(["isAuthenticated", "isAdminRole", "userInfo"]),
   },
   watch: {
     isAuthenticated(newVal, oldVal) {

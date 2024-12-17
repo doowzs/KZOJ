@@ -1,10 +1,9 @@
 <template>
   <el-card class="box-card">
-    <div
-      slot="header"
-      class="clearfix"
-    >
-      <span class="panel-title">{{$t('m.ScrollBoard_Parameter_Config')}}</span>
+    <div slot="header" class="clearfix">
+      <span class="panel-title">{{
+        $t("m.ScrollBoard_Parameter_Config")
+      }}</span>
     </div>
     <el-alert
       :title="$t('m.Formula_for_calculating_the_number_of_medals')"
@@ -13,65 +12,57 @@
     >
       <template slot>
         <p>
-          {{ $i18n.t('m.Number_of_gold_medals') }} : {{this.total}} × 10% = {{this.goldMedal}}
+          {{ $i18n.t("m.Number_of_gold_medals") }} : {{ this.total }} × 10% =
+          {{ this.goldMedal }}
         </p>
         <p>
-          {{ $i18n.t('m.Number_of_silver_medals') }} : {{this.total}} × 20% = {{this.silverMedal}}
+          {{ $i18n.t("m.Number_of_silver_medals") }} : {{ this.total }} × 20% =
+          {{ this.silverMedal }}
         </p>
         <p>
-          {{ $i18n.t('m.Number_of_bronze_medals') }} : {{this.total}} × 30% = {{this.bronzeMedal}}
+          {{ $i18n.t("m.Number_of_bronze_medals") }} : {{ this.total }} × 30% =
+          {{ this.bronzeMedal }}
         </p>
       </template>
     </el-alert>
     <el-form>
       <el-form-item :label="$t('m.Contest_ID')">
-        <el-input
-          v-model="cid"
-          size="small"
-          disabled
-        ></el-input>
+        <el-input v-model="cid" size="small" disabled></el-input>
       </el-form-item>
       <el-form-item :label="$t('m.Number_of_gold_medals')">
-        <el-input
-          v-model="goldMedal"
-          size="small"
-        ></el-input>
+        <el-input v-model="goldMedal" size="small"></el-input>
       </el-form-item>
       <el-form-item :label="$t('m.Number_of_silver_medals')">
-        <el-input
-          v-model="silverMedal"
-          size="small"
-        ></el-input>
+        <el-input v-model="silverMedal" size="small"></el-input>
       </el-form-item>
       <el-form-item :label="$t('m.Number_of_bronze_medals')">
-        <el-input
-          v-model="bronzeMedal"
-          size="small"
-        ></el-input>
+        <el-input v-model="bronzeMedal" size="small"></el-input>
       </el-form-item>
       <el-form-item :label="$t('m.Whether_to_remove_the_star_user')">
         <el-switch v-model="removeStar"></el-switch>
       </el-form-item>
     </el-form>
-    <div style="text-align:center">
+    <div style="text-align: center">
       <template v-if="!contestEnded">
         <el-popconfirm
           :title="$t('m.Contest_Non_Ended_But_Want_to_Scroll_Board')"
           @confirm="goScrollBoard"
         >
           <el-button
-            style="padding: 3px 0; font-size: 16px;"
+            style="padding: 3px 0; font-size: 16px"
             type="text"
             slot="reference"
-          >{{$t('m.Start_Rolling')}}</el-button>
+            >{{ $t("m.Start_Rolling") }}</el-button
+          >
         </el-popconfirm>
       </template>
       <template v-else>
         <el-button
-          style="padding: 3px 0; font-size: 16px;"
+          style="padding: 3px 0; font-size: 16px"
           type="text"
           @click="goScrollBoard"
-        >{{$t('m.Start_Rolling')}}</el-button>
+          >{{ $t("m.Start_Rolling") }}</el-button
+        >
       </template>
     </div>
   </el-card>
@@ -127,5 +118,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

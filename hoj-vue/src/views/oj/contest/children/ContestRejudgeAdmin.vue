@@ -1,7 +1,7 @@
 <template>
   <el-card shadow="always">
     <div slot="header">
-      <span class="panel-title">{{ $t('m.Contest_Rejudge') }}</span>
+      <span class="panel-title">{{ $t("m.Contest_Rejudge") }}</span>
     </div>
     <vxe-table
       border="inner"
@@ -40,7 +40,7 @@
             icon="el-icon-refresh-right"
             @click="rejudgeProblem(row)"
             round
-            >{{ $t('m.Rejudge_All') }}</el-button
+            >{{ $t("m.Rejudge_All") }}</el-button
           >
         </template>
       </vxe-table-column>
@@ -48,12 +48,12 @@
   </el-card>
 </template>
 <script>
-import { mapState, mapActions } from 'vuex';
-import api from '@/common/api';
-import myMessage from '@/common/message';
+import { mapState, mapActions } from "vuex";
+import api from "@/common/api";
+import myMessage from "@/common/message";
 
 export default {
-  name: 'Contest-Rejudge-Admin',
+  name: "Contest-Rejudge-Admin",
   data() {
     return {
       btnLoading: false,
@@ -66,12 +66,12 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getContestProblems']),
+    ...mapActions(["getContestProblems"]),
     rejudgeProblem(row) {
-      this.$confirm(this.$i18n.t('m.Contest_Rejudge_Tips'), 'Tips', {
-        confirmButtonText: this.$i18n.t('m.OK'),
-        cancelButtonText: this.$i18n.t('m.Cancel'),
-        type: 'warning',
+      this.$confirm(this.$i18n.t("m.Contest_Rejudge_Tips"), "Tips", {
+        confirmButtonText: this.$i18n.t("m.OK"),
+        cancelButtonText: this.$i18n.t("m.Cancel"),
+        type: "warning",
       }).then(
         () => {
           let params = {
@@ -82,14 +82,14 @@ export default {
           api
             .ContestRejudgeProblem(params)
             .then((res) => {
-              myMessage.success(this.$i18n.t('m.Rejudge_successfully'));
+              myMessage.success(this.$i18n.t("m.Rejudge_successfully"));
               this.btnLoading = false;
             })
             .catch(() => {
               this.btnLoading = false;
             });
         },
-        () => {}
+        () => {},
       );
     },
   },

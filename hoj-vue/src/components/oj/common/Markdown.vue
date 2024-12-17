@@ -1,18 +1,12 @@
 <template>
   <div
-      v-if="isAvoidXss"
-      v-dompurify-html="html"
-      v-highlight
-      v-katex
-      class="markdown-body"
+    v-if="isAvoidXss"
+    v-dompurify-html="html"
+    v-highlight
+    v-katex
+    class="markdown-body"
   ></div>
-  <div
-      v-else
-      v-html="html"
-      v-highlight
-      v-katex
-      class="markdown-body"
-  ></div>
+  <div v-else v-html="html" v-highlight v-katex class="markdown-body"></div>
 </template>
 <script>
 export default {
@@ -27,10 +21,10 @@ export default {
       type: String,
     },
   },
-  data(){
-    return{
-      pdfLogo: require('@/assets/pdf-logo.svg'),
-    }
+  data() {
+    return {
+      pdfLogo: require("@/assets/pdf-logo.svg"),
+    };
   },
   computed: {
     html: function () {
@@ -40,8 +34,8 @@ export default {
       let res = this.$markDown.render(this.content);
       // 获取pdf链接生成预览模块
       res = res.replace(
-          /<a.*?href="(.*?.pdf)".*?>(.*?)<\/a>/gi,
-          `<p></p>
+        /<a.*?href="(.*?.pdf)".*?>(.*?)<\/a>/gi,
+        `<p></p>
         <file-card>
             <div>
                 <img class="pdf-svg" src="${this.pdfLogo}">
@@ -56,7 +50,7 @@ export default {
             This browser does not support PDFs. Please download the PDF to view it: <a href="$1" target="_blank">Download PDF</a>.</p>
             </embed>
         </object>   -->
-        `
+        `,
       );
       return res;
     },

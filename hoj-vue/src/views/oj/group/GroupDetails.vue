@@ -1,12 +1,12 @@
 <template>
   <div>
     <el-row :gutter="20">
-      <el-col :span="24" style="margin-top: 10px;">
+      <el-col :span="24" style="margin-top: 10px">
         <div class="sub-menu">
           <el-tabs @tab-click="tabClick" v-model="route_name">
             <el-tab-pane name="GroupDetails" lazy>
               <span slot="label">
-                <i class="el-icon-s-home"></i>&nbsp;{{ $t('m.Group_Home') }}
+                <i class="el-icon-s-home"></i>&nbsp;{{ $t("m.Group_Home") }}
               </span>
             </el-tab-pane>
             <el-tab-pane
@@ -15,7 +15,7 @@
               :disabled="groupMenuDisabled"
             >
               <span slot="label">
-                <i class="fa fa-list"></i>&nbsp;{{ $t('m.Group_Problem') }}
+                <i class="fa fa-list"></i>&nbsp;{{ $t("m.Group_Problem") }}
               </span>
             </el-tab-pane>
             <el-tab-pane
@@ -24,7 +24,7 @@
               :disabled="groupMenuDisabled"
             >
               <span slot="label">
-                <i class="el-icon-s-flag"></i>&nbsp;{{ $t('m.Group_Training') }}
+                <i class="el-icon-s-flag"></i>&nbsp;{{ $t("m.Group_Training") }}
               </span>
             </el-tab-pane>
 
@@ -34,7 +34,7 @@
               :disabled="groupMenuDisabled"
             >
               <span slot="label">
-                <i class="el-icon-s-data"></i>&nbsp;{{ $t('m.Group_Contest') }}
+                <i class="el-icon-s-data"></i>&nbsp;{{ $t("m.Group_Contest") }}
               </span>
             </el-tab-pane>
 
@@ -45,7 +45,7 @@
             >
               <span slot="label">
                 <i class="el-icon-s-marketing"></i>&nbsp;{{
-                  $t('m.Group_Submission')
+                  $t("m.Group_Submission")
                 }}
               </span>
             </el-tab-pane>
@@ -58,7 +58,7 @@
             >
               <span slot="label">
                 <i class="el-icon-share"></i>&nbsp;{{
-                  $t('m.Group_Discussion')
+                  $t("m.Group_Discussion")
                 }}
               </span>
             </el-tab-pane>
@@ -69,28 +69,25 @@
             >
               <span slot="label">
                 <i class="el-icon-user-solid"></i>&nbsp;{{
-                  $t('m.Group_Member')
+                  $t("m.Group_Member")
                 }}
               </span>
             </el-tab-pane>
             <el-tab-pane lazy name="GroupAnnouncementList" v-if="isGroupAdmin">
               <span slot="label">
                 <i class="fa fa-bullhorn"></i>&nbsp;{{
-                  $t('m.Group_Announcement')
+                  $t("m.Group_Announcement")
                 }}
               </span>
             </el-tab-pane>
             <el-tab-pane lazy name="GroupSetting" v-if="isGroupRoot">
               <span slot="label">
-                <i class="el-icon-s-tools"></i>&nbsp;{{ $t('m.Group_Setting') }}
+                <i class="el-icon-s-tools"></i>&nbsp;{{ $t("m.Group_Setting") }}
               </span>
             </el-tab-pane>
-            <el-tab-pane 
-              lazy 
-              name="GroupRank" 
-              :disabled="groupMenuDisabled">
+            <el-tab-pane lazy name="GroupRank" :disabled="groupMenuDisabled">
               <span slot="label">
-                <i class="el-icon-medal-1"></i>&nbsp;{{ $t('m.Group_Rank') }}
+                <i class="el-icon-medal-1"></i>&nbsp;{{ $t("m.Group_Rank") }}
               </span>
             </el-tab-pane>
           </el-tabs>
@@ -101,12 +98,12 @@
         v-if="
           $route.name === 'GroupSubmissionList' ||
           $route.name === 'GroupSubmissionDetails' ||
-            $route.name === 'GroupProblemDetails' ||
-            ($route.name != 'GroupTrainingList'
-             && $route.name.startsWith('GroupTraining'))
+          $route.name === 'GroupProblemDetails' ||
+          ($route.name != 'GroupTrainingList' &&
+            $route.name.startsWith('GroupTraining'))
         "
       >
-        <el-col :span="24" style=" margin-bottom: 10px;">
+        <el-col :span="24" style="margin-bottom: 10px">
           <transition name="el-fade-in-linear">
             <router-view></router-view>
           </transition>
@@ -114,7 +111,7 @@
       </template>
 
       <template v-else>
-        <el-col :md="18" :xs="24" style=" margin-bottom: 10px;">
+        <el-col :md="18" :xs="24" style="margin-bottom: 10px">
           <transition name="el-fade-in-linear">
             <router-view></router-view>
           </transition>
@@ -128,11 +125,12 @@
                 <div class="description-body">
                   <Markdown
                     v-if="group.description"
-                    :isAvoidXss="true" 
-                    :content="group.description">
+                    :isAvoidXss="true"
+                    :content="group.description"
+                  >
                   </Markdown>
                   <div class="markdown-body" v-else>
-                    <p>{{ $t('m.Not_set_yet') }}</p>
+                    <p>{{ $t("m.Not_set_yet") }}</p>
                   </div>
                 </div>
               </el-col>
@@ -151,7 +149,7 @@
             </el-row>
           </el-card>
         </el-col>
-        <el-col :md="6" :xs="24" style="margin-bottom: 10px;">
+        <el-col :md="6" :xs="24" style="margin-bottom: 10px">
           <el-card>
             <div slot="header" style="text-align: center">
               <avatar
@@ -165,7 +163,7 @@
             <div class="info-rows">
               <div>
                 <span>
-                  <span>{{ $t('m.Group_Name') }}</span>
+                  <span>{{ $t("m.Group_Name") }}</span>
                 </span>
                 <span>
                   <el-tooltip
@@ -180,7 +178,7 @@
               </div>
               <div>
                 <span>
-                  <span>{{ $t('m.Group_Owner') }}</span>
+                  <span>{{ $t("m.Group_Owner") }}</span>
                 </span>
                 <span>
                   <el-link
@@ -194,7 +192,7 @@
               </div>
               <div>
                 <span>
-                  <span>{{ $t('m.Group_Auth') }}</span>
+                  <span>{{ $t("m.Group_Auth") }}</span>
                 </span>
                 <span>
                   <el-tooltip
@@ -206,7 +204,7 @@
                       size="medium"
                       effect="dark"
                     >
-                      {{ $t('m.Group_' + GROUP_TYPE_REVERSE[group.auth].name) }}
+                      {{ $t("m.Group_" + GROUP_TYPE_REVERSE[group.auth].name) }}
                     </el-tag>
                   </el-tooltip>
                   <el-tooltip :content="$t('m.Group_Hidden_Tips')">
@@ -216,24 +214,24 @@
                       type="primary"
                       effect="dark"
                     >
-                      {{ $t('m.Group_Hidden') }}
+                      {{ $t("m.Group_Hidden") }}
                     </el-tag>
                   </el-tooltip>
                 </span>
               </div>
               <div>
                 <span>
-                  <span>{{ $t('m.Created_Time') }}</span>
+                  <span>{{ $t("m.Created_Time") }}</span>
                 </span>
                 <span>
                   <i class="el-icon-time">
-                    {{ group.gmtCreate | localtime((format = 'YYYY-MM-DD')) }}
+                    {{ group.gmtCreate | localtime((format = "YYYY-MM-DD")) }}
                   </i>
                 </span>
               </div>
               <div>
                 <span>
-                  <span>{{ $t('m.Group_Number') }}</span>
+                  <span>{{ $t("m.Group_Number") }}</span>
                 </span>
                 <span>
                   <span>{{ group.id }}</span>
@@ -243,27 +241,27 @@
             <div style="text-align: center">
               <span v-if="isGroupOwner || isSuperAdmin">
                 <el-button type="danger" size="small" @click="openVerifyDialog">
-                  {{ $t('m.Disband_Group') }}
+                  {{ $t("m.Disband_Group") }}
                 </el-button>
               </span>
               <span v-else-if="isGroupMember">
                 <el-button type="danger" size="small" @click="exitGroup">
-                  {{ $t('m.Exit_Group') }}
+                  {{ $t("m.Exit_Group") }}
                 </el-button>
               </span>
               <span v-else-if="isAuthenticated && userAuth == 0">
                 <el-button type="primary" size="small" @click="handleApply">
-                  {{ $t('m.Apply_Group') }}
+                  {{ $t("m.Apply_Group") }}
                 </el-button>
               </span>
               <span v-else-if="userAuth == 1">
                 <el-button type="warning" size="small">
-                  {{ $t('m.Applying') }}
+                  {{ $t("m.Applying") }}
                 </el-button>
               </span>
               <span v-else-if="userAuth == 2">
                 <el-button type="info" size="small">
-                  {{ $t('m.Refused') }}
+                  {{ $t("m.Refused") }}
                 </el-button>
               </span>
             </div>
@@ -317,40 +315,37 @@
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button type="danger" @click.native="showApplyDialog = false">{{
-          $t('m.Cancel')
+          $t("m.Cancel")
         }}</el-button>
         <el-button type="primary" @click.native="submitApply">{{
-          $t('m.OK')
+          $t("m.OK")
         }}</el-button>
       </span>
     </el-dialog>
 
-    <el-dialog
-        :visible.sync="showVerifyDialog"
-        width="370px"
-    >
+    <el-dialog :visible.sync="showVerifyDialog" width="370px">
       <el-form
-          :model="verifyForm"
-          :rules="rulesVerify"
-          ref="verifyForm"
-          label-position="left"
-          label-width="0px"
-          class="demo-ruleForm"
+        :model="verifyForm"
+        :rules="rulesVerify"
+        ref="verifyForm"
+        label-position="left"
+        label-width="0px"
+        class="demo-ruleForm"
       >
-        <h1 class="title">{{ $t('m.Verify') }}</h1>
-        <el-form-item prop="email" >
+        <h1 class="title">{{ $t("m.Verify") }}</h1>
+        <el-form-item prop="email">
           <el-input
-              v-model="verifyForm.email"
-              prefix-icon="el-icon-message"
-              :placeholder="$t('m.Register_Email')"
-              disabled
+            v-model="verifyForm.email"
+            prefix-icon="el-icon-message"
+            :placeholder="$t('m.Register_Email')"
+            disabled
           >
             <el-button
-                slot="append"
-                icon="el-icon-message"
-                type="primary"
-                @click.native="getVerifyEmailCode"
-                :loading="btnEmailLoading"
+              slot="append"
+              icon="el-icon-message"
+              type="primary"
+              @click.native="getVerifyEmailCode"
+              :loading="btnEmailLoading"
             >
               <span v-show="btnEmailLoading">{{ countdownNum }}</span>
             </el-button>
@@ -358,23 +353,23 @@
         </el-form-item>
         <el-form-item prop="code">
           <el-input
-              v-model="verifyForm.code"
-              prefix-icon="el-icon-s-check"
-              :placeholder="$t('m.Register_Email_Captcha')"
+            v-model="verifyForm.code"
+            prefix-icon="el-icon-s-check"
+            :placeholder="$t('m.Register_Email_Captcha')"
           ></el-input>
         </el-form-item>
         <el-form-item>
           <el-button
-              type="primary"
-              @click="disbandGroup"
-              :loading="btnVerifyLoading"
-              style="width: 100%"
+            type="primary"
+            @click="disbandGroup"
+            :loading="btnVerifyLoading"
+            style="width: 100%"
           >
-            {{  $t('m.OK') }}
+            {{ $t("m.OK") }}
           </el-button>
           <router-link to="/setting">
             <el-link type="primary">
-              {{$t('m.Bind_Email_Address') }}
+              {{ $t("m.Bind_Email_Address") }}
             </el-link>
           </router-link>
         </el-form-item>
@@ -384,69 +379,69 @@
 </template>
 
 <script>
-import { GROUP_TYPE, GROUP_TYPE_REVERSE } from '@/common/constants';
-import { mapState, mapGetters, mapActions } from 'vuex';
-import Avatar from 'vue-avatar';
-import Announcement from '@/components/oj/group/Announcement.vue';
-import api from '@/common/api';
-import mMessage from '@/common/message';
-import Markdown from '@/components/oj/common/Markdown';
+import { GROUP_TYPE, GROUP_TYPE_REVERSE } from "@/common/constants";
+import { mapState, mapGetters, mapActions } from "vuex";
+import Avatar from "vue-avatar";
+import Announcement from "@/components/oj/group/Announcement.vue";
+import api from "@/common/api";
+import mMessage from "@/common/message";
+import Markdown from "@/components/oj/common/Markdown";
 import myMessage from "@/common/message";
 export default {
-  name: 'GroupDetails',
+  name: "GroupDetails",
   components: {
     Avatar,
     Announcement,
-    Markdown
+    Markdown,
   },
   data() {
     var checkGroupReason = (rule, value, callback) => {
       if (this.group.auth !== 1) {
-        if (value === null || value === '') {
-          callback(new Error(this.$t('m.Apply_Reason_Check_Required')));
+        if (value === null || value === "") {
+          callback(new Error(this.$t("m.Apply_Reason_Check_Required")));
         } else if (value.length < 5 || value.length > 100) {
-          callback(new Error(this.$t('m.Apply_Reason_Check_Min_Max')));
+          callback(new Error(this.$t("m.Apply_Reason_Check_Min_Max")));
         }
       }
       callback();
     };
     var checkGroupCode = (rule, value, callback) => {
       if (this.group.auth === 3) {
-        if (value === null || value === '') {
-          callback(new Error(this.$t('m.Group_Code_Check_Required')));
+        if (value === null || value === "") {
+          callback(new Error(this.$t("m.Group_Code_Check_Required")));
         } else if (value.length != 6) {
-          callback(new Error(this.$t('m.Group_Code_Check_Min_Max')));
+          callback(new Error(this.$t("m.Group_Code_Check_Min_Max")));
         }
       }
       callback();
     };
     return {
-      route_name: 'GroupDetails',
-      defaultAvatar: require('@/assets/default.png'),
+      route_name: "GroupDetails",
+      defaultAvatar: require("@/assets/default.png"),
       showApplyDialog: false,
       showVerifyDialog: false,
       btnEmailLoading: false,
-      btnVerifyLoading:false,
+      btnVerifyLoading: false,
       countdownNum: null,
       appliaction: {
-        code: '',
-        reason: '',
+        code: "",
+        reason: "",
       },
       verifyForm: {
-        email: '',
-        code: '',
+        email: "",
+        code: "",
       },
       rules: {
         code: [
           {
             validator: checkGroupCode,
-            trigger: 'blur',
+            trigger: "blur",
           },
         ],
         reason: [
           {
             validator: checkGroupReason,
-            trigger: 'blur',
+            trigger: "blur",
           },
         ],
       },
@@ -454,26 +449,26 @@ export default {
         email: [
           {
             required: true,
-            message: this.$i18n.t('m.Email_Check_Required'),
-            trigger: 'blur',
+            message: this.$i18n.t("m.Email_Check_Required"),
+            trigger: "blur",
           },
           {
-            type: 'email',
-            message: this.$i18n.t('m.Email_Check_Format'),
-            trigger: 'blur',
+            type: "email",
+            message: this.$i18n.t("m.Email_Check_Format"),
+            trigger: "blur",
           },
         ],
         code: [
           {
             required: true,
-            message: this.$i18n.t('m.Code_Check_Required'),
-            trigger: 'blur',
+            message: this.$i18n.t("m.Code_Check_Required"),
+            trigger: "blur",
           },
           {
             min: 6,
             max: 6,
-            message: this.$i18n.t('m.Code_Check_Length'),
-            trigger: 'blur',
+            message: this.$i18n.t("m.Code_Check_Length"),
+            trigger: "blur",
           },
         ],
       },
@@ -481,18 +476,18 @@ export default {
   },
   created() {
     this.route_name = this.$route.name;
-    if (this.route_name == 'GroupProblemDetails') {
-      this.route_name = 'GroupProblemList';
-    } else if (this.route_name == 'GroupSubmissionDetails') {
-      this.route_name = 'GroupSubmissionList';
-    } else if (this.route_name == 'GroupDiscussionDetails') {
-      this.route_name = 'GroupDiscussionList';
-    }else if(this.route_name.startsWith('GroupTraining')){
-      this.route_name = 'GroupTrainingList';
+    if (this.route_name == "GroupProblemDetails") {
+      this.route_name = "GroupProblemList";
+    } else if (this.route_name == "GroupSubmissionDetails") {
+      this.route_name = "GroupSubmissionList";
+    } else if (this.route_name == "GroupDiscussionDetails") {
+      this.route_name = "GroupDiscussionList";
+    } else if (this.route_name.startsWith("GroupTraining")) {
+      this.route_name = "GroupTrainingList";
     }
     this.GROUP_TYPE = Object.assign({}, GROUP_TYPE);
     this.GROUP_TYPE_REVERSE = Object.assign({}, GROUP_TYPE_REVERSE);
-    this.$store.dispatch('getGroup').then((res) => {
+    this.$store.dispatch("getGroup").then((res) => {
       this.changeDomTitle({ title: res.data.data.name });
     });
     if (this.timeVerify != 60 && this.timeVerify != 0) {
@@ -501,14 +496,10 @@ export default {
     }
   },
   mounted() {
-    this.verifyForm.email = this.$store.getters.userInfo.email || '';
+    this.verifyForm.email = this.$store.getters.userInfo.email || "";
   },
   methods: {
-    ...mapActions([
-      'changeDomTitle',
-      'startTimeOut',
-      'changeRegisterTimeOut',
-    ]),
+    ...mapActions(["changeDomTitle", "startTimeOut", "changeRegisterTimeOut"]),
     tabClick(tab) {
       let name = tab.name;
       if (name !== this.$route.name) {
@@ -523,7 +514,7 @@ export default {
       }
     },
     submitApply() {
-      this.$refs['apply'].validate((valid) => {
+      this.$refs["apply"].validate((valid) => {
         if (valid) {
           this.addMember();
         }
@@ -534,24 +525,24 @@ export default {
         .addGroupMember(
           this.$route.params.groupID,
           this.appliaction.code,
-          this.appliaction.reason
+          this.appliaction.reason,
         )
         .then((res) => {
-          mMessage.success(this.$t('m.Apply_Successfully'));
-          this.$store.dispatch('getGroupAuth');
+          mMessage.success(this.$t("m.Apply_Successfully"));
+          this.$store.dispatch("getGroupAuth");
           this.showApplyDialog = false;
         })
         .catch(() => {});
     },
     exitGroup() {
       this.$confirm(
-        this.$i18n.t('m.Exit_Group_Tips'),
-        this.$i18n.t('m.Warning'),
+        this.$i18n.t("m.Exit_Group_Tips"),
+        this.$i18n.t("m.Warning"),
         {
-          confirmButtonText: this.$i18n.t('m.OK'),
-          cancelButtonText: this.$i18n.t('m.Cancel'),
-          type: 'warning',
-        }
+          confirmButtonText: this.$i18n.t("m.OK"),
+          cancelButtonText: this.$i18n.t("m.Cancel"),
+          type: "warning",
+        },
       )
         .then(() => {
           this.loading = true;
@@ -559,8 +550,8 @@ export default {
             .exitGroup(this.$route.params.groupID)
             .then((res) => {
               this.loading = false;
-              mMessage.success(this.$i18n.t('m.Exit_Successfully'));
-              this.$store.dispatch('getGroup');
+              mMessage.success(this.$i18n.t("m.Exit_Successfully"));
+              this.$store.dispatch("getGroup");
             })
             .catch(() => {});
         })
@@ -569,7 +560,7 @@ export default {
         });
     },
     // 计数
-    openVerifyDialog(){
+    openVerifyDialog() {
       this.showVerifyDialog = true;
     },
     countDownVerify() {
@@ -584,44 +575,47 @@ export default {
       }, 1000);
     },
     // 验证码
-    getVerifyEmailCode(){
+    getVerifyEmailCode() {
       this.btnEmailLoading = true;
-      api.getVerifyEmailCode(this.verifyForm.email).then((res)=>{
-        myMessage.success(this.$i18n.t('m.Change_Send_Email_Msg'));
-        this.$notify.success({
-          title: this.$i18n.t('m.Success'),
-          message: this.$i18n.t('m.Change_Send_Email_Msg'),
-          duration: 5000,
-          offset: 50
-        });
-        this.btnEmailLoading = false;
-      },(_)=>{
-        this.btnEmailLoading = false;
-      })
-      myMessage.success(this.$i18n.t('m.Change_Send_Email_Msg'));
+      api.getVerifyEmailCode(this.verifyForm.email).then(
+        (res) => {
+          myMessage.success(this.$i18n.t("m.Change_Send_Email_Msg"));
+          this.$notify.success({
+            title: this.$i18n.t("m.Success"),
+            message: this.$i18n.t("m.Change_Send_Email_Msg"),
+            duration: 5000,
+            offset: 50,
+          });
+          this.btnEmailLoading = false;
+        },
+        (_) => {
+          this.btnEmailLoading = false;
+        },
+      );
+      myMessage.success(this.$i18n.t("m.Change_Send_Email_Msg"));
     },
     disbandGroup() {
-      this.$refs['verifyForm'].validate((valid) => {
+      this.$refs["verifyForm"].validate((valid) => {
         if (valid) {
           this.btnVerifyLoading = true;
-            api
-              .deleteGroup(this.verifyForm,this.$route.params.groupID)
-              .then((res) => {
-                this.btnVerifyLoading = false;
-                mMessage.success(this.$i18n.t('m.Disband_Successfully'));
-                this.$router.push({
-                  name: 'GroupList',
-                });
-              })
-              .catch(() => {
-                this.btnVerifyLoading = false;
+          api
+            .deleteGroup(this.verifyForm, this.$route.params.groupID)
+            .then((res) => {
+              this.btnVerifyLoading = false;
+              mMessage.success(this.$i18n.t("m.Disband_Successfully"));
+              this.$router.push({
+                name: "GroupList",
               });
+            })
+            .catch(() => {
+              this.btnVerifyLoading = false;
+            });
         }
       });
     },
     toUserHome(username) {
       this.$router.push({
-        name: 'UserHome',
+        name: "UserHome",
         query: { username: username },
       });
     },
@@ -631,17 +625,17 @@ export default {
       group: (state) => state.group.group,
     }),
     ...mapGetters([
-      'userInfo',
-      'isAuthenticated',
-      'isGroupAdmin',
-      'isGroupRoot',
-      'groupMenuDisabled',
-      'isGroupMember',
-      'isGroupOwner',
-      'userAuth',
-      'isSuperAdmin',
-      'websiteConfig',
-      'registerTimeOut',
+      "userInfo",
+      "isAuthenticated",
+      "isGroupAdmin",
+      "isGroupRoot",
+      "groupMenuDisabled",
+      "isGroupMember",
+      "isGroupOwner",
+      "userAuth",
+      "isSuperAdmin",
+      "websiteConfig",
+      "registerTimeOut",
     ]),
     timeVerify: {
       get() {
@@ -655,9 +649,9 @@ export default {
   filters: {
     //文字数超出时，超出部分使用...
     ellipsis(value) {
-      if (!value) return '';
+      if (!value) return "";
       var l = value.length;
-      var ans = '';
+      var ans = "";
       var blen = 0;
       for (let i = 0; i < l; i++) {
         if ((value.charCodeAt(i) & 0xff00) != 0) {
@@ -665,7 +659,7 @@ export default {
         }
         blen++;
         if (blen > 26) {
-          return ans + '...';
+          return ans + "...";
         }
         ans += value.charAt(i);
       }
@@ -675,30 +669,30 @@ export default {
   watch: {
     $route(newVal) {
       if (
-        newVal.name == 'GroupEditProblem' ||
-        newVal.name == 'GroupCreateProblem' ||
-        newVal.name == 'GroupProblemDetails'
+        newVal.name == "GroupEditProblem" ||
+        newVal.name == "GroupCreateProblem" ||
+        newVal.name == "GroupProblemDetails"
       ) {
-        this.route_name = 'GroupProblemList';
+        this.route_name = "GroupProblemList";
       } else if (
-        newVal.name == 'GroupEditTraining' ||
-        newVal.name == 'GroupCreateTraining' ||
-        newVal.name == 'GroupTrainingProblemList'
+        newVal.name == "GroupEditTraining" ||
+        newVal.name == "GroupCreateTraining" ||
+        newVal.name == "GroupTrainingProblemList"
       ) {
-        this.route_name = 'GroupTrainingList';
+        this.route_name = "GroupTrainingList";
       } else if (
-        newVal.name == 'GroupEditContest' ||
-        newVal.name == 'GroupCreateContest' ||
-        newVal.name == 'GroupContestProblemList' ||
-        newVal.name == 'GroupContestAnnouncementList'
+        newVal.name == "GroupEditContest" ||
+        newVal.name == "GroupCreateContest" ||
+        newVal.name == "GroupContestProblemList" ||
+        newVal.name == "GroupContestAnnouncementList"
       ) {
-        this.route_name = 'GroupContestList';
-      } else if (newVal.name == 'GroupSubmissionDetails') {
-        this.route_name = 'GroupSubmissionList';
-      } else if (newVal.name == 'GroupDiscussionDetails') {
-        this.route_name = 'GroupDiscussionList';
-      }else if(this.route_name.startsWith('GroupTraining')){
-        this.route_name = 'GroupTrainingList';
+        this.route_name = "GroupContestList";
+      } else if (newVal.name == "GroupSubmissionDetails") {
+        this.route_name = "GroupSubmissionList";
+      } else if (newVal.name == "GroupDiscussionDetails") {
+        this.route_name = "GroupDiscussionList";
+      } else if (this.route_name.startsWith("GroupTraining")) {
+        this.route_name = "GroupTrainingList";
       } else {
         this.route_name = newVal.name;
       }
@@ -706,7 +700,7 @@ export default {
     },
   },
   beforeDestroy() {
-    this.$store.commit('clearGroup');
+    this.$store.commit("clearGroup");
   },
 };
 </script>

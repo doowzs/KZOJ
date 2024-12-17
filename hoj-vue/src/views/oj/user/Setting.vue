@@ -1,8 +1,11 @@
 <template>
-
   <el-card class="box-card">
-
-    <el-tabs v-model="activeName" accordion :tab-position="tabPosition" style="height: auto;">
+    <el-tabs
+      v-model="activeName"
+      accordion
+      :tab-position="tabPosition"
+      style="height: auto"
+    >
       <el-tab-pane name="Account" :label="$t('m.Change_Password')">
         <component :is="Account"></component>
       </el-tab-pane>
@@ -16,14 +19,13 @@
         <component :is="UserInfo"></component>
       </el-tab-pane>
     </el-tabs>
-
   </el-card>
 </template>
 <script>
-const Account = () => import('@/components/oj/setting/Account');
-const ChangeEmail = () => import('@/components/oj/setting/ChangeEmail');
-const Avatar = () => import('@/components/oj/setting/Avatar');
-const UserInfo = () => import('@/components/oj/setting/UserInfo');
+const Account = () => import("@/components/oj/setting/Account");
+const ChangeEmail = () => import("@/components/oj/setting/ChangeEmail");
+const Avatar = () => import("@/components/oj/setting/Avatar");
+const UserInfo = () => import("@/components/oj/setting/UserInfo");
 export default {
   components: {
     Account,
@@ -33,12 +35,12 @@ export default {
   },
   data() {
     return {
-      tabPosition: 'left',
-      Account: 'Account',
-      Avatar:'Avatar',
-      UserInfo: 'UserInfo',
-      activeName: 'Account',
-      ChangeEmail:'ChangeEmail',
+      tabPosition: "left",
+      Account: "Account",
+      Avatar: "Avatar",
+      UserInfo: "UserInfo",
+      activeName: "Account",
+      ChangeEmail: "ChangeEmail",
     };
   },
 };

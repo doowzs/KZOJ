@@ -247,7 +247,7 @@ export default {
         .getGroupProblemList(
           this.currentPage,
           this.limit,
-          this.$route.params.groupID
+          this.$route.params.groupID,
         )
         .then(
           (res) => {
@@ -266,7 +266,7 @@ export default {
                     pidList,
                     false,
                     null,
-                    this.$route.params.groupID
+                    this.$route.params.groupID,
                   )
                   .then((res) => {
                     let result = res.data.data;
@@ -285,7 +285,7 @@ export default {
           },
           (err) => {
             this.loading = false;
-          }
+          },
         );
     },
     goGroupProblem(event) {

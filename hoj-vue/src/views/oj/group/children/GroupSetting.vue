@@ -1,6 +1,6 @@
 <template>
   <el-card>
-    <div class="section-title">{{ $t('m.Avatar_Setting') }}</div>
+    <div class="section-title">{{ $t("m.Avatar_Setting") }}</div>
     <div class="section-main">
       <avatar
         :inline="true"
@@ -17,8 +17,11 @@
           :before-upload="handleSelectFile"
         >
           <div style="padding: 20px 0">
-            <i class="el-icon-upload" style="color: #3399ff;font-size:52px"></i>
-            <p>{{ $t('m.Upload_avatar_hint') }}</p>
+            <i
+              class="el-icon-upload"
+              style="color: #3399ff; font-size: 52px"
+            ></i>
+            <p>{{ $t("m.Upload_avatar_hint") }}</p>
           </div>
         </el-upload>
       </template>
@@ -110,7 +113,7 @@
         width="350px"
       >
         <div class="upload-modal">
-          <p class="notice">{{ $t('m.Your_new_avatar') + ':' }}</p>
+          <p class="notice">{{ $t("m.Your_new_avatar") + ":" }}</p>
           <img :src="uploadImgSrc" />
         </div>
         <div slot="footer">
@@ -118,12 +121,12 @@
             @click="uploadAvatar"
             :loading="loadingUploadBtn"
             type="primary"
-            >{{ $t('m.Upload') }}</el-button
+            >{{ $t("m.Upload") }}</el-button
           >
         </div>
       </el-dialog>
     </div>
-    <div class="section-title">{{ $t('m.UserInfo_Setting') }}</div>
+    <div class="section-title">{{ $t("m.UserInfo_Setting") }}</div>
     <el-form label-position="top" :model="group" :rules="rules" ref="formGroup">
       <el-row :gutter="20">
         <el-col :md="12" :xs="24">
@@ -233,26 +236,26 @@
         </el-col>
       </el-row>
     </el-form>
-    <div style="text-align:center;margin-top:10px">
+    <div style="text-align: center; margin-top: 10px">
       <el-button
         type="primary"
         @click="updateGroup"
         :loading="loadingSaveBtn"
-        >{{ $t('m.Save') }}</el-button
+        >{{ $t("m.Save") }}</el-button
       >
     </div>
   </el-card>
 </template>
 
 <script>
-import api from '@/common/api';
-import mMessage from '@/common/message';
-import { mapState, mapActions } from 'vuex';
-import utils from '@/common/utils';
-import { VueCropper } from 'vue-cropper';
-import Avatar from 'vue-avatar';
-import 'element-ui/lib/theme-chalk/display.css';
-const Editor = () => import('@/components/admin/Editor.vue');
+import api from "@/common/api";
+import mMessage from "@/common/message";
+import { mapState, mapActions } from "vuex";
+import utils from "@/common/utils";
+import { VueCropper } from "vue-cropper";
+import Avatar from "vue-avatar";
+import "element-ui/lib/theme-chalk/display.css";
+const Editor = () => import("@/components/admin/Editor.vue");
 export default {
   components: {
     Avatar,
@@ -265,96 +268,96 @@ export default {
       loadingUploadBtn: false,
       uploadModalVisible: false,
       preview: {},
-      uploadImgSrc: '',
+      uploadImgSrc: "",
       avatarOption: {
-        imgSrc: '',
+        imgSrc: "",
         size: 0.8,
-        outputType: 'png',
+        outputType: "png",
       },
-      defaultAvatar: require('@/assets/default.png'),
+      defaultAvatar: require("@/assets/default.png"),
       rules: {
         name: [
           {
             required: true,
-            message: this.$i18n.t('m.Group_Name_Check_Required'),
-            trigger: 'blur',
+            message: this.$i18n.t("m.Group_Name_Check_Required"),
+            trigger: "blur",
           },
           {
             min: 5,
             max: 25,
-            message: this.$i18n.t('m.Group_Name_Check_Min_Max'),
-            trigger: 'blur',
+            message: this.$i18n.t("m.Group_Name_Check_Min_Max"),
+            trigger: "blur",
           },
         ],
         shortName: [
           {
             required: true,
-            message: this.$i18n.t('m.Group_Short_Name_Check_Required'),
-            trigger: 'blur',
+            message: this.$i18n.t("m.Group_Short_Name_Check_Required"),
+            trigger: "blur",
           },
           {
             min: 5,
             max: 10,
-            message: this.$i18n.t('m.Group_Short_Name_Check_Min_Max'),
-            trigger: 'blur',
+            message: this.$i18n.t("m.Group_Short_Name_Check_Min_Max"),
+            trigger: "blur",
           },
         ],
         brief: [
           {
             required: true,
-            message: this.$i18n.t('m.Group_Brief_Check_Required'),
-            trigger: 'blur',
+            message: this.$i18n.t("m.Group_Brief_Check_Required"),
+            trigger: "blur",
           },
           {
             min: 5,
             max: 50,
-            message: this.$i18n.t('m.Group_Brief_Check_Min_Max'),
-            trigger: 'blur',
+            message: this.$i18n.t("m.Group_Brief_Check_Min_Max"),
+            trigger: "blur",
           },
         ],
         code: [
           {
             required: true,
-            message: this.$i18n.t('m.Group_Code_Check_Required'),
-            trigger: 'blur',
+            message: this.$i18n.t("m.Group_Code_Check_Required"),
+            trigger: "blur",
           },
           {
             min: 6,
             max: 6,
-            message: this.$i18n.t('m.Group_Code_Check_Min_Max'),
-            trigger: 'blur',
+            message: this.$i18n.t("m.Group_Code_Check_Min_Max"),
+            trigger: "blur",
           },
         ],
         auth: [
           {
             required: true,
-            message: this.$i18n.t('m.Group_Auth_Check_Required'),
-            trigger: 'blur',
+            message: this.$i18n.t("m.Group_Auth_Check_Required"),
+            trigger: "blur",
           },
         ],
         description: [
           {
             required: true,
-            message: this.$i18n.t('m.Group_Description_Check_Required'),
-            trigger: 'blur',
+            message: this.$i18n.t("m.Group_Description_Check_Required"),
+            trigger: "blur",
           },
           {
             min: 5,
             max: 1000,
-            message: this.$i18n.t('m.Group_Description_Check_Min_Max'),
-            trigger: 'blur',
+            message: this.$i18n.t("m.Group_Description_Check_Min_Max"),
+            trigger: "blur",
           },
         ],
       },
     };
   },
   methods: {
-    ...mapActions(['changeDomTitle']),
+    ...mapActions(["changeDomTitle"]),
     checkFileType(file) {
       if (!/\.(gif|jpg|jpeg|png|bmp|webp|GIF|JPG|PNG|WEBP)$/.test(file.name)) {
         this.$notify.warning({
-          title: this.$i18n.t('m.File_type_not_support'),
-          message: file.name + this.$i18n.t('m.is_incorrect_format_file'),
+          title: this.$i18n.t("m.File_type_not_support"),
+          message: file.name + this.$i18n.t("m.is_incorrect_format_file"),
         });
         return false;
       }
@@ -364,8 +367,8 @@ export default {
       // max size is 2MB
       if (file.size > 2 * 1024 * 1024) {
         this.$notify.warning({
-          title: this.$i18n.t('m.Exceed_max_size_limit'),
-          message: file.name + this.$i18n.t('m.File_Exceed_Tips'),
+          title: this.$i18n.t("m.Exceed_max_size_limit"),
+          message: file.name + this.$i18n.t("m.File_Exceed_Tips"),
         });
         return false;
       }
@@ -387,19 +390,19 @@ export default {
       this.preview = data;
     },
     rotate(direction) {
-      if (direction === 'left') {
+      if (direction === "left") {
         this.$refs.cropper.rotateLeft();
       } else {
         this.$refs.cropper.rotateRight();
       }
     },
     reselect() {
-      this.$confirm(this.$i18n.t('m.Cancel_Avater_Tips'), 'Tips', {
-        confirmButtonText: this.$i18n.t('m.OK'),
-        cancelButtonText: this.$i18n.t('m.Cancel'),
-        type: 'warning',
+      this.$confirm(this.$i18n.t("m.Cancel_Avater_Tips"), "Tips", {
+        confirmButtonText: this.$i18n.t("m.OK"),
+        cancelButtonText: this.$i18n.t("m.Cancel"),
+        type: "warning",
       }).then(() => {
-        this.avatarOption.imgSrc = '';
+        this.avatarOption.imgSrc = "";
       });
     },
     finishCrop() {
@@ -413,48 +416,48 @@ export default {
         let form = new window.FormData();
         let file = new window.File(
           [blob],
-          'avatar.' + this.avatarOption.outputType
+          "avatar." + this.avatarOption.outputType,
         );
-        form.append('image', file);
-        form.append('gid', this.$route.params.groupID);
+        form.append("image", file);
+        form.append("gid", this.$route.params.groupID);
         this.loadingUploadBtn = true;
         this.$http({
-          method: 'post',
-          url: '/api/file/upload-group-avatar',
+          method: "post",
+          url: "/api/file/upload-group-avatar",
           data: form,
-          headers: { 'content-type': 'multipart/form-data' },
+          headers: { "content-type": "multipart/form-data" },
         }).then(
           (res) => {
             this.loadingUploadBtn = false;
-            mMessage.success(this.$i18n.t('m.Upload_Avatar_Successfully'));
+            mMessage.success(this.$i18n.t("m.Upload_Avatar_Successfully"));
             this.uploadModalVisible = false;
-            this.avatarOption.imgSrc = '';
-            this.$store.dispatch('setGroup', res.data.data);
+            this.avatarOption.imgSrc = "";
+            this.$store.dispatch("setGroup", res.data.data);
           },
           () => {
             this.loadingUploadBtn = false;
-          }
+          },
         );
       });
     },
     updateGroup() {
-      this.$refs['formGroup'].validate((valid) => {
+      this.$refs["formGroup"].validate((valid) => {
         if (valid) {
           this.loadingSaveBtn = true;
           let updateData = utils.filterEmptyValue(
-            Object.assign({}, this.group)
+            Object.assign({}, this.group),
           );
           api.updateGroup(updateData).then(
             (res) => {
-              mMessage.success(this.$i18n.t('m.Update_Successfully'));
-              this.$store.dispatch('getGroup').then((res) => {
+              mMessage.success(this.$i18n.t("m.Update_Successfully"));
+              this.$store.dispatch("getGroup").then((res) => {
                 this.changeDomTitle({ title: res.data.data.name });
               });
               this.loadingSaveBtn = false;
             },
             (_) => {
               this.loadingSaveBtn = false;
-            }
+            },
           );
         }
       });
@@ -469,9 +472,9 @@ export default {
     },
     previewStyle() {
       return {
-        width: this.preview.w + 'px',
-        height: this.preview.h + 'px',
-        overflow: 'hidden',
+        width: this.preview.w + "px",
+        height: this.preview.h + "px",
+        overflow: "hidden",
       };
     },
   },

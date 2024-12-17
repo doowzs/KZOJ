@@ -1,17 +1,16 @@
-<template>
-</template>
+<template></template>
 
 <script>
-  import api from '@/common/api'
+import api from "@/common/api";
 
-  export default {
-    mounted () {
-        api.logout().then(res => {
-        this.$store.dispatch('clearUserInfoAndToken')
-        this.$router.replace({
-          path: '/'
-        })
-      })
-    }
-  }
+export default {
+  mounted() {
+    api.logout().then((res) => {
+      this.$store.dispatch("clearUserInfoAndToken");
+      this.$router.replace({
+        path: "/",
+      });
+    });
+  },
+};
 </script>

@@ -2,7 +2,7 @@
   <div>
     <el-card>
       <div slot="header">
-        <span class="panel-title home-title">{{ $t('m.Training_List') }}</span>
+        <span class="panel-title home-title">{{ $t("m.Training_List") }}</span>
         <div class="filter-row">
           <span>
             <vxe-input
@@ -20,7 +20,7 @@
               size="small"
               @click="goCreateTraining"
               icon="el-icon-plus"
-              >{{ $t('m.Create') }}
+              >{{ $t("m.Create") }}
             </el-button>
           </span>
         </div>
@@ -70,7 +70,7 @@
         <vxe-table-column min-width="150" :title="$t('m.Option')">
           <template v-slot="{ row }">
             <template v-if="isSuperAdmin || userInfo.username == row.author">
-              <div style="margin-bottom:10px">
+              <div style="margin-bottom: 10px">
                 <el-tooltip
                   effect="dark"
                   :content="$t('m.Edit')"
@@ -131,18 +131,18 @@
 </template>
 
 <script>
-import api from '@/common/api';
-import { TRAINING_TYPE } from '@/common/constants';
-import { mapGetters } from 'vuex';
-import myMessage from '@/common/message';
+import api from "@/common/api";
+import { TRAINING_TYPE } from "@/common/constants";
+import { mapGetters } from "vuex";
+import myMessage from "@/common/message";
 export default {
-  name: 'TrainingList',
+  name: "TrainingList",
   data() {
     return {
       pageSize: 10,
       total: 0,
       trainingList: [],
-      keyword: '',
+      keyword: "",
       loading: false,
       excludeAdmin: true,
       currentPage: 1,
@@ -157,14 +157,14 @@ export default {
   },
   watch: {
     $route() {
-      let refresh = this.$route.query.refresh == 'true' ? true : false;
+      let refresh = this.$route.query.refresh == "true" ? true : false;
       if (refresh) {
         this.getTrainingList(1);
       }
     },
   },
   computed: {
-    ...mapGetters(['isSuperAdmin', 'userInfo']),
+    ...mapGetters(["isSuperAdmin", "userInfo"]),
   },
   methods: {
     // 切换页码回调
@@ -182,43 +182,43 @@ export default {
         },
         (res) => {
           this.loading = false;
-        }
+        },
       );
     },
     goEdit(trainingId) {
       this.$router.push({
-        name: 'admin-edit-training',
+        name: "admin-edit-training",
         params: { trainingId },
       });
     },
     goTrainingProblemList(trainingId) {
       this.$router.push({
-        name: 'admin-training-problem-list',
+        name: "admin-training-problem-list",
         params: { trainingId },
       });
     },
     deleteTraining(trainingId) {
-      this.$confirm(this.$i18n.t('m.Delete_Training_Tips'), 'Tips', {
-        confirmButtonText: this.$i18n.t('m.OK'),
-        cancelButtonText: this.$i18n.t('m.Cancel'),
-        type: 'warning',
+      this.$confirm(this.$i18n.t("m.Delete_Training_Tips"), "Tips", {
+        confirmButtonText: this.$i18n.t("m.OK"),
+        cancelButtonText: this.$i18n.t("m.Cancel"),
+        type: "warning",
       }).then(() => {
         api.admin_deleteTraining(trainingId).then((res) => {
-          myMessage.success(this.$i18n.t('m.Delete_successfully'));
+          myMessage.success(this.$i18n.t("m.Delete_successfully"));
           this.currentChange(1);
         });
       });
     },
     changeTrainingStatus(trainingId, status, author) {
       api.admin_changeTrainingStatus(trainingId, status, author).then((res) => {
-        myMessage.success(this.$i18n.t('m.Update_Successfully'));
+        myMessage.success(this.$i18n.t("m.Update_Successfully"));
       });
     },
     filterByKeyword() {
       this.currentChange(1);
     },
     goCreateTraining() {
-      this.$router.push({ name: 'admin-create-training' });
+      this.$router.push({ name: "admin-create-training" });
     },
   },
 };

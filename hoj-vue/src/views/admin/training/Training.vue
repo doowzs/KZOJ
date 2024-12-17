@@ -74,31 +74,31 @@
         </el-row>
       </el-form>
       <el-button type="primary" @click.native="saveTraining">{{
-        $t('m.Save')
+        $t("m.Save")
       }}</el-button>
     </el-card>
   </div>
 </template>
 
 <script>
-import api from '@/common/api';
-import { mapGetters } from 'vuex';
-import myMessage from '@/common/message';
-const Editor = () => import('@/components/admin/Editor.vue');
+import api from "@/common/api";
+import { mapGetters } from "vuex";
+import myMessage from "@/common/message";
+const Editor = () => import("@/components/admin/Editor.vue");
 export default {
-  name: 'CreateTraining',
+  name: "CreateTraining",
   components: {
     Editor,
   },
   data() {
     return {
-      title: 'Create Training',
+      title: "Create Training",
       training: {
         rank: 1000,
-        title: '',
-        description: '',
-        privatePwd: '',
-        auth: 'Public',
+        title: "",
+        description: "",
+        privatePwd: "",
+        auth: "Public",
       },
       trainingCategoryId: null,
       trainingCategoryList: [],
@@ -109,23 +109,23 @@ export default {
   },
   watch: {
     $route() {
-      if (this.$route.name === 'admin-edit-training') {
-        this.title = this.$i18n.t('m.Edit_Training');
+      if (this.$route.name === "admin-edit-training") {
+        this.title = this.$i18n.t("m.Edit_Training");
         this.getTraining();
       } else {
-        this.title = this.$i18n.t('m.Create_Training');
+        this.title = this.$i18n.t("m.Create_Training");
         this.training = {
           rank: 1000,
-          title: '',
-          description: '',
-          privatePwd: '',
-          auth: 'Public',
+          title: "",
+          description: "",
+          privatePwd: "",
+          auth: "Public",
         };
       }
     },
   },
   computed: {
-    ...mapGetters(['userInfo']),
+    ...mapGetters(["userInfo"]),
   },
   methods: {
     init() {
@@ -133,25 +133,25 @@ export default {
         let data = res.data.data;
         if (!data || !data.length) {
           this.$alert(
-            this.$i18n.t('m.Redirect_To_Category'),
-            this.$i18n.t('m.Redirect'),
+            this.$i18n.t("m.Redirect_To_Category"),
+            this.$i18n.t("m.Redirect"),
             {
-              confirmButtonText: this.$i18n.t('m.OK'),
+              confirmButtonText: this.$i18n.t("m.OK"),
               showClose: false,
               callback: (action) => {
                 this.$router.push({
-                  path: '/admin/training/category',
+                  path: "/admin/training/category",
                 });
               },
-            }
+            },
           );
         } else {
           this.trainingCategoryList = data;
-          if (this.$route.name === 'admin-edit-training') {
-            this.title = this.$i18n.t('m.Edit_Training');
+          if (this.$route.name === "admin-edit-training") {
+            this.title = this.$i18n.t("m.Edit_Training");
             this.getTraining();
           } else {
-            this.title = this.$i18n.t('m.Create_Training');
+            this.title = this.$i18n.t("m.Create_Training");
           }
         }
       });
@@ -171,52 +171,54 @@ export default {
     saveTraining() {
       if (!this.training.rank && this.training.rank != 0) {
         myMessage.error(
-          this.$i18n.t('m.Training_rank') + ' ' + this.$i18n.t('m.is_required')
+          this.$i18n.t("m.Training_rank") + " " + this.$i18n.t("m.is_required"),
         );
         return;
       }
 
       if (!this.training.title) {
         myMessage.error(
-          this.$i18n.t('m.Training_Title') + ' ' + this.$i18n.t('m.is_required')
+          this.$i18n.t("m.Training_Title") +
+            " " +
+            this.$i18n.t("m.is_required"),
         );
         return;
       }
       if (!this.training.description) {
         myMessage.error(
-          this.$i18n.t('m.Training_Description') +
-            ' ' +
-            this.$i18n.t('m.is_required')
+          this.$i18n.t("m.Training_Description") +
+            " " +
+            this.$i18n.t("m.is_required"),
         );
         return;
       }
 
       if (!this.trainingCategoryId) {
         myMessage.error(
-          this.$i18n.t('m.Training_Category') +
-            ' ' +
-            this.$i18n.t('m.is_required')
+          this.$i18n.t("m.Training_Category") +
+            " " +
+            this.$i18n.t("m.is_required"),
         );
         return;
       }
 
-      if (this.training.auth != 'Public' && !this.training.privatePwd) {
+      if (this.training.auth != "Public" && !this.training.privatePwd) {
         myMessage.error(
-          this.$i18n.t('m.Training_Password') +
-            ' ' +
-            this.$i18n.t('m.is_required')
+          this.$i18n.t("m.Training_Password") +
+            " " +
+            this.$i18n.t("m.is_required"),
         );
         return;
       }
 
       let funcName =
-        this.$route.name === 'admin-edit-training'
-          ? 'admin_editTraining'
-          : 'admin_createTraining';
+        this.$route.name === "admin-edit-training"
+          ? "admin_editTraining"
+          : "admin_createTraining";
 
       let data = Object.assign({}, this.training);
-      if (funcName === 'admin_createTraining') {
-        data['author'] = this.userInfo.username;
+      if (funcName === "admin_createTraining") {
+        data["author"] = this.userInfo.username;
       }
       let trainingDto = {
         training: data,
@@ -227,10 +229,10 @@ export default {
 
       api[funcName](trainingDto)
         .then((res) => {
-          myMessage.success('success');
+          myMessage.success("success");
           this.$router.push({
-            name: 'admin-training-list',
-            query: { refresh: 'true' },
+            name: "admin-training-list",
+            query: { refresh: "true" },
           });
         })
         .catch(() => {});

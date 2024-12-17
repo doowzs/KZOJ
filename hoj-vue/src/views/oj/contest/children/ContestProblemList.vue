@@ -184,7 +184,7 @@ export default {
                 isContestProblemList,
                 this.$route.params.contestID,
                 null,
-                this.isContainsAfterContestJudge
+                this.isContainsAfterContestJudge,
               )
               .then((res) => {
                 let result = res.data.data;

@@ -52,7 +52,7 @@ export default {
 };
 </script>
 
-<style  scoped>
+<style scoped>
 .height-100 {
   height: 100%;
 }

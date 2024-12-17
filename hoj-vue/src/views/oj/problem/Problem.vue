@@ -197,7 +197,7 @@
                         {{ $t("m.OI_Rank_Score") }}：{{
                           calcOIRankScore(
                             problemData.problem.ioScore,
-                            problemData.problem.difficulty
+                            problemData.problem.difficulty,
                           )
                         }}
                       </span>
@@ -552,7 +552,7 @@
                             @click="
                               getInfoByUsername(
                                 discussion.uid,
-                                discussion.author
+                                discussion.author,
                               )
                             "
                             :title="discussion.author"
@@ -1146,8 +1146,8 @@ export default {
       let problemCodeAndSetting = storage.get(
         buildProblemCodeAndSettingKey(
           this.$route.params.problemID,
-          this.$route.params.contestID
-        )
+          this.$route.params.contestID,
+        ),
       );
       if (problemCodeAndSetting) {
         this.language = problemCodeAndSetting.language;
@@ -1157,7 +1157,7 @@ export default {
         this.tabSize = problemCodeAndSetting.tabSize;
       } else {
         let individualLanguageAndSetting = storage.get(
-          buildIndividualLanguageAndSettingKey()
+          buildIndividualLanguageAndSettingKey(),
         );
         if (individualLanguageAndSetting) {
           this.language = individualLanguageAndSetting.language;
@@ -1193,7 +1193,7 @@ export default {
         },
         (err) => {
           this.loading.discussion = false;
-        }
+        },
       );
     },
     getInfoByUsername(uid, username) {
@@ -1235,7 +1235,7 @@ export default {
           },
           (err) => {
             this.loadingTable = false;
-          }
+          },
         )
         .catch(() => {
           this.loadingTable = false;
@@ -1280,13 +1280,13 @@ export default {
 
     dragControllerDiv() {
       var resize = document.getElementById(
-        "js-center" + "-" + this.$route.name
+        "js-center" + "-" + this.$route.name,
       );
       var left = document.getElementById(
-        "problem-left" + "-" + this.$route.name
+        "problem-left" + "-" + this.$route.name,
       );
       var right = document.getElementById(
-        "problem-right" + "-" + this.$route.name
+        "problem-right" + "-" + this.$route.name,
       );
       var box = document.getElementById("problem-box" + "-" + this.$route.name);
       const _this = this;
@@ -1336,13 +1336,13 @@ export default {
         return;
       }
       var resize = document.getElementById(
-        "js-center" + "-" + this.$route.name
+        "js-center" + "-" + this.$route.name,
       );
       var left = document.getElementById(
-        "problem-left" + "-" + this.$route.name
+        "problem-left" + "-" + this.$route.name,
       );
       var right = document.getElementById(
-        "problem-right" + "-" + this.$route.name
+        "problem-right" + "-" + this.$route.name,
       );
       var box = document.getElementById("problem-box" + "-" + this.$route.name);
       resize.style.left = box.clientWidth - 10 + "px";
@@ -1353,13 +1353,13 @@ export default {
     },
     resetWatch(minLeft = false) {
       var resize = document.getElementById(
-        "js-center" + "-" + this.$route.name
+        "js-center" + "-" + this.$route.name,
       );
       var left = document.getElementById(
-        "problem-left" + "-" + this.$route.name
+        "problem-left" + "-" + this.$route.name,
       );
       var right = document.getElementById(
-        "problem-right" + "-" + this.$route.name
+        "problem-right" + "-" + this.$route.name,
       );
       var box = document.getElementById("problem-box" + "-" + this.$route.name);
 
@@ -1383,14 +1383,14 @@ export default {
         let totalHeight = window.innerHeight;
 
         let left = document.getElementById(
-          "problem-left" + "-" + this.$route.name
+          "problem-left" + "-" + this.$route.name,
         );
         let right = document.getElementById(
-          "problem-right" + "-" + this.$route.name
+          "problem-right" + "-" + this.$route.name,
         );
         if (headerWidth >= 992) {
           let box = document.getElementById(
-            "problem-box" + "-" + this.$route.name
+            "problem-box" + "-" + this.$route.name,
           );
           let tmp = (left.clientWidth / box.clientWidth) * 100;
           left.style.width = tmp + "%";
@@ -1434,7 +1434,7 @@ export default {
                 "style",
                 "height:" +
                   problemLeftHight +
-                  "px !important; padding-bottom: 1rem;"
+                  "px !important; padding-bottom: 1rem;",
               );
           } else {
             document
@@ -1446,21 +1446,21 @@ export default {
             .getElementById("js-submission")
             .setAttribute(
               "style",
-              "height:" + problemLeftHight + "px !important"
+              "height:" + problemLeftHight + "px !important",
             );
         } else if (this.activeName == "Explain") {
           document
             .getElementById("js-explain")
             .setAttribute(
               "style",
-              "height:" + problemLeftHight + "px !important"
+              "height:" + problemLeftHight + "px !important",
             );
         } else if (this.activeName == "extraFile") {
           document
             .getElementById("js-extraFile")
             .setAttribute(
               "style",
-              "height:" + problemLeftHight + "px !important"
+              "height:" + problemLeftHight + "px !important",
             );
         }
         document
@@ -1470,7 +1470,7 @@ export default {
             "top:" +
               problemLeftHight * 0.5 +
               "px !important; left:" +
-              left.style.width
+              left.style.width,
           );
       } catch (e) {}
     },
@@ -1506,7 +1506,7 @@ export default {
           result["myStatus"] = -10; // 设置默认值
 
           result.problem.examples = utils.stringToExamples(
-            result.problem.examples
+            result.problem.examples,
           );
           if (result.problem.userExtraFile) {
             this.userExtraFile = JSON.parse(result.problem.userExtraFile);
@@ -1524,7 +1524,7 @@ export default {
                 isContestProblemList,
                 this.contestID,
                 this.groupID,
-                true
+                true,
               )
               .then((res) => {
                 let statusMap = res.data.data;
@@ -1546,7 +1546,7 @@ export default {
             return;
           }
           this.problemData.languages = this.problemData.languages.filter(
-            (lang) => ["C++ With O2", "Python3"].indexOf(lang) >= 0
+            (lang) => ["C++ With O2", "Python3"].indexOf(lang) >= 0,
           );
           if (this.problemData.languages.length != 0) {
             if (
@@ -1557,9 +1557,8 @@ export default {
             }
           }
           if (!this.problemData.codeTemplate["C++ With O2"]) {
-            this.problemData.codeTemplate[
-              "C++ With O2"
-            ] = `#include <bits/stdc++.h>
+            this.problemData.codeTemplate["C++ With O2"] =
+              `#include <bits/stdc++.h>
 using namespace std;
 
 int main() {
@@ -1580,7 +1579,7 @@ int main() {
         (err) => {
           this.submitDisabled = true;
           this.loading.problem = false;
-        }
+        },
       );
 
       if (this.activeName == "mySubmission") {
@@ -1609,7 +1608,7 @@ int main() {
 
       // 根据结果设置legend,没有提交过的legend不显示
       let legend = Object.keys(problemData).map((ele) =>
-        (ele + "").toUpperCase()
+        (ele + "").toUpperCase(),
       );
       if (legend.length === 0) {
         legend.push("AC", "WA");
@@ -1699,7 +1698,7 @@ int main() {
           cancelButtonText: this.$i18n.t("m.Cancel"),
           confirmButtonText: this.$i18n.t("m.OK"),
           type: "warning",
-        }
+        },
       )
         .then(() => {
           let codeTemplate = this.problemData.codeTemplate;
@@ -1716,7 +1715,7 @@ int main() {
         this.$notify.error({
           title: this.$i18n.t("m.Error"),
           message: this.$i18n.t(
-            "m.You_havenot_passed_the_problem_so_you_cannot_get_the_code_passed_recently"
+            "m.You_havenot_passed_the_problem_so_you_cannot_get_the_code_passed_recently",
           ),
           duration: 4000,
           offset: 50,
@@ -1725,20 +1724,20 @@ int main() {
       }
       this.$confirm(
         this.$i18n.t(
-          "m.Are_you_sure_you_want_to_get_your_recent_accepted_code"
+          "m.Are_you_sure_you_want_to_get_your_recent_accepted_code",
         ),
         "Tips",
         {
           cancelButtonText: this.$i18n.t("m.Cancel"),
           confirmButtonText: this.$i18n.t("m.OK"),
           type: "warning",
-        }
+        },
       )
         .then(() => {
           api
             .getUserLastAccepetedCode(
               this.problemData.problem.id,
-              this.contestID
+              this.contestID,
             )
             .then((res) => {
               this.code = res.data.data.code;
@@ -1788,7 +1787,7 @@ int main() {
           (res) => {
             this.submitting = false;
             clearTimeout(this.refreshStatus);
-          }
+          },
         );
       };
       // 设置每2秒检查一下该题的提交结果
@@ -1807,7 +1806,7 @@ int main() {
           this.submitPwdVisible = false;
           this.submitCode();
         },
-        (res) => {}
+        (res) => {},
       );
     },
 
@@ -1874,7 +1873,7 @@ int main() {
             // }
             this.submitting = false;
             this.statusVisible = false;
-          }
+          },
         );
       };
 
@@ -1885,14 +1884,14 @@ int main() {
         if (this.submissionExists) {
           this.$confirm(
             this.$i18n.t(
-              "m.You_have_submission_in_this_problem_sure_to_cover_it"
+              "m.You_have_submission_in_this_problem_sure_to_cover_it",
             ),
             "Warning",
             {
               confirmButtonText: this.$i18n.t("m.OK"),
               cancelButtonText: this.$i18n.t("m.Cancel"),
               type: "warning",
-            }
+            },
           )
             .then(() => {
               // 暂时解决对话框与后面提示对话框冲突的问题(否则一闪而过）
@@ -1923,7 +1922,7 @@ int main() {
         (err) => {
           this.submitting = false;
           this.statusVisible = false;
-        }
+        },
       );
     },
 

@@ -6,12 +6,12 @@
       </el-col>
       <el-col :sm="24" :md="12" :lg="12">
         <div class="left">
-          <p class="section-title">{{ $t('m.Change_Password') }}</p>
+          <p class="section-title">{{ $t("m.Change_Password") }}</p>
           <el-form
-              class="setting-content"
-              ref="formPassword"
-              :model="formPassword"
-              :rules="rulePassword"
+            class="setting-content"
+            ref="formPassword"
+            :model="formPassword"
+            :rules="rulePassword"
           >
             <el-form-item :label="$t('m.Old_Password')" prop="oldPassword">
               <el-input v-model="formPassword.oldPassword" type="password" />
@@ -20,59 +20,59 @@
               <el-input v-model="formPassword.newPassword" type="password" />
             </el-form-item>
             <el-form-item
-                :label="$t('m.Confirm_New_Password')"
-                prop="againPassword"
+              :label="$t('m.Confirm_New_Password')"
+              prop="againPassword"
             >
               <el-input v-model="formPassword.againPassword" type="password" />
             </el-form-item>
           </el-form>
           <el-popover
-              placement="top"
-              width="350"
-              v-model="visible.passwordSlideBlock"
-              trigger="click"
+            placement="top"
+            width="350"
+            v-model="visible.passwordSlideBlock"
+            trigger="click"
           >
             <el-button
-                type="primary"
-                slot="reference"
-                :loading="loading.btnPassword"
-                :disabled="disabled.btnPassword"
-            >{{ $t('m.Update_Password') }}</el-button
+              type="primary"
+              slot="reference"
+              :loading="loading.btnPassword"
+              :disabled="disabled.btnPassword"
+              >{{ $t("m.Update_Password") }}</el-button
             >
             <slide-verify
-                :l="42"
-                :r="10"
-                :w="325"
-                :h="100"
-                :accuracy="3"
-                @success="changePassword"
-                @again="onAgain('password')"
-                :slider-text="$t('m.Slide_Verify')"
-                ref="passwordSlideBlock"
-                v-show="!verify.passwordSuccess"
+              :l="42"
+              :r="10"
+              :w="325"
+              :h="100"
+              :accuracy="3"
+              @success="changePassword"
+              @again="onAgain('password')"
+              :slider-text="$t('m.Slide_Verify')"
+              ref="passwordSlideBlock"
+              v-show="!verify.passwordSuccess"
             >
             </slide-verify>
             <el-alert
-                :title="$t('m.Slide_Verify_Success')"
-                type="success"
-                :description="verify.passwordMsg"
-                v-show="verify.passwordSuccess"
-                :center="true"
-                :closable="false"
-                show-icon
+              :title="$t('m.Slide_Verify_Success')"
+              type="success"
+              :description="verify.passwordMsg"
+              v-show="verify.passwordSuccess"
+              :center="true"
+              :closable="false"
+              show-icon
             >
             </el-alert>
           </el-popover>
         </div>
         <el-alert
-            v-show="visible.passwordAlert.show"
-            :title="visible.passwordAlert.title"
-            :type="visible.passwordAlert.type"
-            :description="visible.passwordAlert.description"
-            :closable="false"
-            effect="dark"
-            style="margin-top:15px"
-            show-icon
+          v-show="visible.passwordAlert.show"
+          :title="visible.passwordAlert.title"
+          :type="visible.passwordAlert.type"
+          :description="visible.passwordAlert.description"
+          :closable="false"
+          effect="dark"
+          style="margin-top: 15px"
+          show-icon
         >
         </el-alert>
       </el-col>
@@ -84,39 +84,39 @@
 </template>
 
 <script>
-import api from '@/common/api';
-import myMessage from '@/common/message';
-import 'element-ui/lib/theme-chalk/display.css';
+import api from "@/common/api";
+import myMessage from "@/common/message";
+import "element-ui/lib/theme-chalk/display.css";
 export default {
   data() {
     const oldPasswordCheck = [
       {
         required: true,
-        trigger: 'blur',
-        message: this.$i18n.t('m.The_current_password_cannot_be_empty'),
+        trigger: "blur",
+        message: this.$i18n.t("m.The_current_password_cannot_be_empty"),
       },
       {
-        trigger: 'blur',
+        trigger: "blur",
         min: 6,
         max: 20,
-        message: this.$i18n.t('m.Password_Check_Between'),
+        message: this.$i18n.t("m.Password_Check_Between"),
       },
     ];
     const CheckAgainPassword = (rule, value, callback) => {
       if (value !== this.formPassword.newPassword) {
-        callback(new Error(this.$i18n.t('m.Password_does_not_match')));
+        callback(new Error(this.$i18n.t("m.Password_does_not_match")));
       }
       callback();
     };
     const CheckNewPassword = (rule, value, callback) => {
-      if (this.formPassword.oldPassword !== '') {
+      if (this.formPassword.oldPassword !== "") {
         if (this.formPassword.oldPassword === this.formPassword.newPassword) {
           callback(
-              new Error(this.$i18n.t('m.The_new_password_does_not_change'))
+            new Error(this.$i18n.t("m.The_new_password_does_not_change")),
           );
         } else {
           // 对第二个密码框再次验证
-          this.$refs.formPassword.validateField('again_password');
+          this.$refs.formPassword.validateField("again_password");
         }
       }
       callback();
@@ -130,58 +130,60 @@ export default {
       },
       verify: {
         passwordSuccess: false,
-        passwordMsg: '',
+        passwordMsg: "",
       },
       visible: {
         passwordAlert: {
-          type: 'success',
+          type: "success",
           show: false,
-          title: '',
-          description: '',
+          title: "",
+          description: "",
         },
         passwordSlideBlock: false,
       },
       formPassword: {
-        oldPassword: '',
-        newPassword: '',
-        againPassword: '',
+        oldPassword: "",
+        newPassword: "",
+        againPassword: "",
       },
       rulePassword: {
         oldPassword: oldPasswordCheck,
         newPassword: [
           {
             required: true,
-            trigger: 'blur',
-            message: this.$i18n.t('m.The_new_password_cannot_be_empty'),
+            trigger: "blur",
+            message: this.$i18n.t("m.The_new_password_cannot_be_empty"),
           },
           {
-            trigger: 'blur',
+            trigger: "blur",
             min: 6,
             max: 20,
-            message: this.$i18n.t('m.Password_Check_Between'),
+            message: this.$i18n.t("m.Password_Check_Between"),
           },
-          { validator: CheckNewPassword, trigger: 'blur' },
+          { validator: CheckNewPassword, trigger: "blur" },
         ],
         againPassword: [
           {
             required: true,
-            trigger: 'blur',
-            message: this.$i18n.t('m.Password_Again_Check_Required'),
+            trigger: "blur",
+            message: this.$i18n.t("m.Password_Again_Check_Required"),
           },
-          { validator: CheckAgainPassword, trigger: 'blur' },
+          { validator: CheckAgainPassword, trigger: "blur" },
         ],
       },
     };
   },
   methods: {
     changePassword(times) {
-      if(!this.formPassword.newPassword.match(/^(?=.*\d)(?=.*[a-zA-Z]).{6,20}$/)){
-        myMessage.warning(this.$i18n.t('m.Pass_Strength'));
+      if (
+        !this.formPassword.newPassword.match(/^(?=.*\d)(?=.*[a-zA-Z]).{6,20}$/)
+      ) {
+        myMessage.warning(this.$i18n.t("m.Pass_Strength"));
         return;
       }
       this.verify.passwordSuccess = true;
       let time = (times / 1000).toFixed(1);
-      this.verify.passwordMsg = 'Total time ' + time + 's';
+      this.verify.passwordMsg = "Total time " + time + "s";
       setTimeout(() => {
         this.visible.passwordSlideBlock = false;
         this.verify.passwordSuccess = false;
@@ -189,54 +191,54 @@ export default {
         this.$refs.passwordSlideBlock.reset();
       }, 1000);
 
-      this.$refs['formPassword'].validate((valid) => {
+      this.$refs["formPassword"].validate((valid) => {
         if (valid) {
           this.loading.btnPassword = true;
           let data = Object.assign({}, this.formPassword);
           delete data.againPassword;
           api.changePassword(data).then(
-              (res) => {
-                this.loading.btnPassword = false;
-                if (res.data.data.code == 200) {
-                  myMessage.success(this.$i18n.t('m.Update_Successfully'));
-                  this.visible.passwordAlert = {
-                    show: true,
-                    title: this.$i18n.t('m.Update_Successfully'),
-                    type: 'success',
-                    description: res.data.data.msg,
-                  };
-                  setTimeout(() => {
-                    this.visible.passwordAlert = false;
-                    this.$router.push({ name: 'Logout' });
-                  }, 5000);
-                } else {
-                  myMessage.error(res.data.data.msg);
-                  this.visible.passwordAlert = {
-                    show: true,
-                    title: this.$i18n.t('m.Update_Failed'),
-                    type: 'warning',
-                    description: res.data.data.msg,
-                  };
-                  if (res.data.data.code == 403) {
-                    this.visible.passwordAlert.type = 'error';
-                    this.disabled.btnPassword = true;
-                  }
+            (res) => {
+              this.loading.btnPassword = false;
+              if (res.data.data.code == 200) {
+                myMessage.success(this.$i18n.t("m.Update_Successfully"));
+                this.visible.passwordAlert = {
+                  show: true,
+                  title: this.$i18n.t("m.Update_Successfully"),
+                  type: "success",
+                  description: res.data.data.msg,
+                };
+                setTimeout(() => {
+                  this.visible.passwordAlert = false;
+                  this.$router.push({ name: "Logout" });
+                }, 5000);
+              } else {
+                myMessage.error(res.data.data.msg);
+                this.visible.passwordAlert = {
+                  show: true,
+                  title: this.$i18n.t("m.Update_Failed"),
+                  type: "warning",
+                  description: res.data.data.msg,
+                };
+                if (res.data.data.code == 403) {
+                  this.visible.passwordAlert.type = "error";
+                  this.disabled.btnPassword = true;
                 }
-              },
-              (err) => {
-                this.loading.btnPassword = false;
               }
+            },
+            (err) => {
+              this.loading.btnPassword = false;
+            },
           );
         }
       });
     },
     onAgain(type) {
-      if ((type = 'password')) {
+      if ((type = "password")) {
         this.$refs.passwordSlideBlock.reset();
       } else {
         this.$refs.emailSlideBlock.reset();
       }
-      myMessage.warning(this.$i18n.t('m.Guess_robot'));
+      myMessage.warning(this.$i18n.t("m.Guess_robot"));
     },
   },
 };

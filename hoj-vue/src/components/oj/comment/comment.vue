@@ -11,22 +11,22 @@
         effect="dark"
         center
         :closable="false"
-        style="background-color: rgb(14, 176, 201)!important;"
+        style="background-color: rgb(14, 176, 201) !important"
       >
         <template slot="title">
           <span class="title">{{
-            $i18n.t('m.Announcement_of_contest_Q_and_A_area')
+            $i18n.t("m.Announcement_of_contest_Q_and_A_area")
           }}</span></template
         >
         <template slot>
           <p>
-            1. {{ $i18n.t('m.Announcement_of_contest_Q_and_A_area_tips1') }}
+            1. {{ $i18n.t("m.Announcement_of_contest_Q_and_A_area_tips1") }}
           </p>
           <p>
-            2. {{ $i18n.t('m.Announcement_of_contest_Q_and_A_area_tips2') }}
+            2. {{ $i18n.t("m.Announcement_of_contest_Q_and_A_area_tips2") }}
           </p>
           <p>
-            3. {{ $i18n.t('m.Announcement_of_contest_Q_and_A_area_tips3') }}
+            3. {{ $i18n.t("m.Announcement_of_contest_Q_and_A_area_tips3") }}
           </p>
         </template>
       </el-alert>
@@ -158,7 +158,7 @@
           <span class="own-btn-comment">
             <el-button class="btn" type="primary" round @click="commitComment"
               ><i class="el-icon-edit">
-                {{ $t('m.Submit_Comment') }}</i
+                {{ $t("m.Submit_Comment") }}</i
               ></el-button
             >
           </span>
@@ -166,7 +166,7 @@
       </div>
       <h3 class="comment-total">
         <div class="text">
-          <span>{{ $t('m.All_Comment') }}</span
+          <span>{{ $t("m.All_Comment") }}</span
           ><span class="number">{{ totalComment }}</span>
         </div>
       </h3>
@@ -194,13 +194,13 @@
           <div class="right">
             <div class="name">
               <span
-                style="margin-right:3px;vertical-align: middle;"
+                style="margin-right: 3px; vertical-align: middle"
                 class="user-info"
                 @click="getInfoByUsername(item.fromUid, item.fromName)"
                 :title="item.fromName"
                 >{{ item.fromName }}</span
               >
-              <span v-if="item.fromTitleName" style="margin-right: 4px;">
+              <span v-if="item.fromTitleName" style="margin-right: 4px">
                 <el-tag effect="dark" size="small" :color="item.fromTitleColor">
                   {{ item.fromTitleName }}
                 </el-tag>
@@ -228,8 +228,9 @@
         <div class="info-bottom">
           <Markdown
             class="content markdown-content"
-            :isAvoidXss="true" 
-            :content="item.content">
+            :isAvoidXss="true"
+            :content="item.content"
+          >
           </Markdown>
           <div class="control">
             <span
@@ -239,26 +240,34 @@
             >
               <i class="iconfont fa fa-thumbs-o-up"></i>
               <span class="like-num">{{
-                item.likeNum > 0 ? item.likeNum + $t('m.Like') : $t('m.Like')
+                item.likeNum > 0 ? item.likeNum + $t("m.Like") : $t("m.Like")
               }}</span>
             </span>
             <span
               class="comment-opt comment-reply"
               @click="showCommentInput(item)"
               v-if="
-                !cid || (cid && (item.fromUid == userInfo.uid || isContestAdmin || (item.fromRole != 'root' && item.fromUid != contest.uid)))
+                !cid ||
+                (cid &&
+                  (item.fromUid == userInfo.uid ||
+                    isContestAdmin ||
+                    (item.fromRole != 'root' && item.fromUid != contest.uid)))
               "
             >
               <i class="iconfont el-icon-chat-square"></i>
-              <span>{{ $t('m.Reply') }}</span>
+              <span>{{ $t("m.Reply") }}</span>
             </span>
             <span
-              v-if="item.fromUid == userInfo.uid || (!cid && isAdminRole) || (cid && isContestAdmin)"
+              v-if="
+                item.fromUid == userInfo.uid ||
+                (!cid && isAdminRole) ||
+                (cid && isContestAdmin)
+              "
               class="comment-opt comment-delete"
               @click="deleteComment(item, commentIndex)"
             >
               <i class="iconfont el-icon-delete"></i>
-              <span>{{ $t('m.Delete') }}</span>
+              <span>{{ $t("m.Delete") }}</span>
             </span>
           </div>
           <div class="reply">
@@ -281,13 +290,13 @@
                     color="#FFF"
                     :src="reply.fromAvatar"
                   ></avatar>
-                  <span style="vertical-align: middle;">{{
+                  <span style="vertical-align: middle">{{
                     reply.fromName
                   }}</span>
                 </span>
                 <span
                   v-if="reply.fromTitleName"
-                  style="margin-right: 4px;"
+                  style="margin-right: 4px"
                   class="hidden-xs-only"
                 >
                   <el-tag
@@ -310,7 +319,7 @@
                   v-if="reply.fromRole == 'admin'"
                   >ADM</span
                 >
-                <span class="reply-text">{{ $t('m.Reply') }}</span>
+                <span class="reply-text">{{ $t("m.Reply") }}</span>
                 <span
                   class="to-name"
                   :title="reply.toName"
@@ -318,11 +327,12 @@
                   >@{{ reply.toName }}</span
                 >
               </div>
-              <div style="padding: 8px 0;margin-left: 34px;">
+              <div style="padding: 8px 0; margin-left: 34px">
                 <Markdown
                   class="markdown-content"
-                  :isAvoidXss="true" 
-                  :content="reply.content">
+                  :isAvoidXss="true"
+                  :content="reply.content"
+                >
                 </Markdown>
               </div>
               <div class="reply-bottom">
@@ -338,29 +348,33 @@
                   @click="showCommentInput(item, reply)"
                 >
                   <i class="iconfont el-icon-chat-square"></i>
-                  <span>{{ $t('m.Reply') }}</span>
+                  <span>{{ $t("m.Reply") }}</span>
                 </span>
                 <span
                   class="reply-opt reply-delete"
-                  v-if="reply.fromUid == userInfo.uid || (!cid && isAdminRole) || (cid && isContestAdmin)"
+                  v-if="
+                    reply.fromUid == userInfo.uid ||
+                    (!cid && isAdminRole) ||
+                    (cid && isContestAdmin)
+                  "
                   @click="deleteReply(reply, commentIndex, replyIndex)"
                 >
                   <i class="iconfont el-icon-delete"></i>
-                  <span>{{ $t('m.Delete') }}</span>
+                  <span>{{ $t("m.Delete") }}</span>
                 </span>
               </div>
             </div>
             <div class="view-more item" v-if="item.totalReplyNum > 3">
-              {{ $t('m.Reply_Total') }}<b> {{ item.totalReplyNum }} </b
-              >{{ $t('m.Replies') }},
+              {{ $t("m.Reply_Total") }}<b> {{ item.totalReplyNum }} </b
+              >{{ $t("m.Replies") }},
               <a
                 class="btn-more"
                 @click="showAllReply(item)"
                 v-if="!item.hadOpen"
-                >{{ $t('m.Click_Show_All') }}</a
+                >{{ $t("m.Click_Show_All") }}</a
               >
               <a class="btn-more" @click="pickWayReply(item)" v-else>{{
-                $t('m.Pick_up')
+                $t("m.Pick_up")
               }}</a>
             </div>
             <transition name="fade">
@@ -498,7 +512,7 @@
                       round
                       @click="cancel"
                       size="small"
-                      >{{ $t('m.Cancel') }}</el-button
+                      >{{ $t("m.Cancel") }}</el-button
                     >
                     <el-button
                       class="btn"
@@ -506,7 +520,7 @@
                       round
                       @click="commitReply(item.id)"
                       size="small"
-                      >{{ $t('m.OK') }}</el-button
+                      >{{ $t("m.OK") }}</el-button
                     >
                   </span>
                 </div>
@@ -517,20 +531,20 @@
       </div>
     </div>
     <div class="container loading-text" v-if="showloading">
-      <a style="background: #fff;padding:10px;" @click="loadMoreComment"
-        ><span>{{ $t('m.Load_More') }}...</span></a
+      <a style="background: #fff; padding: 10px" @click="loadMoreComment"
+        ><span>{{ $t("m.Load_More") }}...</span></a
       >
     </div>
   </div>
 </template>
 
 <script>
-import Avatar from 'vue-avatar';
-import { mapGetters, mapState } from 'vuex';
-import myMessage from '@/common/message';
-import api from '@/common/api';
-import { addCodeBtn } from '@/common/codeblock';
-import Markdown from '@/components/oj/common/Markdown';
+import Avatar from "vue-avatar";
+import { mapGetters, mapState } from "vuex";
+import myMessage from "@/common/message";
+import api from "@/common/api";
+import { addCodeBtn } from "@/common/codeblock";
+import Markdown from "@/components/oj/common/Markdown";
 export default {
   props: {
     did: {
@@ -544,21 +558,21 @@ export default {
       default: null,
     },
   },
-  components: { 
+  components: {
     Avatar,
-    Markdown
+    Markdown,
   },
   data() {
     return {
-      replyInputComment: '',
-      ownInputComment: '',
-      showItemId: '',
+      replyInputComment: "",
+      ownInputComment: "",
+      showItemId: "",
       faceList: [],
       comments: [],
       commentLikeMap: {},
       facelistVisiable: false,
       replyFacelistVisiable: false,
-      replyPlaceholder: '',
+      replyPlaceholder: "",
       query: {
         limit: 10,
         currentPage: 1,
@@ -569,19 +583,19 @@ export default {
       totalComment: 0,
       replyObj: {
         commentId: 0,
-        content: '',
-        toUid: '',
-        toName: '',
-        toAvatar: '',
+        content: "",
+        toUid: "",
+        toName: "",
+        toAvatar: "",
       },
       replyQuoteId: null,
-      replyQuoteType: 'Comment',
+      replyQuoteType: "Comment",
       loading: false,
     };
   },
 
   created() {
-    const appData = require('./emoji.json');
+    const appData = require("./emoji.json");
     for (let i in appData) {
       this.faceList.push(appData[i]);
     }
@@ -593,7 +607,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['userInfo', 'isAuthenticated', 'isAdminRole']),
+    ...mapGetters(["userInfo", "isAuthenticated", "isAdminRole"]),
     avatar() {
       return this.$store.getters.userInfo.avatar;
     },
@@ -602,7 +616,7 @@ export default {
     init() {
       let queryParams = Object.assign({}, this.query);
       this.replyPlaceholder = this.$i18n.t(
-        'm.Come_and_write_down_your_comments'
+        "m.Come_and_write_down_your_comments",
       );
       this.loading = true;
       api.getCommentList(queryParams).then(
@@ -623,7 +637,7 @@ export default {
         },
         (err) => {
           this.loading = false;
-        }
+        },
       );
     },
 
@@ -635,11 +649,11 @@ export default {
       let toLike = this.commentLikeMap[item.id] != true;
 
       let sourceId = this.did;
-      let sourceType = 'Discussion';
+      let sourceType = "Discussion";
 
       if (this.cid != null) {
         sourceId = this.cid;
-        sourceType = 'Contest';
+        sourceType = "Contest";
       }
 
       api.toLikeComment(item.id, toLike, sourceId, sourceType).then((res) => {
@@ -657,7 +671,7 @@ export default {
      * 点击取消按钮
      */
     cancel() {
-      this.showItemId = '';
+      this.showItemId = "";
     },
 
     /**
@@ -665,16 +679,20 @@ export default {
      */
     commitComment() {
       if (!this.isAuthenticated) {
-        myMessage.warning(this.$i18n.t('m.Please_login_first'));
-        this.$store.dispatch('changeModalStatus', { visible: true });
+        myMessage.warning(this.$i18n.t("m.Please_login_first"));
+        this.$store.dispatch("changeModalStatus", { visible: true });
         return;
       }
-      if (this.ownInputComment.replace(/(^s*)|(s*$)/g, '').length == 0) {
-        myMessage.warning(this.$i18n.t('m.Content_cannot_be_empty'));
+      if (this.ownInputComment.replace(/(^s*)|(s*$)/g, "").length == 0) {
+        myMessage.warning(this.$i18n.t("m.Content_cannot_be_empty"));
         return;
       }
-      if(this.ownInputComment.length > 10000){
-        myMessage.error(this.$i18n.t("m.Comment_Content") + " " +this.$i18n.t("m.Can_not_exceed_10000"));
+      if (this.ownInputComment.length > 10000) {
+        myMessage.error(
+          this.$i18n.t("m.Comment_Content") +
+            " " +
+            this.$i18n.t("m.Can_not_exceed_10000"),
+        );
         return;
       }
       let comment = {
@@ -686,8 +704,8 @@ export default {
         this.comments = [res.data.data].concat(this.comments);
         this.totalComment++;
         this.total++;
-        myMessage.success(this.$i18n.t('m.Comment_Successfully'));
-        this.ownInputComment = '';
+        myMessage.success(this.$i18n.t("m.Comment_Successfully"));
+        this.ownInputComment = "";
         this.$nextTick((_) => {
           addCodeBtn();
         });
@@ -700,16 +718,20 @@ export default {
 
     commitReply() {
       if (!this.isAuthenticated) {
-        myMessage.warning(this.$i18n.t('m.Please_login_first'));
-        this.$store.dispatch('changeModalStatus', { visible: true });
+        myMessage.warning(this.$i18n.t("m.Please_login_first"));
+        this.$store.dispatch("changeModalStatus", { visible: true });
         return;
       }
-      if (this.replyInputComment.replace(/(^s*)|(s*$)/g, '').length == 0) {
-        myMessage.warning(this.$i18n.t('m.Content_cannot_be_empty'));
+      if (this.replyInputComment.replace(/(^s*)|(s*$)/g, "").length == 0) {
+        myMessage.warning(this.$i18n.t("m.Content_cannot_be_empty"));
         return;
       }
-      if(this.replyInputComment.length > 10000){
-        myMessage.error(this.$i18n.t("m.Reply_Content") + " " +this.$i18n.t("m.Can_not_exceed_10000"));
+      if (this.replyInputComment.length > 10000) {
+        myMessage.error(
+          this.$i18n.t("m.Reply_Content") +
+            " " +
+            this.$i18n.t("m.Can_not_exceed_10000"),
+        );
         return;
       }
       this.replyObj.content = this.replyInputComment;
@@ -723,11 +745,11 @@ export default {
         for (let i = 0; i < this.comments.length; i++) {
           if (this.comments[i].id == this.replyObj.commentId) {
             this.comments[i].replyList = [res.data.data].concat(
-              this.comments[i].replyList
+              this.comments[i].replyList,
             );
             if (this.comments[i].backupReplyList) {
               this.comments[i].backupReplyList = [res.data.data].concat(
-                this.comments[i].backupReplyList
+                this.comments[i].backupReplyList,
               );
             }
             this.comments[i].totalReplyNum++;
@@ -741,8 +763,8 @@ export default {
           addCodeBtn();
         });
         this.totalComment++;
-        myMessage.success(this.$i18n.t('m.Reply_Successfully'));
-        this.replyInputComment = '';
+        myMessage.success(this.$i18n.t("m.Reply_Successfully"));
+        this.replyInputComment = "";
       });
     },
 
@@ -752,26 +774,26 @@ export default {
      * reply: 当前回复的评论
      */
     showCommentInput(item, reply) {
-      this.replyInputComment = '';
+      this.replyInputComment = "";
       if (reply) {
-        this.replyPlaceholder = '@' + reply.fromName;
+        this.replyPlaceholder = "@" + reply.fromName;
         // 对当前需要回复评论对象进行赋值
         this.replyObj.commentId = item.id;
         this.replyObj.toUid = reply.fromUid;
         this.replyObj.toName = reply.fromName;
         this.replyObj.toAvatar = reply.fromAvatar;
         this.replyQuoteId = reply.id;
-        this.replyQuoteType = 'Reply';
+        this.replyQuoteType = "Reply";
       } else {
         this.replyPlaceholder = this.$i18n.t(
-          'm.Come_and_write_down_your_comments'
+          "m.Come_and_write_down_your_comments",
         );
         this.replyObj.commentId = item.id;
         this.replyObj.toUid = item.fromUid;
         this.replyObj.toName = item.fromName;
         this.replyObj.toAvatar = item.fromAvatar;
         this.replyQuoteId = item.id;
-        this.replyQuoteType = 'Comment';
+        this.replyQuoteType = "Comment";
       }
       this.showItemId = item.id;
     },
@@ -781,24 +803,24 @@ export default {
      */
 
     deleteComment(comment, commentIndex) {
-      this.$confirm(this.$i18n.t('m.Delete_Comment_Tips'), 'Tips', {
-        confirmButtonText: this.$i18n.t('m.OK'),
-        cancelButtonText: this.$i18n.t('m.Cancel'),
-        type: 'warning',
+      this.$confirm(this.$i18n.t("m.Delete_Comment_Tips"), "Tips", {
+        confirmButtonText: this.$i18n.t("m.OK"),
+        cancelButtonText: this.$i18n.t("m.Cancel"),
+        type: "warning",
       })
         .then(() => {
           let commentDeleteData = {
             id: comment.id,
             fromUid: comment.fromUid,
             did: this.did,
-            cid: this.cid
+            cid: this.cid,
           };
           api.deleteComment(commentDeleteData).then((res) => {
             this.totalComment--;
             this.total--;
             this.totalComment -= comment.replyList.length;
             this.comments.splice(commentIndex, 1);
-            myMessage.success(this.$i18n.t('m.Delete_successfully'));
+            myMessage.success(this.$i18n.t("m.Delete_successfully"));
           });
         })
         .catch(() => {});
@@ -809,10 +831,10 @@ export default {
      */
 
     deleteReply(reply, commentIndex, replyIndex) {
-      this.$confirm(this.$i18n.t('m.Delete_Reply_Tips'), 'Tips', {
-        confirmButtonText: this.$i18n.t('m.OK'),
-        cancelButtonText: this.$i18n.t('m.Cancel'),
-        type: 'warning',
+      this.$confirm(this.$i18n.t("m.Delete_Reply_Tips"), "Tips", {
+        confirmButtonText: this.$i18n.t("m.OK"),
+        cancelButtonText: this.$i18n.t("m.Cancel"),
+        type: "warning",
       })
         .then(() => {
           let replyDeleteData = {
@@ -820,7 +842,7 @@ export default {
             reply: reply,
           };
           api.deleteReply(replyDeleteData).then((res) => {
-            myMessage.success(this.$i18n.t('m.Delete_successfully'));
+            myMessage.success(this.$i18n.t("m.Delete_successfully"));
             if (!this.comments[commentIndex].backupReplyList) {
               api
                 .getAllReply(this.comments[commentIndex].id, this.cid)
@@ -829,7 +851,7 @@ export default {
                   if (res.data.data && res.data.data.length > 3) {
                     this.comments[commentIndex].replyList = res.data.data.slice(
                       0,
-                      3
+                      3,
                     );
                   } else {
                     this.comments[commentIndex].replyList = res.data.data;
@@ -847,9 +869,8 @@ export default {
                   commentIndex
                 ].backupReplyList.slice(0, 3);
               } else {
-                this.comments[commentIndex].replyList = this.comments[
-                  commentIndex
-                ].backupReplyList;
+                this.comments[commentIndex].replyList =
+                  this.comments[commentIndex].backupReplyList;
               }
               this.comments[commentIndex].totalReplyNum--;
               this.totalComment--;
@@ -866,9 +887,9 @@ export default {
     getEmo(index, isOwn) {
       var textArea;
       if (isOwn) {
-        textArea = document.getElementById('own-textarea');
+        textArea = document.getElementById("own-textarea");
       } else {
-        textArea = document.getElementById('reply-textarea');
+        textArea = document.getElementById("reply-textarea");
       }
       function changeSelectedText(obj, str) {
         if (window.getSelection) {
@@ -896,22 +917,22 @@ export default {
     },
 
     addContentTips(num, isReply) {
-      let tips = '';
+      let tips = "";
       switch (num) {
         case 0:
-          tips = '`your inline code...`';
+          tips = "`your inline code...`";
           break;
         case 1:
-          tips = '\n```\ncode block\n```\n';
+          tips = "\n```\ncode block\n```\n";
           break;
         case 2:
-          tips = '[Xingyi](https://xingyi.ac.cn)';
+          tips = "[Xingyi](https://xingyi.ac.cn)";
           break;
         case 3:
-          tips = '\n- ...';
+          tips = "\n- ...";
           break;
         case 4:
-          tips = '\n1. ...';
+          tips = "\n1. ...";
           break;
       }
       if (isReply) {
@@ -927,7 +948,7 @@ export default {
 
     getInfoByUsername(uid, username) {
       this.$router.push({
-        path: '/user-home',
+        path: "/user-home",
         query: { uid, username },
       });
     },
@@ -964,7 +985,12 @@ export default {
     ...mapState({
       contest: (state) => state.contest.contest,
     }),
-    ...mapGetters(['isAuthenticated', 'userInfo', 'isAdminRole','isContestAdmin']),
+    ...mapGetters([
+      "isAuthenticated",
+      "userInfo",
+      "isAdminRole",
+      "isContestAdmin",
+    ]),
     showloading() {
       if (this.query.currentPage * this.query.limit >= this.total) {
         return false;

@@ -3,7 +3,7 @@
     <el-backtop :right="10" v-if="isLogin"></el-backtop>
     <div v-if="!isAdminView" class="full-height flex-column">
       <NavBar v-if="isLogin"></NavBar>
-      <div v-if="isLogin" id="oj-content" >
+      <div v-if="isLogin" id="oj-content">
         <transition name="el-zoom-in-bottom">
           <router-view></router-view>
         </transition>
@@ -13,54 +13,51 @@
       </transition>
       <footer v-if="showFooter" class="fix-to-bottom">
         <div class="mundb-footer">
-
           <el-row>
             <!--          名称+介绍-->
-            <el-col
-                :md="24"
-                :xs="24"
-            >
+            <el-col :md="24" :xs="24">
               <h1>{{ websiteConfig.name }}</h1>
               <span
-                  style="line-height:25px"
-                  v-html="websiteConfig.description"
-                  v-katex
-                  v-highlight
+                style="line-height: 25px"
+                v-html="websiteConfig.description"
+                v-katex
+                v-highlight
               >
               </span>
               <div class="mundb-footer">
                 <a
-                    :href="websiteConfig.projectUrl"
-                    style="color:#1E9FFF"
-                    target="_blank"
-                >{{ websiteConfig.projectName }}</a>
+                  :href="websiteConfig.projectUrl"
+                  style="color: #1e9fff"
+                  target="_blank"
+                  >{{ websiteConfig.projectName }}</a
+                >
                 is powered by HOJ
                 <a
-                    style="color:#1E9FFF;margin-left: 10px"
-                    :href="websiteConfig.recordUrl"
-                    target="_blank"
-                >{{ websiteConfig.recordName }}</a>
+                  style="color: #1e9fff; margin-left: 10px"
+                  :href="websiteConfig.recordUrl"
+                  target="_blank"
+                  >{{ websiteConfig.recordName }}</a
+                >
               </div>
             </el-col>
             <el-col>
-              <span style="margin-left:10px">
-                  <el-dropdown
-                      @command="changeWebLanguage"
-                      placement="top"
-                  >
-                    <span class="el-dropdown-link">
-                      <i
-                          class="fa fa-globe"
-                          aria-hidden="true"
-                      >
-                        {{ this.webLanguage == 'zh-CN' ? '简体中文' : 'English' }}</i><i class="el-icon-arrow-up el-icon--right"></i>
-                    </span>
-                    <el-dropdown-menu slot="dropdown">
-                      <el-dropdown-item command="zh-CN">简体中文</el-dropdown-item>
-                      <el-dropdown-item command="en-US">English</el-dropdown-item>
-                    </el-dropdown-menu>
-                  </el-dropdown>
-                </span>
+              <span style="margin-left: 10px">
+                <el-dropdown @command="changeWebLanguage" placement="top">
+                  <span class="el-dropdown-link">
+                    <i class="fa fa-globe" aria-hidden="true">
+                      {{
+                        this.webLanguage == "zh-CN" ? "简体中文" : "English"
+                      }}</i
+                    ><i class="el-icon-arrow-up el-icon--right"></i>
+                  </span>
+                  <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item command="zh-CN"
+                      >简体中文</el-dropdown-item
+                    >
+                    <el-dropdown-item command="en-US">English</el-dropdown-item>
+                  </el-dropdown-menu>
+                </el-dropdown>
+              </span>
             </el-col>
           </el-row>
         </div>
@@ -90,7 +87,7 @@ export default {
     return {
       isAdminView: false,
       showFooter: true,
-      isLogin:false,
+      isLogin: false,
     };
   },
   methods: {
@@ -102,7 +99,7 @@ export default {
     },
     goHome() {
       if (this.token) {
-        if (this.$route.name === 'LoginHome') {
+        if (this.$route.name === "LoginHome") {
           this.$router.push({
             path: "/home",
           });
@@ -181,14 +178,18 @@ export default {
       } else {
         this.isAdminView = false;
       }
-      if(newVal.name == 'ProblemDetails' || utils.isFocusModePage(newVal.name) || newVal.name == 'LoginHome'){
+      if (
+        newVal.name == "ProblemDetails" ||
+        utils.isFocusModePage(newVal.name) ||
+        newVal.name == "LoginHome"
+      ) {
         this.showFooter = false;
-      }else{
+      } else {
         this.showFooter = true;
       }
-      if(newVal.name == 'LoginHome'){
+      if (newVal.name == "LoginHome") {
         this.isLogin = false;
-      }else{
+      } else {
         this.isLogin = true;
       }
     },
@@ -212,8 +213,12 @@ export default {
     } else {
       this.isAdminView = true;
     }
-    this.showFooter = !(this.$route.name == 'ProblemDetails'|| utils.isFocusModePage(this.$route.name)|| this.$route.name == 'LoginHome') ;
-    this.isLogin = !(this.$route.name == 'LoginHome') ;
+    this.showFooter = !(
+      this.$route.name == "ProblemDetails" ||
+      utils.isFocusModePage(this.$route.name) ||
+      this.$route.name == "LoginHome"
+    );
+    this.isLogin = !(this.$route.name == "LoginHome");
     window.addEventListener("visibilitychange", this.autoRefreshUserInfo);
   },
   mounted() {
@@ -233,7 +238,7 @@ export default {
 body {
   background-color: #eff3f5 !important;
   font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB",
-  "Microsoft YaHei", "微软雅黑", Arial, sans-serif !important;
+    "Microsoft YaHei", "微软雅黑", Arial, sans-serif !important;
   color: #495060 !important;
   font-size: 12px !important;
 }
@@ -326,22 +331,22 @@ a:hover {
   color: #409eff;
   font-family: "Raleway";
 }
-.contest-config{
-  text-align:right;
+.contest-config {
+  text-align: right;
 }
-.contest-config-switches p span{
+.contest-config-switches p span {
   margin-left: 8px;
   margin-right: 4px;
 }
 
-.contest-rank-filter{
+.contest-rank-filter {
   margin: 10px 0;
 }
-.contest-rank-config{
-  text-align:right;
+.contest-rank-config {
+  text-align: right;
   margin-top: 15px;
 }
-.contest-scoreBoard-config{
+.contest-scoreBoard-config {
   margin-top: 30px !important;
 }
 .contest-rank-config span {
@@ -351,16 +356,16 @@ a:hover {
   margin-left: 5px;
 }
 @media screen and (max-width: 992px) {
-  .contest-rank-config{
-    text-align:center;
+  .contest-rank-config {
+    text-align: center;
     margin-bottom: 10px;
     margin-top: -1px;
   }
-  .contest-config{
+  .contest-config {
     margin-top: 5px;
-    text-align:center;
+    text-align: center;
   }
-  .contest-scoreBoard-config{
+  .contest-scoreBoard-config {
     margin-top: 10px !important;
   }
 }
@@ -374,12 +379,12 @@ a:hover {
   margin-top: 11px;
   cursor: pointer;
 }
-.contest-rank-user-box{
+.contest-rank-user-box {
   display: flex;
 }
-.contest-rank-user-info{
+.contest-rank-user-info {
   flex: 1;
-  text-align:right;
+  text-align: right;
   min-width: 0;
 }
 
@@ -441,7 +446,7 @@ a:hover {
   color: #fff;
 }
 .after-ac {
-  background-color: rgba(92,184,92,.4);
+  background-color: rgba(92, 184, 92, 0.4);
 }
 .first-ac {
   background-color: #1daa1d;
@@ -569,7 +574,9 @@ a:hover {
 }
 
 .tex-formula {
-  font-family: times new roman, sans-serif;
+  font-family:
+    times new roman,
+    sans-serif;
   vertical-align: middle;
   margin: 0;
   border: medium none;
@@ -579,7 +586,9 @@ a:hover {
 
 .tex-span {
   font-size: 125%;
-  font-family: times new roman, sans-serif;
+  font-family:
+    times new roman,
+    sans-serif;
   white-space: nowrap;
 }
 
@@ -629,7 +638,9 @@ a:hover {
 
 .tex-font-style-tt {
   font-size: 110%;
-  font-family: courier new, monospace;
+  font-family:
+    courier new,
+    monospace;
 }
 
 .tex-font-style-bf {
@@ -684,9 +695,20 @@ footer a:hover {
   text-decoration: none;
 }
 footer h1 {
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC,
-  Hiragino Sans GB, Microsoft YaHei, Helvetica Neue, Helvetica, Arial,
-  sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    Segoe UI,
+    PingFang SC,
+    Hiragino Sans GB,
+    Microsoft YaHei,
+    Helvetica Neue,
+    Helvetica,
+    Arial,
+    sans-serif,
+    Apple Color Emoji,
+    Segoe UI Emoji,
+    Segoe UI Symbol;
   font-weight: 300;
   color: #3d3d3d;
   line-height: 1.1;

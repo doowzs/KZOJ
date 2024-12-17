@@ -1,57 +1,52 @@
 <template>
-  <el-row
-    type="flex"
-    justify="space-around"
-  >
-    <el-col
-      :span="24"
-      id="status"
-    >
+  <el-row type="flex" justify="space-around">
+    <el-col :span="24" id="status">
       <el-alert
         :type="status.type"
         show-icon
         :closable="false"
         effect="dark"
         :class="getbackgroudColor(submission.status)"
-        style="padding: 18px;"
+        style="padding: 18px"
       >
         <template slot="title">
           <span class="title">{{ status.statusName }}</span>
         </template>
         <template slot>
-          <div
-            v-if="isCE || isSE || isSF"
-            class="content"
-          >
+          <div v-if="isCE || isSE || isSF" class="content">
             <pre>{{ submission.errorMessage }}</pre>
           </div>
-          <div
-            v-else
-            class="content"
-          >
-            <span class="span-row">{{ $t('m.Time') }}:
-              {{ submissionTimeFormat(submission.time) }}</span>
-            <span class="span-row">{{ $t('m.Memory') }}:
-              {{ submissionMemoryFormat(submission.memory) }}</span>
-            <span class="span-row">{{ $t('m.Length') }}:
-              {{ submissionLengthFormat(submission.length) }}</span>
-            <span class="span-row">{{ $t('m.Language') }}: {{ submission.language }}</span>
-            <span class="span-row">{{ $t('m.Author') }}: {{ submission.username }}</span>
+          <div v-else class="content">
+            <span class="span-row"
+              >{{ $t("m.Time") }}:
+              {{ submissionTimeFormat(submission.time) }}</span
+            >
+            <span class="span-row"
+              >{{ $t("m.Memory") }}:
+              {{ submissionMemoryFormat(submission.memory) }}</span
+            >
+            <span class="span-row"
+              >{{ $t("m.Length") }}:
+              {{ submissionLengthFormat(submission.length) }}</span
+            >
+            <span class="span-row"
+              >{{ $t("m.Language") }}: {{ submission.language }}</span
+            >
+            <span class="span-row"
+              >{{ $t("m.Author") }}: {{ submission.username }}</span
+            >
           </div>
         </template>
       </el-alert>
     </el-col>
 
-    <el-col
-      v-if="tableData && !isCE"
-      :span="24"
-    >
+    <el-col v-if="tableData && !isCE" :span="24">
       <vxe-table
         align="center"
         :data="tableData"
         stripe
         auto-resize
-        style="padding-top: 13px;"
+        style="padding-top: 13px"
         :loading="loadingTable"
       >
         <vxe-table-column
@@ -59,10 +54,7 @@
           :title="$t('m.Run_ID')"
           width="100"
         ></vxe-table-column>
-        <vxe-table-column
-          :title="$t('m.Submit_Time')"
-          min-width="160"
-        >
+        <vxe-table-column :title="$t('m.Submit_Time')" min-width="160">
           <template v-slot="{ row }">
             <span>{{ row.submitTime | localtime }}</span>
           </template>
@@ -73,10 +65,7 @@
           min-width="100"
         >
           <template v-slot="{ row }">
-            <a
-              @click="getProblemUri(row)"
-              style="color: rgb(87, 163, 243)"
-            >{{
+            <a @click="getProblemUri(row)" style="color: rgb(87, 163, 243)">{{
               row.displayPid
             }}</a>
           </template>
@@ -92,18 +81,12 @@
             }}</span>
           </template>
         </vxe-table-column>
-        <vxe-table-column
-          :title="$t('m.Time')"
-          min-width="96"
-        >
+        <vxe-table-column :title="$t('m.Time')" min-width="96">
           <template v-slot="{ row }">
             <span>{{ submissionTimeFormat(row.time) }}</span>
           </template>
         </vxe-table-column>
-        <vxe-table-column
-          :title="$t('m.Memory')"
-          min-width="96"
-        >
+        <vxe-table-column :title="$t('m.Memory')" min-width="96">
           <template v-slot="{ row }">
             <span>{{ submissionMemoryFormat(row.memory) }}</span>
           </template>
@@ -117,10 +100,10 @@
             <template v-if="row.score != null">
               <el-tooltip placement="top">
                 <div slot="content">
-                  {{ $t('m.Problem_Score') }}：{{
-                    row.score != null ? row.score : $t('m.Nothing')
-                  }}<br />{{ $t('m.OI_Rank_Score') }}：{{
-                    row.oiRankScore != null ? row.oiRankScore : $t('m.Nothing')
+                  {{ $t("m.Problem_Score") }}：{{
+                    row.score != null ? row.score : $t("m.Nothing")
+                  }}<br />{{ $t("m.OI_Rank_Score") }}：{{
+                    row.oiRankScore != null ? row.oiRankScore : $t("m.Nothing")
                   }}
                 </div>
                 <span>{{ row.score }}</span>
@@ -131,10 +114,7 @@
             </template>
           </template>
         </vxe-table-column>
-        <vxe-table-column
-          :title="$t('m.Length')"
-          min-width="80"
-        >
+        <vxe-table-column :title="$t('m.Length')" min-width="80">
           <template v-slot="{ row }">
             <span>{{ submissionLengthFormat(row.length) }}</span>
           </template>
@@ -142,87 +122,92 @@
       </vxe-table>
     </el-col>
     <template v-if="testCaseResult != null">
-      <template v-if="testCaseResult.judgeCaseMode == JUDGE_CASE_MODE.DEFAULT
-        || testCaseResult.judgeCaseMode == JUDGE_CASE_MODE.ERGODIC_WITHOUT_ERROR ">
+      <template
+        v-if="
+          testCaseResult.judgeCaseMode == JUDGE_CASE_MODE.DEFAULT ||
+          testCaseResult.judgeCaseMode == JUDGE_CASE_MODE.ERGODIC_WITHOUT_ERROR
+        "
+      >
         <el-col
           :span="24"
-          v-if="testCaseResult != null
-      && testCaseResult.judgeCaseList != null
-      && testCaseResult.judgeCaseList.length > 0"
+          v-if="
+            testCaseResult != null &&
+            testCaseResult.judgeCaseList != null &&
+            testCaseResult.judgeCaseList.length > 0
+          "
         >
           <JudgeCase :judgeCaseList="testCaseResult.judgeCaseList"></JudgeCase>
         </el-col>
       </template>
       <template v-else>
         <el-col :span="24">
-          <el-collapse
-            accordion
-            style="margin-top: 13px;"
-            v-model="activeName"
-          >
+          <el-collapse accordion style="margin-top: 13px" v-model="activeName">
             <el-collapse-item
               v-for="(item, index) in testCaseResult.subTaskJudgeCaseVoList"
               :key="index"
               class="subtask-item"
-              :style="'border-left: 3px solid '+ JUDGE_STATUS[item.status].rgb"
+              :style="'border-left: 3px solid ' + JUDGE_STATUS[item.status].rgb"
               :name="item.groupNum"
             >
               <template slot="title">
                 <el-row
                   class="subtask-title"
-                  :class="activeName == item.groupNum?'active':''"
+                  :class="activeName == item.groupNum ? 'active' : ''"
                 >
-                  <el-col
-                    :md="5"
-                    :sm="5"
-                    :xs="7"
-                  >
-                    <span>{{$t('m.Subtask')}} #{{item.groupNum}}</span>
+                  <el-col :md="5" :sm="5" :xs="7">
+                    <span>{{ $t("m.Subtask") }} #{{ item.groupNum }}</span>
                   </el-col>
-                  <el-col
-                    :md="5"
-                    :sm="5"
-                    :xs="13"
-                  >
-                    <span :class="'text-color-'+JUDGE_STATUS[item.status].color">
+                  <el-col :md="5" :sm="5" :xs="13">
+                    <span
+                      :class="'text-color-' + JUDGE_STATUS[item.status].color"
+                    >
                       <template v-if="item.status == JUDGE_STATUS_RESERVE.ac">
-                        <i class="el-icon-success"></i> {{JUDGE_STATUS[item.status].name}}
+                        <i class="el-icon-success"></i>
+                        {{ JUDGE_STATUS[item.status].name }}
                       </template>
                       <template v-else>
-                        <i class="el-icon-error"></i> {{JUDGE_STATUS[item.status].name}}
+                        <i class="el-icon-error"></i>
+                        {{ JUDGE_STATUS[item.status].name }}
                       </template>
                     </span>
                   </el-col>
-                  <el-col
-                    :md="5"
-                    :sm="5"
-                    :xs="4"
-                  >
+                  <el-col :md="5" :sm="5" :xs="4">
                     <el-tooltip placement="top" effect="light">
                       <div slot="content">
-                        <template v-if="testCaseResult.judgeCaseMode == JUDGE_CASE_MODE.SUBTASK_AVERAGE">
-                          {{$t('m.Judge_Case_Subtask_Average_Mode')}}<br/>
+                        <template
+                          v-if="
+                            testCaseResult.judgeCaseMode ==
+                            JUDGE_CASE_MODE.SUBTASK_AVERAGE
+                          "
+                        >
+                          {{ $t("m.Judge_Case_Subtask_Average_Mode") }}<br />
                         </template>
                         <template v-else>
-                          {{$t('m.Judge_Case_Subtask_Lowest_Mode')}}<br/>
+                          {{ $t("m.Judge_Case_Subtask_Lowest_Mode") }}<br />
                         </template>
-                        {{ $t('m.Score') }}：{{item.score}}<br />
-                        {{ $t('m.AC') }}：{{item.ac}}<br />
-                        {{ $t('m.Total') }}：{{item.total}}
+                        {{ $t("m.Score") }}：{{ item.score }}<br />
+                        {{ $t("m.AC") }}：{{ item.ac }}<br />
+                        {{ $t("m.Total") }}：{{ item.total }}
                       </div>
                       <span>
                         <template v-if="!isMobile">
-                        <i
-                          class="el-icon-s-claim"
-                          style="font-weight: 700 !important;"
-                        > {{item.score}} pts ({{item.ac}}/{{item.total}})</i>
-                      </template>
-                      <template v-else>
-                        <i
-                          class="el-icon-s-claim"
-                          style="font-weight: 700 !important;"
-                        > {{item.score}}</i>
-                      </template>
+                          <i
+                            class="el-icon-s-claim"
+                            style="font-weight: 700 !important"
+                          >
+                            {{ item.score }} pts ({{ item.ac }}/{{
+                              item.total
+                            }})</i
+                          >
+                        </template>
+                        <template v-else>
+                          <i
+                            class="el-icon-s-claim"
+                            style="font-weight: 700 !important"
+                          >
+                            {{ item.score }}</i
+                          >
+                        </template>
                       </span>
                     </el-tooltip>
                   </el-col>
@@ -235,8 +220,10 @@
                     <span>
                       <i
                         class="el-icon-time"
-                        style="font-weight: 700 !important;"
-                      > {{submissionTimeFormat(item.time)}}</i>
+                        style="font-weight: 700 !important"
+                      >
+                        {{ submissionTimeFormat(item.time) }}</i
+                      >
                     </span>
                   </el-col>
                   <el-col
@@ -248,8 +235,10 @@
                     <span>
                       <i
                         class="el-icon-cpu"
-                        style="font-weight: 700 !important;"
-                      > {{submissionMemoryFormat(item.memory)}}</i>
+                        style="font-weight: 700 !important"
+                      >
+                        {{ submissionMemoryFormat(item.memory) }}</i
+                      >
                     </span>
                   </el-col>
                 </el-row>
@@ -264,43 +253,45 @@
         </el-col>
       </template>
     </template>
-<!--    测试数据下载-->
+    <!--    测试数据下载-->
     <template v-if="isDownload && isSubmissionOwner && !(isCE || isSE || isSF)">
-      <el-card style="margin-top: 13px;width: 99.5%" shadow="hover">
+      <el-card style="margin-top: 13px; width: 99.5%" shadow="hover">
         <div slot="header">
-            <span class="panel-title home-title">{{
-                $t('m.Download_Explanation')
-              }}</span>
+          <span class="panel-title home-title">{{
+            $t("m.Download_Explanation")
+          }}</span>
         </div>
         <ul style="font-size: medium">
-          <li>{{ $t('m.Download_tips_1') }}</li>
-          <li>{{ $t('m.Download_tips_2') }}</li>
-          <li>{{ $t('m.Download_tips_3') }}</li>
+          <li>{{ $t("m.Download_tips_1") }}</li>
+          <li>{{ $t("m.Download_tips_2") }}</li>
+          <li>{{ $t("m.Download_tips_3") }}</li>
         </ul>
         <div class="download-btn">
-          <el-button type="primary" size="small" icon="el-icon-download"
-                     @click="downloadWrongcaseCase">
-            Test #{{this.seq}} {{ $t('m.Download_Wrong_Testcase')}}
+          <el-button
+            type="primary"
+            size="small"
+            icon="el-icon-download"
+            @click="downloadWrongcaseCase"
+          >
+            Test #{{ this.seq }} {{ $t("m.Download_Wrong_Testcase") }}
           </el-button>
         </div>
       </el-card>
     </template>
-<!--    提交的代码-->
-    <template v-if="
+    <!--    提交的代码-->
+    <template
+      v-if="
         (submission.code && submission.share && codeShare) ||
-          isSubmissionOwner ||
-          isAdminRole ||
-          (submission.code && submission.cid!=0)
-      ">
-      <el-col
-        :span="24"
-        style="margin-top: 13px;"
-        v-if="submission.code"
-      >
+        isSubmissionOwner ||
+        isAdminRole ||
+        (submission.code && submission.cid != 0)
+      "
+    >
+      <el-col :span="24" style="margin-top: 13px" v-if="submission.code">
         <Highlight
-            :code="submission.code"
-            :language="submission.language"
-            :border-color.sync="status.color"
+          :code="submission.code"
+          :language="submission.language"
+          :border-color.sync="status.color"
         ></Highlight>
       </el-col>
       <el-col :span="24">
@@ -311,7 +302,8 @@
             size="large"
             @click="doCopy"
             v-if="submission.code"
-          >{{ $t('m.Copy') }}</el-button>
+            >{{ $t("m.Copy") }}</el-button
+          >
           <template v-if="codeShare && isSubmissionOwner">
             <el-button
               v-if="submission.share"
@@ -320,7 +312,7 @@
               icon="el-icon-circle-close"
               @click="shareSubmission(false)"
             >
-              {{ $t('m.Unshared') }}
+              {{ $t("m.Unshared") }}
             </el-button>
             <el-button
               v-else-if="!submission.share"
@@ -329,7 +321,7 @@
               icon="el-icon-share"
               @click="shareSubmission(true)"
             >
-              {{ $t('m.Shared') }}
+              {{ $t("m.Shared") }}
             </el-button>
           </template>
         </div>
@@ -375,7 +367,7 @@ export default {
         isDisplay: 1,
         share: true,
       },
-      isDownload:true,
+      isDownload: true,
       seq: "",
       tableData: [],
       testCaseResult: {},
@@ -408,7 +400,7 @@ export default {
         },
         () => {
           myMessage.success(this.$i18n.t("m.Copied_failed"));
-        }
+        },
       );
     },
 
@@ -425,9 +417,10 @@ export default {
     },
 
     downloadWrongcaseCase() {
-      let url = '/api/file/download-wrong-case?submitId=' + this.submission.submitId;
+      let url =
+        "/api/file/download-wrong-case?submitId=" + this.submission.submitId;
       utils.downloadFile(url).then(() => {
-        myMessage.success(this.$i18n.t('m.Download_success'));
+        myMessage.success(this.$i18n.t("m.Download_success"));
       });
     },
     getProblemUri(row) {
@@ -507,32 +500,35 @@ export default {
         },
         () => {
           this.loadingTable = false;
-        }
+        },
       );
     },
 
     //首先该题必须支持开放测试点结果查看，同时若是比赛题目，只支持IO查看测试点情况，ACM强制禁止查看
     getAllCaseResult() {
-      api.getAllCaseResult(this.$route.params.submitID).then((res) => {
-        if(res.data.data!=null){
-          this.testCaseResult = res.data.data;
-          // 找到第一个未通过的测试点
-          var len = this.testCaseResult.judgeCaseList.length
-          if (len > 0) {
-            for (let i = 0; i < len; i++) {
-              let status = this.testCaseResult.judgeCaseList[i].status;
-              if(status != 0){
-                this.seq = this.testCaseResult.judgeCaseList[i].seq;
-                return
+      api.getAllCaseResult(this.$route.params.submitID).then(
+        (res) => {
+          if (res.data.data != null) {
+            this.testCaseResult = res.data.data;
+            // 找到第一个未通过的测试点
+            var len = this.testCaseResult.judgeCaseList.length;
+            if (len > 0) {
+              for (let i = 0; i < len; i++) {
+                let status = this.testCaseResult.judgeCaseList[i].status;
+                if (status != 0) {
+                  this.seq = this.testCaseResult.judgeCaseList[i].seq;
+                  return;
+                }
               }
             }
           }
-        }
-        // 未开放测试点结果查看，AC不可查看
-        this.isDownload = false;
-      },() => {
-        this.isDownload = false;
-      });
+          // 未开放测试点结果查看，AC不可查看
+          this.isDownload = false;
+        },
+        () => {
+          this.isDownload = false;
+        },
+      );
     },
     shareSubmission(shared) {
       let data = {
@@ -549,7 +545,7 @@ export default {
             myMessage.success(this.$i18n.t("m.Cancel_Sharing_Successfully"));
           }
         },
-        () => {}
+        () => {},
       );
     },
   },
@@ -637,7 +633,9 @@ export default {
 .subtask-title {
   width: 100%;
   padding-left: 20px;
-  transition: 0.1s ease, color 0.1s ease;
+  transition:
+    0.1s ease,
+    color 0.1s ease;
   font-weight: 700 !important;
 }
 @media screen and (max-width: 768px) {

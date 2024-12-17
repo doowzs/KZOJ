@@ -1,11 +1,8 @@
 <template>
-  <div style="margin-top:5px">
+  <div style="margin-top: 5px">
     <el-card shadow>
-      <div
-        slot="header"
-        class="rank-title"
-      >
-        <span class="panel-title">{{ $t('m.Record_List') }}</span>
+      <div slot="header" class="rank-title">
+        <span class="panel-title">{{ $t("m.Record_List") }}</span>
       </div>
       <div class="training-rank-search">
         <el-input
@@ -63,26 +60,25 @@
               </span>
               <span class="contest-rank-user-info">
                 <a @click="getUserHomeByUsername(row.uid, row.username)">
-                  <span
-                    class="contest-username"
-                    :title="row.username"
-                  >
+                  <span class="contest-username" :title="row.username">
                     <span
                       class="contest-rank-flag"
                       v-if="row.uid == userInfo.uid"
-                    >Own</span>
+                      >Own</span
+                    >
                     <span
                       class="contest-rank-flag"
                       v-if="row.gender == 'female'"
-                    >Girl</span>
-                    {{ row.username }}</span>
+                      >Girl</span
+                    >
+                    {{ row.username }}</span
+                  >
                   <span
                     class="contest-school"
                     v-if="row.school"
                     :title="row.school"
-                  >{{
-                    row.school
-                  }}</span>
+                    >{{ row.school }}</span
+                  >
                 </a>
               </span>
             </div>
@@ -110,26 +106,25 @@
               </span>
               <span class="contest-rank-user-info">
                 <a @click="getUserHomeByUsername(row.uid, row.username)">
-                  <span
-                    class="contest-username"
-                    :title="row.username"
-                  >
+                  <span class="contest-username" :title="row.username">
                     <span
                       class="contest-rank-flag"
                       v-if="row.uid == userInfo.uid"
-                    >Own</span>
+                      >Own</span
+                    >
                     <span
                       class="contest-rank-flag"
                       v-if="row.gender == 'female'"
-                    >Girl</span>
-                    {{ row.username }}</span>
+                      >Girl</span
+                    >
+                    {{ row.username }}</span
+                  >
                   <span
                     class="contest-school"
                     v-if="row.school"
                     :title="row.school"
-                  >{{
-                    row.school
-                  }}</span>
+                    >{{ row.school }}</span
+                  >
                 </a>
               </span>
             </div>
@@ -149,10 +144,12 @@
           min-width="90"
         >
           <template v-slot="{ row }">
-            <span><a
+            <span
+              ><a
                 @click="getUserACSubmit(row.username)"
-                style="color:rgb(87, 163, 243);font-size:16px"
-              >{{ row.ac }}</a>
+                style="color: rgb(87, 163, 243); font-size: 16px"
+                >{{ row.ac }}</a
+              >
               <br />
               <span class="judge-time">({{ row.totalRunTime }}ms)</span>
             </span>
@@ -165,18 +162,18 @@
           :field="problem.problemId"
         >
           <template v-slot:header>
-            <span><a
+            <span
+              ><a
                 @click="getTrainingProblemById(problem.problemId)"
                 class="emphasis"
-                style="color:#495060;"
-              >{{ problem.problemId }}</a></span>
+                style="color: #495060"
+                >{{ problem.problemId }}</a
+              ></span
+            >
           </template>
           <template v-slot="{ row }">
             <template v-if="row.submissionInfo[problem.problemId]">
-              <el-tooltip
-                effect="dark"
-                placement="top"
-              >
+              <el-tooltip effect="dark" placement="top">
                 <div slot="content">
                   {{
                     JUDGE_STATUS[row.submissionInfo[problem.problemId].status]
@@ -187,8 +184,8 @@
                   class="judge-status submission-hover"
                   :style="
                     'color:' +
-                      JUDGE_STATUS[row.submissionInfo[problem.problemId].status]
-                        .rgb
+                    JUDGE_STATUS[row.submissionInfo[problem.problemId].status]
+                      .rgb
                   "
                 >
                   {{
@@ -240,7 +237,7 @@ export default {
       total: 0,
       page: 1,
       limit: 30,
-      keyword: '',
+      keyword: "",
       trainingID: "",
       dataRank: [],
       JUDGE_STATUS: {},
@@ -267,7 +264,7 @@ export default {
         tid: this.trainingID,
         limit: this.limit,
         currentPage: this.page,
-        keyword: this.keyword
+        keyword: this.keyword,
       };
       this.loading = true;
       api.getTrainingRank(data).then(
@@ -278,7 +275,7 @@ export default {
         },
         (err) => {
           this.loading = false;
-        }
+        },
       );
     },
 
@@ -390,18 +387,18 @@ export default {
 /deep/.el-card__body {
   padding: 20px !important;
 }
-.training-rank-search{
+.training-rank-search {
   text-align: center;
   margin: 10px auto;
   width: 90%;
 }
-@media screen and (min-width: 768px){
-  .training-rank-search{
+@media screen and (min-width: 768px) {
+  .training-rank-search {
     width: 50%;
   }
 }
-@media screen and (min-width: 1050px){
-  .training-rank-search{
+@media screen and (min-width: 1050px) {
+  .training-rank-search {
     width: 30%;
   }
 }

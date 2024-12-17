@@ -13,7 +13,7 @@
       <i
         :class="{ rotate: !isOpen }"
         class="el-icon-caret-top"
-        style="color:#2d8cf0"
+        style="color: #2d8cf0"
       ></i>
     </footer>
   </div>
@@ -21,7 +21,7 @@
 
 <script>
 export default {
-  name: 'Accordion',
+  name: "Accordion",
   props: {
     title: {
       type: String,
@@ -40,7 +40,7 @@ export default {
   methods: {
     changeVisible() {
       this.isOpen = !this.isOpen;
-      this.$emit('changeVisible', this.index, this.isOpen);
+      this.$emit("changeVisible", this.index, this.isOpen);
     },
   },
 };
@@ -48,7 +48,9 @@ export default {
 
 <style scoped>
 .accordion {
-  box-shadow: 0 1px 2px 0 rgb(34 36 38 / 15%), 0 0 0 1px rgb(34 36 38 / 15%);
+  box-shadow:
+    0 1px 2px 0 rgb(34 36 38 / 15%),
+    0 0 0 1px rgb(34 36 38 / 15%);
 }
 .accordion header {
   position: relative;
@@ -64,7 +66,7 @@ export default {
 }
 
 .body {
-  font-family: "Inconsolata",monospace;
+  font-family: "Inconsolata", monospace;
   background-color: #f9fafc;
   border-top: 1px solid rgb(34 36 38 / 15%);
   clear: both;

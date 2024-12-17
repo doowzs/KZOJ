@@ -49,7 +49,7 @@
                       query.status === ""
                         ? $t("m.Status")
                         : $t(
-                            "m." + CONTEST_STATUS_REVERSE[query.status]["name"]
+                            "m." + CONTEST_STATUS_REVERSE[query.status]["name"],
                           )
                     }}
                     <i class="el-icon-caret-bottom"></i>
@@ -175,10 +175,10 @@
                               '：' +
                               (contest.oiRankScoreType == 'Recent'
                                 ? $t(
-                                    'm.Based_on_The_Recent_Score_Submitted_Of_Each_Problem'
+                                    'm.Based_on_The_Recent_Score_Submitted_Of_Each_Problem',
                                   )
                                 : $t(
-                                    'm.Based_on_The_Highest_Score_Submitted_For_Each_Problem'
+                                    'm.Based_on_The_Highest_Score_Submitted_For_Each_Problem',
                                   ))
                             "
                             placement="top"
@@ -209,7 +209,7 @@
                             {{
                               $t(
                                 "m." +
-                                  CONTEST_TYPE_REVERSE[contest.auth]["name"]
+                                  CONTEST_TYPE_REVERSE[contest.auth]["name"],
                               )
                             }}
                           </el-tag>
@@ -239,7 +239,7 @@
                             @click="
                               toContestOutsideScoreBoard(
                                 contest.id,
-                                contest.type
+                                contest.type,
                               )
                             "
                           ></el-button>
@@ -263,7 +263,7 @@
                       <i class="fa fa-circle" aria-hidden="true"></i>
                       {{
                         $t(
-                          "m." + CONTEST_STATUS_REVERSE[contest.status]["name"]
+                          "m." + CONTEST_STATUS_REVERSE[contest.status]["name"],
                         )
                       }}
                     </el-tag>
@@ -369,7 +369,7 @@ export default {
         },
         (err) => {
           this.loading = false;
-        }
+        },
       );
     },
 

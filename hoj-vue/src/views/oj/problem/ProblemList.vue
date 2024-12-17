@@ -326,7 +326,7 @@
                 <el-collapse-item
                   :title="
                     getTagClassificationName(
-                      tagsAndClassification.classification
+                      tagsAndClassification.classification,
                     )
                   "
                   v-if="
@@ -482,7 +482,7 @@ export default {
 
     pushRouter() {
       this.query.tagId = JSON.stringify(
-        this.filterTagList.map((tagJson) => tagJson.id)
+        this.filterTagList.map((tagJson) => tagJson.id),
       );
       this.query.limit = this.limit;
       this.$router.push({
@@ -584,7 +584,7 @@ export default {
         },
         (res) => {
           this.loadings.table = false;
-        }
+        },
       );
     },
     getTagList(oj) {
@@ -617,7 +617,7 @@ export default {
         },
         (res) => {
           this.loadings.tag = false;
-        }
+        },
       );
     },
     filterSearchTag() {
@@ -641,7 +641,7 @@ export default {
             this.activeTagClassificationIdList.push(
               tagsAndClassification.classification == null
                 ? -1
-                : tagsAndClassification.classification.id
+                : tagsAndClassification.classification.id,
             );
           }
         }

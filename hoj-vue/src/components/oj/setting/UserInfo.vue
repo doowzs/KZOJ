@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="section-title">{{ $t('m.UserInfo_Setting') }}</div>
+    <div class="section-title">{{ $t("m.UserInfo_Setting") }}</div>
     <el-form ref="formProfile" :model="formProfile">
       <el-row :gutter="30" justify="space-around">
         <el-col :md="11" :xs="24">
@@ -14,7 +14,12 @@
             <el-input v-model="formProfile.school" disabled :maxlength="50" />
           </el-form-item>
           <el-form-item :label="$t('m.Class')">
-            <el-select v-model="formProfile.number" :placeholder="$t('m.Select_Class')" style="width:100%" disabled>
+            <el-select
+              v-model="formProfile.number"
+              :placeholder="$t('m.Select_Class')"
+              style="width: 100%"
+              disabled
+            >
               <el-option label="一年级" value="一年级"></el-option>
               <el-option label="二年级" value="二年级"></el-option>
               <el-option label="三年级" value="三年级"></el-option>
@@ -48,49 +53,49 @@
           <el-form-item :label="$t('m.Gender')">
             <el-radio-group v-model="formProfile.gender">
               <el-radio label="male" border size="small">{{
-                  $t('m.Male')
-                }}</el-radio>
+                $t("m.Male")
+              }}</el-radio>
               <el-radio label="female" border size="small">{{
-                  $t('m.Female')
-                }}</el-radio>
+                $t("m.Female")
+              }}</el-radio>
               <el-radio label="secrecy" border size="small" disabled>{{
-                  $t('m.Secrecy')
-                }}</el-radio>
+                $t("m.Secrecy")
+              }}</el-radio>
             </el-radio-group>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="24">
-          <label class="el-form-item__label" style="float: none;">{{
-              $t('m.Signature')
-            }}</label>
+          <label class="el-form-item__label" style="float: none">{{
+            $t("m.Signature")
+          }}</label>
           <Editor
-              :value.sync="formProfile.signature"
-              style="padding: 5px;"
+            :value.sync="formProfile.signature"
+            style="padding: 5px"
           ></Editor>
         </el-col>
       </el-row>
     </el-form>
-    <div style="text-align:center;margin-top:10px">
+    <div style="text-align: center; margin-top: 10px">
       <el-button
-          type="primary"
-          @click="updateUserInfo"
-          :loading="loadingSaveBtn"
-      >{{ $t('m.Save') }}</el-button
+        type="primary"
+        @click="updateUserInfo"
+        :loading="loadingSaveBtn"
+        >{{ $t("m.Save") }}</el-button
       >
     </div>
   </div>
 </template>
 
 <script>
-import api from '@/common/api';
-import utils from '@/common/utils';
-import myMessage from '@/common/message';
-import { VueCropper } from 'vue-cropper';
-import Avatar from 'vue-avatar';
-import 'element-ui/lib/theme-chalk/display.css';
-const Editor = () => import('@/components/admin/Editor.vue');
+import api from "@/common/api";
+import utils from "@/common/utils";
+import myMessage from "@/common/message";
+import { VueCropper } from "vue-cropper";
+import Avatar from "vue-avatar";
+import "element-ui/lib/theme-chalk/display.css";
+const Editor = () => import("@/components/admin/Editor.vue");
 export default {
   components: {
     Avatar,
@@ -102,16 +107,16 @@ export default {
       loadingSaveBtn: false,
       preview: {},
       formProfile: {
-        realname: '',
-        username: '',
-        cfUsername: '',
-        gender: '',
-        nickname: '',
-        signature: '',
-        number: '',
-        blog: '',
-        school: '',
-        github: '',
+        realname: "",
+        username: "",
+        cfUsername: "",
+        gender: "",
+        nickname: "",
+        signature: "",
+        number: "",
+        blog: "",
+        school: "",
+        github: "",
       },
     };
   },
@@ -125,8 +130,8 @@ export default {
   },
   methods: {
     updateUserInfo() {
-      if (this.formProfile.nickname.length>8) {
-        myMessage.error(this.$i18n.t('m.Enter_the_Nickname_Length'));
+      if (this.formProfile.nickname.length > 8) {
+        myMessage.error(this.$i18n.t("m.Enter_the_Nickname_Length"));
         return;
       }
       this.loadingSaveBtn = true;
@@ -134,14 +139,14 @@ export default {
           Object.assign({}, this.formProfile)
       );*/
       api.changeUserInfo(this.formProfile).then(
-          (res) => {
-            myMessage.success(this.$i18n.t('m.Update_Successfully'));
-            this.$store.dispatch('setUserInfo', res.data.data);
-            this.loadingSaveBtn = false;
-          },
-          (_) => {
-            this.loadingSaveBtn = false;
-          }
+        (res) => {
+          myMessage.success(this.$i18n.t("m.Update_Successfully"));
+          this.$store.dispatch("setUserInfo", res.data.data);
+          this.loadingSaveBtn = false;
+        },
+        (_) => {
+          this.loadingSaveBtn = false;
+        },
       );
     },
   },

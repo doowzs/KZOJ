@@ -1,25 +1,28 @@
 <template>
   <div>
-    <div class="section-title">{{ $t('m.Avatar_Setting') }}</div>
+    <div class="section-title">{{ $t("m.Avatar_Setting") }}</div>
     <div class="section-main">
       <avatar
-          :username="formProfile.username"
-          :inline="true"
-          :size="130"
-          color="#FFF"
-          style="margin-bottom:15px"
-          :src="avatar"
+        :username="formProfile.username"
+        :inline="true"
+        :size="130"
+        color="#FFF"
+        style="margin-bottom: 15px"
+        :src="avatar"
       ></avatar>
       <template v-if="!avatarOption.imgSrc">
         <el-upload
-            class="upload-container"
-            action=""
-            drag
-            :before-upload="handleSelectFile"
+          class="upload-container"
+          action=""
+          drag
+          :before-upload="handleSelectFile"
         >
           <div style="padding: 20px 0">
-            <i class="el-icon-upload" style="color: #3399ff;font-size:52px"></i>
-            <p>{{ $t('m.Upload_avatar_hint') }}</p>
+            <i
+              class="el-icon-upload"
+              style="color: #3399ff; font-size: 52px"
+            ></i>
+            <p>{{ $t("m.Upload_avatar_hint") }}</p>
           </div>
         </el-upload>
       </template>
@@ -29,70 +32,70 @@
           <el-col :xs="24" :md="12">
             <div class="cropper-main inline">
               <vueCropper
-                  ref="cropper"
-                  autoCrop
-                  fixed
-                  :autoCropWidth="200"
-                  :autoCropHeight="200"
-                  :img="avatarOption.imgSrc"
-                  :outputSize="avatarOption.size"
-                  :outputType="avatarOption.outputType"
-                  :info="true"
-                  @realTime="realTime"
+                ref="cropper"
+                autoCrop
+                fixed
+                :autoCropWidth="200"
+                :autoCropHeight="200"
+                :img="avatarOption.imgSrc"
+                :outputSize="avatarOption.size"
+                :outputType="avatarOption.outputType"
+                :info="true"
+                @realTime="realTime"
               >
               </vueCropper>
             </div>
             <div class="cropper-btn">
               <el-tooltip
-                  class="item"
-                  effect="dark"
-                  content="向左旋转90°"
-                  trigger="hover"
-                  placement="bottom"
+                class="item"
+                effect="dark"
+                content="向左旋转90°"
+                trigger="hover"
+                placement="bottom"
               >
                 <el-button
-                    @click="rotate('left')"
-                    icon="el-icon-refresh-left"
-                    size="mini"
+                  @click="rotate('left')"
+                  icon="el-icon-refresh-left"
+                  size="mini"
                 ></el-button>
               </el-tooltip>
               <el-tooltip
-                  class="item"
-                  effect="dark"
-                  content="向右旋转90°"
-                  trigger="hover"
-                  placement="bottom"
+                class="item"
+                effect="dark"
+                content="向右旋转90°"
+                trigger="hover"
+                placement="bottom"
               >
                 <el-button
-                    @click="rotate('right')"
-                    icon="el-icon-refresh-right"
-                    size="mini"
+                  @click="rotate('right')"
+                  icon="el-icon-refresh-right"
+                  size="mini"
                 ></el-button>
               </el-tooltip>
               <el-tooltip
-                  class="item"
-                  effect="dark"
-                  content="关闭图像截取"
-                  trigger="hover"
-                  placement="bottom"
+                class="item"
+                effect="dark"
+                content="关闭图像截取"
+                trigger="hover"
+                placement="bottom"
               >
                 <el-button
-                    @click="reselect"
-                    icon="el-icon-refresh"
-                    size="mini"
+                  @click="reselect"
+                  icon="el-icon-refresh"
+                  size="mini"
                 ></el-button>
               </el-tooltip>
               <el-tooltip
-                  class="item"
-                  effect="dark"
-                  trigger="hover"
-                  content="确定图像截取"
-                  placement="bottom"
+                class="item"
+                effect="dark"
+                trigger="hover"
+                content="确定图像截取"
+                placement="bottom"
               >
                 <el-button
-                    @click="finishCrop"
-                    icon="el-icon-check"
-                    size="mini"
+                  @click="finishCrop"
+                  icon="el-icon-check"
+                  size="mini"
                 ></el-button>
               </el-tooltip>
             </div>
@@ -107,20 +110,20 @@
         </el-row>
       </template>
       <el-dialog
-          :visible.sync="uploadModalVisible"
-          :title="$t('m.Upload')"
-          width="350px"
+        :visible.sync="uploadModalVisible"
+        :title="$t('m.Upload')"
+        width="350px"
       >
         <div class="upload-modal">
-          <p class="notice">{{ $t('m.Your_new_avatar') + ':' }}</p>
+          <p class="notice">{{ $t("m.Your_new_avatar") + ":" }}</p>
           <img :src="uploadImgSrc" />
         </div>
         <div slot="footer">
           <el-button
-              @click="uploadAvatar"
-              :loading="loadingUploadBtn"
-              type="primary"
-          >{{ $t('m.Upload') }}</el-button
+            @click="uploadAvatar"
+            :loading="loadingUploadBtn"
+            type="primary"
+            >{{ $t("m.Upload") }}</el-button
           >
         </div>
       </el-dialog>
@@ -129,13 +132,13 @@
 </template>
 
 <script>
-import api from '@/common/api';
-import utils from '@/common/utils';
-import myMessage from '@/common/message';
-import { VueCropper } from 'vue-cropper';
-import Avatar from 'vue-avatar';
-import 'element-ui/lib/theme-chalk/display.css';
-const Editor = () => import('@/components/admin/Editor.vue');
+import api from "@/common/api";
+import utils from "@/common/utils";
+import myMessage from "@/common/message";
+import { VueCropper } from "vue-cropper";
+import Avatar from "vue-avatar";
+import "element-ui/lib/theme-chalk/display.css";
+const Editor = () => import("@/components/admin/Editor.vue");
 export default {
   components: {
     Avatar,
@@ -148,24 +151,24 @@ export default {
       loadingUploadBtn: false,
       uploadModalVisible: false,
       preview: {},
-      uploadImgSrc: '',
+      uploadImgSrc: "",
       avatarOption: {
-        imgSrc: '',
+        imgSrc: "",
         size: 0.8,
-        outputType: 'png',
+        outputType: "png",
       },
 
       formProfile: {
-        realname: '',
-        username: '',
-        cfUsername: '',
-        gender: '',
-        nickname: '',
-        signature: '',
-        number: '',
-        blog: '',
-        school: '',
-        github: '',
+        realname: "",
+        username: "",
+        cfUsername: "",
+        gender: "",
+        nickname: "",
+        signature: "",
+        number: "",
+        blog: "",
+        school: "",
+        github: "",
       },
     };
   },
@@ -181,8 +184,8 @@ export default {
     checkFileType(file) {
       if (!/\.(gif|jpg|jpeg|png|bmp|webp|GIF|JPG|PNG|WEBP)$/.test(file.name)) {
         this.$notify.warning({
-          title: this.$i18n.t('m.File_type_not_support'),
-          message: file.name + this.$i18n.t('m.is_incorrect_format_file'),
+          title: this.$i18n.t("m.File_type_not_support"),
+          message: file.name + this.$i18n.t("m.is_incorrect_format_file"),
         });
         return false;
       }
@@ -192,8 +195,8 @@ export default {
       // max size is 2MB
       if (file.size > 2 * 1024 * 1024) {
         this.$notify.warning({
-          title: this.$i18n.t('m.Exceed_max_size_limit'),
-          message: file.name + this.$i18n.t('m.File_Exceed_Tips'),
+          title: this.$i18n.t("m.Exceed_max_size_limit"),
+          message: file.name + this.$i18n.t("m.File_Exceed_Tips"),
         });
         return false;
       }
@@ -215,19 +218,19 @@ export default {
       this.preview = data;
     },
     rotate(direction) {
-      if (direction === 'left') {
+      if (direction === "left") {
         this.$refs.cropper.rotateLeft();
       } else {
         this.$refs.cropper.rotateRight();
       }
     },
     reselect() {
-      this.$confirm(this.$i18n.t('m.Cancel_Avater_Tips'), 'Tips', {
-        confirmButtonText: this.$i18n.t('m.OK'),
-        cancelButtonText: this.$i18n.t('m.Cancel'),
-        type: 'warning',
+      this.$confirm(this.$i18n.t("m.Cancel_Avater_Tips"), "Tips", {
+        confirmButtonText: this.$i18n.t("m.OK"),
+        cancelButtonText: this.$i18n.t("m.Cancel"),
+        type: "warning",
       }).then(() => {
-        this.avatarOption.imgSrc = '';
+        this.avatarOption.imgSrc = "";
       });
     },
     finishCrop() {
@@ -240,27 +243,27 @@ export default {
       this.$refs.cropper.getCropBlob((blob) => {
         let form = new window.FormData();
         let file = new window.File(
-            [blob],
-            'avatar.' + this.avatarOption.outputType
+          [blob],
+          "avatar." + this.avatarOption.outputType,
         );
-        form.append('image', file);
+        form.append("image", file);
         this.loadingUploadBtn = true;
         this.$http({
-          method: 'post',
-          url: '/api/file/upload-avatar',
+          method: "post",
+          url: "/api/file/upload-avatar",
           data: form,
-          headers: { 'content-type': 'multipart/form-data' },
+          headers: { "content-type": "multipart/form-data" },
         }).then(
-            (res) => {
-              this.loadingUploadBtn = false;
-              myMessage.success(this.$i18n.t('m.Upload_Avatar_Successfully'));
-              this.uploadModalVisible = false;
-              this.avatarOption.imgSrc = '';
-              this.$store.dispatch('setUserInfo', res.data.data);
-            },
-            () => {
-              this.loadingUploadBtn = false;
-            }
+          (res) => {
+            this.loadingUploadBtn = false;
+            myMessage.success(this.$i18n.t("m.Upload_Avatar_Successfully"));
+            this.uploadModalVisible = false;
+            this.avatarOption.imgSrc = "";
+            this.$store.dispatch("setUserInfo", res.data.data);
+          },
+          () => {
+            this.loadingUploadBtn = false;
+          },
         );
       });
     },
@@ -271,9 +274,9 @@ export default {
     },
     previewStyle() {
       return {
-        width: this.preview.w + 'px',
-        height: this.preview.h + 'px',
-        overflow: 'hidden',
+        width: this.preview.w + "px",
+        height: this.preview.h + "px",
+        overflow: "hidden",
       };
     },
   },

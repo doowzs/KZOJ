@@ -1,10 +1,10 @@
 <template>
-  <div style="text-align:center">
-    <div style="margin-bottom:10px" v-if="contest.type != undefined">
+  <div style="text-align: center">
+    <div style="margin-bottom: 10px" v-if="contest.type != undefined">
       <span class="tips">{{
         contest.type == 0
-          ? $t('m.ACM_Contest_Add_From_Public_Problem_Tips')
-          : $t('m.OI_Contest_Add_From_Public_Problem_Tips')
+          ? $t("m.ACM_Contest_Add_From_Public_Problem_Tips")
+          : $t("m.OI_Contest_Add_From_Public_Problem_Tips")
       }}</span>
     </div>
     <vxe-input
@@ -14,7 +14,7 @@
       size="medium"
       @search-click="filterByKeyword"
       @keyup.enter.native="filterByKeyword"
-      style="margin-bottom:10px"
+      style="margin-bottom: 10px"
     ></vxe-input>
     <vxe-table
       :data="problemList"
@@ -55,18 +55,18 @@
   </div>
 </template>
 <script>
-import api from '@/common/api';
-import mMessage from '@/common/message';
-import Pagination from '@/components/oj/common/Pagination';
+import api from "@/common/api";
+import mMessage from "@/common/message";
+import Pagination from "@/components/oj/common/Pagination";
 export default {
-  name: 'AddProblemFromPublic',
+  name: "AddProblemFromPublic",
   components: {
     Pagination,
   },
   props: {
     apiMethod: {
       type: String,
-      default: 'getGroupTrainingProblemList',
+      default: "getGroupTrainingProblemList",
     },
     trainingId: {
       type: Number,
@@ -85,7 +85,7 @@ export default {
       loading: false,
       problemList: [],
       contest: {},
-      keyword: '',
+      keyword: "",
     };
   },
   mounted() {
@@ -135,8 +135,8 @@ export default {
     addPublicProblem(id, problemId) {
       if (this.contestId) {
         this.$prompt(
-          this.$i18n.t('m.Enter_The_Problem_Display_ID_in_the_Contest'),
-          'Tips'
+          this.$i18n.t("m.Enter_The_Problem_Display_ID_in_the_Contest"),
+          "Tips",
         ).then(
           ({ value }) => {
             let data = {
@@ -146,14 +146,14 @@ export default {
             };
             api.addGroupContestProblemFromPublic(data).then(
               (res) => {
-                mMessage.success(this.$i18n.t('m.Add_Successfully'));
-                this.$emit('currentChangeProblem');
+                mMessage.success(this.$i18n.t("m.Add_Successfully"));
+                this.$emit("currentChangeProblem");
                 this.currentChange(1);
               },
-              () => {}
+              () => {},
             );
           },
-          () => {}
+          () => {},
         );
       } else {
         let data = {
@@ -163,11 +163,11 @@ export default {
         };
         api.addGroupTrainingProblemFromPublic(data).then(
           (res) => {
-            mMessage.success(this.$i18n.t('m.Add_Successfully'));
-            this.$emit('currentChangeProblem');
+            mMessage.success(this.$i18n.t("m.Add_Successfully"));
+            this.$emit("currentChangeProblem");
             this.currentChange(1);
           },
-          () => {}
+          () => {},
         );
       }
     },

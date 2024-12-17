@@ -266,7 +266,7 @@
                   :type="
                     getResultStausType(
                       testJudgeRes.problemJudgeMode,
-                      testJudgeRes.status
+                      testJudgeRes.status,
                     )
                   "
                   :closable="false"
@@ -278,7 +278,7 @@
                         getResultStatusName(
                           testJudgeRes.problemJudgeMode,
                           testJudgeRes.status,
-                          testJudgeRes.expectedOutput != null
+                          testJudgeRes.expectedOutput != null,
                         )
                       }}
                       <template v-if="equalsExpectedOuput != null">
@@ -596,7 +596,7 @@ export default {
               cm.replaceSelection(
                 Array(cm.getOption("indentUnit") + 1).join(" "),
                 "end",
-                "+input"
+                "+input",
               ); // 光标处插入 indentUnit 个空格
             }
           },
@@ -788,7 +788,7 @@ export default {
         },
         (err) => {
           this.testJudgeActiveTab = "input";
-        }
+        },
       );
     },
     checkTestJudgeStatus() {
@@ -826,7 +826,7 @@ export default {
           (res) => {
             this.testJudgeLoding = false;
             clearTimeout(this.refreshStatus);
-          }
+          },
         );
       };
       // 设置每1秒检查一下该题的提交结果

@@ -100,15 +100,15 @@ export default {
             this.calcMoveLen();
           });
         },
-        (err) => {}
+        (err) => {},
       );
     },
     calcMoveLen() {
       this.dataNavListRealWidth = document.getElementById(
-        "problem-header-list"
+        "problem-header-list",
       ).scrollWidth;
       this.dataNavListViewWidth = document.getElementById(
-        "problem-header-list"
+        "problem-header-list",
       ).offsetWidth;
       this.moveLen = this.dataNavListViewWidth / 2;
       let num = Math.floor((this.dataNavListViewWidth - 70) / 100);
@@ -121,7 +121,7 @@ export default {
     recalcMoveLen() {
       try {
         this.dataNavListViewWidth = document.getElementById(
-          "problem-header-list"
+          "problem-header-list",
         ).offsetWidth;
         if (
           this.move >

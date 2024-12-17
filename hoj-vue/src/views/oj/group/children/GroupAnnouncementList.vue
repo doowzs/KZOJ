@@ -3,7 +3,7 @@
     <div class="filter-row">
       <el-row>
         <el-col :md="3" :xs="5">
-          <span class="title">{{ $t('m.Group_Announcement') }}</span>
+          <span class="title">{{ $t("m.Group_Announcement") }}</span>
         </el-col>
         <el-col :md="18" :xs="19">
           <el-button
@@ -11,7 +11,7 @@
             size="small"
             @click="handleCreatePage"
             icon="el-icon-plus"
-            >{{ $t('m.Create') }}</el-button
+            >{{ $t("m.Create") }}</el-button
           >
         </el-col>
       </el-row>
@@ -21,9 +21,9 @@
 </template>
 
 <script>
-import AnnouncementList from '@/components/oj/group/AnnouncementList.vue';
+import AnnouncementList from "@/components/oj/group/AnnouncementList.vue";
 export default {
-  name: 'GroupAnnouncementList',
+  name: "GroupAnnouncementList",
   components: {
     AnnouncementList,
   },

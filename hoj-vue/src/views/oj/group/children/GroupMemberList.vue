@@ -3,7 +3,7 @@
     <div class="filter-row">
       <el-row>
         <el-col :md="3" :xs="5">
-          <span class="title">{{ $t('m.Group_Member') }}</span>
+          <span class="title">{{ $t("m.Group_Member") }}</span>
         </el-col>
         <el-col :md="18" :xs="19">
           <el-button
@@ -12,7 +12,7 @@
             size="small"
             @click="adminPage = !adminPage"
             :icon="adminPage ? 'el-icon-back' : 'el-icon-s-opportunity'"
-            >{{ adminPage ? $t('m.Back') : $t('m.Member_Admin') }}</el-button
+            >{{ adminPage ? $t("m.Back") : $t("m.Member_Admin") }}</el-button
           >
         </el-col>
       </el-row>
@@ -35,17 +35,17 @@
             ><el-link
               type="primary"
               @click="goUserHome(row.username)"
-              style="font-size: 13px;"
+              style="font-size: 13px"
               >{{ row.username }}</el-link
             >
           </template>
         </vxe-table-column>
         <vxe-table-column
-            min-width="150"
-            field="username"
-            show-overflow
-            v-if="isSuperAdmin || isGroupAdmin"
-            :title="$t('m.RealName')"
+          min-width="150"
+          field="username"
+          show-overflow
+          v-if="isSuperAdmin || isGroupAdmin"
+          :title="$t('m.RealName')"
         >
           <template v-slot="{ row }">
             {{ row.realname }}
@@ -99,13 +99,13 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import Pagination from '@/components/oj/common/Pagination';
-import api from '@/common/api';
-import Editor from '@/components/admin/Editor.vue';
-import MemberList from '@/components/oj/group/MemberList';
+import { mapGetters } from "vuex";
+import Pagination from "@/components/oj/common/Pagination";
+import api from "@/common/api";
+import Editor from "@/components/admin/Editor.vue";
+import MemberList from "@/components/oj/group/MemberList";
 export default {
-  name: 'GroupMemberList',
+  name: "GroupMemberList",
   components: {
     Pagination,
     Editor,
@@ -138,7 +138,7 @@ export default {
     },
     goUserHome(username) {
       this.$router.push({
-        path: '/user-home',
+        path: "/user-home",
         query: { username },
       });
     },
@@ -148,7 +148,7 @@ export default {
         .getGroupMemberList(
           this.currentPage,
           this.limit,
-          this.$route.params.groupID
+          this.$route.params.groupID,
         )
         .then(
           (res) => {
@@ -158,12 +158,12 @@ export default {
           },
           (err) => {
             this.loading = false;
-          }
+          },
         );
     },
   },
   computed: {
-    ...mapGetters(['userInfo', 'isSuperAdmin', 'isGroupAdmin']),
+    ...mapGetters(["userInfo", "isSuperAdmin", "isGroupAdmin"]),
   },
 };
 </script>

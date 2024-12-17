@@ -61,10 +61,10 @@
                     '：' +
                     (contest.oiRankScoreType == 'Recent'
                       ? $t(
-                          'm.Based_on_The_Recent_Score_Submitted_Of_Each_Problem'
+                          'm.Based_on_The_Recent_Score_Submitted_Of_Each_Problem',
                         )
                       : $t(
-                          'm.Based_on_The_Highest_Score_Submitted_For_Each_Problem'
+                          'm.Based_on_The_Highest_Score_Submitted_For_Each_Problem',
                         ))
                   "
                   placement="top"
@@ -467,7 +467,7 @@ export default {
                   "</i></p>" +
                   '<p style="text-align:center;color:#409eff">' +
                   this.$i18n.t(
-                    "m.Please_check_the_contest_announcement_for_details"
+                    "m.Please_check_the_contest_announcement_for_details",
                   ) +
                   "</p>",
                 type: "warning",
@@ -569,7 +569,7 @@ export default {
         },
         (_) => {
           this.loadingSaveBtn = false;
-        }
+        },
       );
     },
   },

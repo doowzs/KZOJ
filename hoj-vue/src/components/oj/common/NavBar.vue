@@ -826,8 +826,11 @@ export default {
   bottom: 0px;
   z-index: 1000;
   width: 100%;
-  box-shadow: 00px 0px 00px rgb(255, 255, 255), 0px 0px 10px rgb(255, 255, 255),
-    0px 0px 0px rgb(255, 255, 255), 1px 1px 0px rgb(218, 218, 218);
+  box-shadow:
+    00px 0px 00px rgb(255, 255, 255),
+    0px 0px 10px rgb(255, 255, 255),
+    0px 0px 0px rgb(255, 255, 255),
+    1px 1px 0px rgb(218, 218, 218);
 }
 
 .logo {

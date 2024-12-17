@@ -17,17 +17,17 @@
           ><el-link
             type="primary"
             @click="goUserHome(row.username)"
-            style="font-size: 13px;"
+            style="font-size: 13px"
             >{{ row.username }}</el-link
           >
         </template>
       </vxe-table-column>
       <vxe-table-column
-          min-width="150"
-          field="username"
-          show-overflow
-          v-if="isSuperAdmin || isGroupAdmin"
-          :title="$t('m.RealName')"
+        min-width="150"
+        field="username"
+        show-overflow
+        v-if="isSuperAdmin || isGroupAdmin"
+        :title="$t('m.RealName')"
       >
         <template v-slot="{ row }">
           {{ row.realname }}
@@ -113,8 +113,8 @@
             placement="top"
             v-if="
               (isGroupOwner || row.auth < userAuth) &&
-                userInfo.uid != row.uid &&
-                row.uid != group.owner
+              userInfo.uid != row.uid &&
+              row.uid != group.owner
             "
           >
             <el-button
@@ -139,13 +139,13 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import Pagination from '@/components/oj/common/Pagination';
-import api from '@/common/api';
-import mMessage from '@/common/message';
-import Editor from '@/components/admin/Editor.vue';
+import { mapGetters } from "vuex";
+import Pagination from "@/components/oj/common/Pagination";
+import api from "@/common/api";
+import mMessage from "@/common/message";
+import Editor from "@/components/admin/Editor.vue";
 export default {
-  name: 'GroupMemberList',
+  name: "GroupMemberList",
   components: {
     Pagination,
     Editor,
@@ -158,7 +158,7 @@ export default {
       adminMemberList: [],
       member: {
         id: null,
-        username: '',
+        username: "",
         auth: null,
       },
       loading: false,
@@ -173,7 +173,7 @@ export default {
     },
     goUserHome(username) {
       this.$router.push({
-        path: '/user-home',
+        path: "/user-home",
         query: { username },
       });
     },
@@ -191,7 +191,7 @@ export default {
         .getGroupApplyList(
           this.currentPage,
           this.limit,
-          this.$route.params.groupID
+          this.$route.params.groupID,
         )
         .then(
           (res) => {
@@ -201,34 +201,34 @@ export default {
           },
           (err) => {
             this.loading = false;
-          }
+          },
         );
     },
     updateGroupMember(data) {
       api
         .updateGroupMember(data)
         .then((res) => {
-          mMessage.success(this.$i18n.t('m.Update_Successfully'));
-          this.$emit('currentChange', 1);
-          this.$store.dispatch('getGroup');
+          mMessage.success(this.$i18n.t("m.Update_Successfully"));
+          this.$emit("currentChange", 1);
+          this.$store.dispatch("getGroup");
           this.currentChange(1);
         })
         .catch(() => {});
     },
     viewReason(value) {
-      this.$alert(value, this.$t('m.Apply_Reason'), {
-        confirmButtonText: this.$t('m.OK'),
+      this.$alert(value, this.$t("m.Apply_Reason"), {
+        confirmButtonText: this.$t("m.OK"),
       });
     },
     deleteMember(uid, gid) {
       this.$confirm(
-        this.$i18n.t('m.Delete_Member_Tips'),
-        this.$i18n.t('m.Warning'),
+        this.$i18n.t("m.Delete_Member_Tips"),
+        this.$i18n.t("m.Warning"),
         {
-          confirmButtonText: this.$i18n.t('m.OK'),
-          cancelButtonText: this.$i18n.t('m.Cancel'),
-          type: 'warning',
-        }
+          confirmButtonText: this.$i18n.t("m.OK"),
+          cancelButtonText: this.$i18n.t("m.Cancel"),
+          type: "warning",
+        },
       )
         .then(() => {
           this.loading = true;
@@ -236,9 +236,9 @@ export default {
             .deleteGroupMember(uid, gid)
             .then((res) => {
               this.loading = false;
-              mMessage.success(this.$i18n.t('m.Delete_successfully'));
-              this.$emit('currentChange', 1);
-              this.$store.dispatch('getGroup');
+              mMessage.success(this.$i18n.t("m.Delete_successfully"));
+              this.$emit("currentChange", 1);
+              this.$store.dispatch("getGroup");
               this.currentChange(1);
             })
             .catch(() => {
@@ -252,12 +252,12 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'userInfo',
-      'isSuperAdmin',
-      'userAuth',
-      'isGroupOwner',
-      'isGroupAdmin',
-      'group',
+      "userInfo",
+      "isSuperAdmin",
+      "userAuth",
+      "isGroupOwner",
+      "isGroupAdmin",
+      "group",
     ]),
   },
 };

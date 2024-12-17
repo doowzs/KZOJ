@@ -3,7 +3,7 @@
     <div class="filter-row">
       <el-row>
         <el-col :md="3" :xs="24">
-          <span class="title">{{ $t('m.Group_Training') }}</span>
+          <span class="title">{{ $t("m.Group_Training") }}</span>
         </el-col>
         <el-col
           :md="18"
@@ -18,7 +18,9 @@
             size="small"
             @click="handleCreatePage"
             :icon="createPage ? 'el-icon-back' : 'el-icon-plus'"
-            >{{ createPage ? $t('m.Back_To_Admin_Training_List') : $t('m.Create') }}</el-button
+            >{{
+              createPage ? $t("m.Back_To_Admin_Training_List") : $t("m.Create")
+            }}</el-button
           >
           <el-button
             v-if="editPage && adminPage"
@@ -26,15 +28,17 @@
             size="small"
             @click="handleEditPage"
             icon="el-icon-back"
-            >{{ $t('m.Back_To_Admin_Training_List') }}</el-button
+            >{{ $t("m.Back_To_Admin_Training_List") }}</el-button
           >
           <el-button
             :type="adminPage ? 'danger' : 'success'"
-            v-if="!editPage&&!createPage"
+            v-if="!editPage && !createPage"
             size="small"
             @click="handleAdminPage"
             :icon="adminPage ? 'el-icon-back' : 'el-icon-s-opportunity'"
-            >{{ adminPage ? $t('m.Back_To_Training_List') : $t('m.Training_Admin') }}</el-button
+            >{{
+              adminPage ? $t("m.Back_To_Training_List") : $t("m.Training_Admin")
+            }}</el-button
           >
         </el-col>
         <el-col
@@ -49,21 +53,21 @@
             size="small"
             @click="publicPage = true"
             icon="el-icon-plus"
-            >{{ $t('m.Add_From_Public_Problem') }}</el-button
+            >{{ $t("m.Add_From_Public_Problem") }}</el-button
           >
           <el-button
             type="success"
             size="small"
             @click="handleGroupPage"
             icon="el-icon-plus"
-            >{{ $t('m.Add_From_Group_Problem') }}</el-button
+            >{{ $t("m.Add_From_Group_Problem") }}</el-button
           >
           <el-button
             type="warning"
             size="small"
             @click="handleProblemPage(null)"
             icon="el-icon-back"
-            >{{ $t('m.Back_To_Admin_Training_List') }}</el-button
+            >{{ $t("m.Back_To_Admin_Training_List") }}</el-button
           >
         </el-col>
         <el-col
@@ -76,7 +80,7 @@
             size="small"
             @click="handleEditProblemPage"
             icon="el-icon-back"
-            >{{ $t('m.Back_Admin_Training_Problem_List') }}</el-button
+            >{{ $t("m.Back_Admin_Training_Problem_List") }}</el-button
           >`
         </el-col>
       </el-row>
@@ -115,7 +119,7 @@
         >
           <template v-slot="{ row }">
             <el-tag :type="TRAINING_TYPE[row.auth]['color']" effect="dark">
-              {{ $t('m.Training_' + row.auth) }}
+              {{ $t("m.Training_" + row.auth) }}
             </el-tag>
           </template>
         </vxe-table-column>
@@ -130,21 +134,22 @@
               size="large"
               :style="
                 'background-color: #fff; color: ' +
-                  row.categoryColor +
-                  '; border-color: ' +
-                  row.categoryColor +
-                  ';'
+                row.categoryColor +
+                '; border-color: ' +
+                row.categoryColor +
+                ';'
               "
               >{{ row.categoryName }}</el-tag
             >
           </template>
         </vxe-table-column>
 
-        <vxe-table-column 
-          field="acCount" 
-          :title="$t('m.Progress')" 
+        <vxe-table-column
+          field="acCount"
+          :title="$t('m.Progress')"
           min-width="120"
-          align="center">
+          align="center"
+        >
           <template v-slot="{ row }">
             <span>
               <el-tooltip
@@ -186,12 +191,12 @@
         >
           <template v-slot="{ row }">
             <span>
-                <el-tooltip
-                  :content="row.gmtModified | localtime"
-                  placement="top"
-                >
-                  <span>{{ row.gmtModified | fromNow }}</span>
-                </el-tooltip>
+              <el-tooltip
+                :content="row.gmtModified | localtime"
+                placement="top"
+              >
+                <span>{{ row.gmtModified | fromNow }}</span>
+              </el-tooltip>
             </span>
           </template>
         </vxe-table-column>
@@ -258,17 +263,17 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import { TRAINING_TYPE } from '@/common/constants';
-import Pagination from '@/components/oj/common/Pagination';
-import TrainingList from '@/components/oj/group/TrainingList';
-import Training from '@/components/oj/group/Training';
-import TrainingProblemList from '@/components/oj/group/TrainingProblemList';
-import AddPublicProblem from '@/components/oj/group/AddPublicProblem.vue';
-import AddGroupProblem from '@/components/oj/group/AddGroupProblem.vue';
-import api from '@/common/api';
+import { mapGetters } from "vuex";
+import { TRAINING_TYPE } from "@/common/constants";
+import Pagination from "@/components/oj/common/Pagination";
+import TrainingList from "@/components/oj/group/TrainingList";
+import Training from "@/components/oj/group/Training";
+import TrainingProblemList from "@/components/oj/group/TrainingProblemList";
+import AddPublicProblem from "@/components/oj/group/AddPublicProblem.vue";
+import AddGroupProblem from "@/components/oj/group/AddGroupProblem.vue";
+import api from "@/common/api";
 export default {
-  name: 'GroupTrainingList',
+  name: "GroupTrainingList",
   components: {
     Pagination,
     TrainingList,
@@ -320,7 +325,7 @@ export default {
         .getGroupTrainingList(
           this.currentPage,
           this.limit,
-          this.$route.params.groupID
+          this.$route.params.groupID,
         )
         .then(
           (res) => {
@@ -330,15 +335,15 @@ export default {
           },
           (err) => {
             this.loading = false;
-          }
+          },
         );
     },
     goGroupTraining(event) {
       this.$router.push({
-        name: 'GroupTrainingDetails',
+        name: "GroupTrainingDetails",
         params: {
           trainingID: event.row.id,
-          groupID:this.$route.params.groupID
+          groupID: this.$route.params.groupID,
         },
       });
     },
@@ -373,7 +378,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(['isAuthenticated', 'isSuperAdmin', 'isGroupAdmin']),
+    ...mapGetters(["isAuthenticated", "isSuperAdmin", "isGroupAdmin"]),
   },
 };
 </script>

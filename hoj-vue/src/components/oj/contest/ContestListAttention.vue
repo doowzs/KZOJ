@@ -8,7 +8,7 @@
         :md="6"
         :xs="24"
         :key="index"
-        v-for="(index,contest) in runningContestList"
+        v-for="(index, contest) in runningContestList"
       >
         <el-card class="contest-attention-item running">
           <span class="state-phase">Contest is running</span>
@@ -23,7 +23,7 @@
         :md="6"
         :xs="24"
         :key="index"
-        v-for="(index,contest) in scheduledContestList"
+        v-for="(index, contest) in scheduledContestList"
       >
         <el-card class="contest-attention-item scheduled">
           <span class="state-phase">Before contest</span>
@@ -38,14 +38,14 @@
 </template>
 <script>
 export default {
-    name: "ContestListAttention",
+  name: "ContestListAttention",
   props: {
     runningContestList: {
-      default: [1,2],
+      default: [1, 2],
       type: Array,
     },
     scheduledContestList: {
-      default: [1,2,3],
+      default: [1, 2, 3],
       type: Array,
     },
   },
@@ -59,11 +59,11 @@ export default {
   text-align: center;
   margin-bottom: 10px;
 }
-.contest-attention-item.running{
-    border-color: rgb(25, 190, 107);
+.contest-attention-item.running {
+  border-color: rgb(25, 190, 107);
 }
-.contest-attention-item.scheduled{
-    border-color: #f90;
+.contest-attention-item.scheduled {
+  border-color: #f90;
 }
 
 .contest-attention-item .state-phase {
@@ -83,9 +83,9 @@ export default {
   color: #777;
 }
 /deep/.el-card__header {
-    padding: 10px 20px;
+  padding: 10px 20px;
 }
 /deep/.el-card__body {
-    padding: 10px 20px;
+  padding: 10px 20px;
 }
 </style>

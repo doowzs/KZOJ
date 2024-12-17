@@ -2,7 +2,9 @@
   <el-card shadow :padding="10">
     <div slot="header">
       <span class="panel-title" v-if="isContest">{{ title }}</span>
-      <span v-else class="home-title panel-title"><i class="el-icon-data-board"></i> {{ title }}</span>
+      <span v-else class="home-title panel-title"
+        ><i class="el-icon-data-board"></i> {{ title }}</span
+      >
       <span style="float: right">
         <el-button
           v-if="listVisible"
@@ -11,7 +13,7 @@
           size="small"
           icon="el-icon-refresh"
           :loading="btnLoading"
-          >{{ $t('m.Refresh') }}</el-button
+          >{{ $t("m.Refresh") }}</el-button
         >
         <el-button
           v-else
@@ -19,7 +21,7 @@
           icon="el-icon-back"
           @click="goBack"
           size="small"
-          >{{ $t('m.Back') }}</el-button
+          >{{ $t("m.Back") }}</el-button
         >
       </span>
     </div>
@@ -78,11 +80,11 @@
 </template>
 
 <script>
-import api from '@/common/api';
-import { addCodeBtn } from '@/common/codeblock';
-import Pagination from '@/components/oj/common/Pagination';
+import api from "@/common/api";
+import { addCodeBtn } from "@/common/codeblock";
+import Pagination from "@/components/oj/common/Pagination";
 export default {
-  name: 'Announcement',
+  name: "Announcement",
   components: {
     Pagination,
   },
@@ -97,7 +99,7 @@ export default {
       total: 0,
       btnLoading: false,
       announcements: [],
-      announcement: '',
+      announcement: "",
       listVisible: true,
     };
   },
@@ -122,7 +124,7 @@ export default {
         },
         () => {
           this.btnLoading = false;
-        }
+        },
       );
     },
     getContestAnnouncementList(page = 1) {
@@ -131,7 +133,7 @@ export default {
         .getContestAnnouncementList(
           page,
           this.limit,
-          this.$route.params.contestID
+          this.$route.params.contestID,
         )
         .then(
           (res) => {
@@ -141,7 +143,7 @@ export default {
           },
           () => {
             this.btnLoading = false;
-          }
+          },
         );
     },
     goAnnouncement(announcement) {
@@ -154,15 +156,15 @@ export default {
     },
     goBack() {
       this.listVisible = true;
-      this.announcement = '';
+      this.announcement = "";
     },
   },
   computed: {
     title() {
       if (this.listVisible) {
         return this.isContest
-          ? this.$i18n.t('m.Contest_Announcement')
-          : this.$i18n.t('m.Announcement');
+          ? this.$i18n.t("m.Contest_Announcement")
+          : this.$i18n.t("m.Announcement");
       } else {
         return this.announcement.title;
       }

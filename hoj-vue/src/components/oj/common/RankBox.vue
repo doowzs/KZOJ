@@ -1,19 +1,15 @@
 <template>
   <div>
     <template v-if="name != null && num != undefined">
-      <el-tooltip
-        effect="dark"
-        :content="name"
-        placement="top"
-      >
+      <el-tooltip effect="dark" :content="name" placement="top">
         <div class="num-box">
-          <span :style="getRankNumColor">{{num}}</span>
+          <span :style="getRankNumColor">{{ num }}</span>
         </div>
       </el-tooltip>
     </template>
     <template v-else>
       <div class="num-box">
-        <span :style="getRankNumColor">{{num}}</span>
+        <span :style="getRankNumColor">{{ num }}</span>
       </div>
     </template>
   </div>
@@ -42,15 +38,16 @@ export default {
   },
   computed: {
     getRankNumColor() {
-      let style = "color:" + this.color + "; background:" + this.background +'; width:';
-      if(this.num <= 99){
-        style +='20px';
-      }else if(this.num <= 999){
-        style +='30px';
-      }else if(this.num <= 9999){
-        style +='40px';
-      }else{
-        style +='50px';
+      let style =
+        "color:" + this.color + "; background:" + this.background + "; width:";
+      if (this.num <= 99) {
+        style += "20px";
+      } else if (this.num <= 999) {
+        style += "30px";
+      } else if (this.num <= 9999) {
+        style += "40px";
+      } else {
+        style += "50px";
       }
       return style;
     },

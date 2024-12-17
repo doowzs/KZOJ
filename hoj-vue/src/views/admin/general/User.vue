@@ -2,92 +2,97 @@
   <div class="view">
     <el-card>
       <div slot="header">
-        <span class="panel-title home-title">{{ $t('m.General_User') }}</span>
+        <span class="panel-title home-title">{{ $t("m.General_User") }}</span>
         <div class="filter-row">
           <span>
             <el-button
-                type="primary"
-                icon="el-icon-download"
-                @click="ExportUser"
-                size="small"
-            >{{ $t('m.Export_User') }}
+              type="primary"
+              icon="el-icon-download"
+              @click="ExportUser"
+              size="small"
+              >{{ $t("m.Export_User") }}
             </el-button>
           </span>
           <span>
             <el-button
-                type="danger"
-                icon="el-icon-delete-solid"
-                @click="deleteUsers(null)"
-                size="small"
-            >{{ $t('m.Delete') }}
+              type="danger"
+              icon="el-icon-delete-solid"
+              @click="deleteUsers(null)"
+              size="small"
+              >{{ $t("m.Delete") }}
             </el-button>
           </span>
           <span>
             <vxe-input
-                v-model="keyword"
-                :placeholder="$t('m.Enter_keyword')"
-                type="search"
-                size="medium"
-                @search-click="filterByKeyword"
-                @keyup.enter.native="filterByKeyword"
+              v-model="keyword"
+              :placeholder="$t('m.Enter_keyword')"
+              type="search"
+              size="medium"
+              @search-click="filterByKeyword"
+              @keyup.enter.native="filterByKeyword"
             ></vxe-input>
           </span>
           <span>
             <el-switch
-                v-model="onlyAdmin"
-                :active-text="$t('m.OnlyAdmin')"
-                :width="40"
-                @change="filterByAdmin"
+              v-model="onlyAdmin"
+              :active-text="$t('m.OnlyAdmin')"
+              :width="40"
+              @change="filterByAdmin"
             >
             </el-switch>
           </span>
           <span>
             <el-switch
-                v-model="onlyStatus"
-                :active-text="$t('m.onlyStatus')"
-                :width="40"
-                @change="filterByAdmin"
+              v-model="onlyStatus"
+              :active-text="$t('m.onlyStatus')"
+              :width="40"
+              @change="filterByAdmin"
             >
             </el-switch>
           </span>
           <span>
             <el-switch
-                v-model="showLoginTime"
-                :active-text="$t('m.showLoginTime')"
-                :width="40"
-                @change="filterLoginTime"
+              v-model="showLoginTime"
+              :active-text="$t('m.showLoginTime')"
+              :width="40"
+              @change="filterLoginTime"
             >
             </el-switch>
           </span>
         </div>
       </div>
       <vxe-table
-          stripe
-          auto-resize
-          :data="userList"
-          ref="xTable"
-          align = "center"
-          :loading="loadingTable"
-          :checkbox-config="{ labelField: 'id', highlight: true, range: true, checkMethod: checCheckboxkMethod }"
-          @checkbox-change="handleSelectionChange"
-          @checkbox-all="handlechangeAll"
+        stripe
+        auto-resize
+        :data="userList"
+        ref="xTable"
+        align="center"
+        :loading="loadingTable"
+        :checkbox-config="{
+          labelField: 'id',
+          highlight: true,
+          range: true,
+          checkMethod: checCheckboxkMethod,
+        }"
+        @checkbox-change="handleSelectionChange"
+        @checkbox-all="handlechangeAll"
       >
         <vxe-table-column type="checkbox" width="60"></vxe-table-column>
         <vxe-table-column
-            field="username"
-            :title="$t('m.User')"
-            min-width="160"
-            sortable
-            show-overflow
+          field="username"
+          :title="$t('m.User')"
+          min-width="160"
+          sortable
+          show-overflow
         >
           <template v-slot="{ row }">
             <span>{{ row.username }}</span>
-            <span style="margin-left:2px">
+            <span style="margin-left: 2px">
               <el-tag
-                  effect="dark"
-                  size="small"
-                  v-if="row.titleName"
-                  :color="row.titleColor"
+                effect="dark"
+                size="small"
+                v-if="row.titleName"
+                :color="row.titleColor"
               >
                 {{ row.titleName }}
               </el-tag>
@@ -95,86 +100,83 @@
           </template>
         </vxe-table-column>
         <vxe-table-column
-            field="realname"
-            :title="$t('m.RealName')"
-            min-width="140"
-            show-overflow
-            sortable
+          field="realname"
+          :title="$t('m.RealName')"
+          min-width="140"
+          show-overflow
+          sortable
         ></vxe-table-column>
         <vxe-table-column
-            field="school"
-            :title="$t('m.School')"
-            min-width="200"
-            show-overflow
-            sortable
+          field="school"
+          :title="$t('m.School')"
+          min-width="200"
+          show-overflow
+          sortable
         ></vxe-table-column>
 
         <!--          最近登陆时间-->
         <vxe-table-column
-            field="gmtCreate"
-            :title="$t('m.Recent_Login_Time')"
-            min-width="160"
-            v-if="showLoginTime"
-            sortable
+          field="gmtCreate"
+          :title="$t('m.Recent_Login_Time')"
+          min-width="160"
+          v-if="showLoginTime"
+          sortable
         >
-          <template
-              v-slot="{ row }"
-          >
-            {{ row.recentLoginTime | fromNow}}
+          <template v-slot="{ row }">
+            {{ row.recentLoginTime | fromNow }}
           </template>
         </vxe-table-column>
         <vxe-table-column
-            field="role"
-            :title="$t('m.User_Type')"
-            min-width="100"
-            sortable
+          field="role"
+          :title="$t('m.User_Type')"
+          min-width="100"
+          sortable
         >
           <template v-slot="{ row }">
             {{ getRole(row.roles) | parseRole }}
           </template>
         </vxe-table-column>
         <vxe-table-column
-            field="status"
-            :title="$t('m.Status')"
-            min-width="100"
-            sortable
+          field="status"
+          :title="$t('m.Status')"
+          min-width="100"
+          sortable
         >
           <template v-slot="{ row }">
-
-            <el-switch v-model="row.status"
-                       :active-value="0"
-                       :inactive-value="1"
-                       @change="saveStatus(row)">
+            <el-switch
+              v-model="row.status"
+              :active-value="0"
+              :inactive-value="1"
+              @change="saveStatus(row)"
+            >
             </el-switch>
-
           </template>
-
         </vxe-table-column>
         <vxe-table-column :title="$t('m.Option')" min-width="150">
           <template v-slot="{ row }">
             <el-tooltip
-                effect="dark"
-                :content="$t('m.Edit_User')"
-                placement="top"
+              effect="dark"
+              :content="$t('m.Edit_User')"
+              placement="top"
             >
               <el-button
-                  icon="el-icon-edit-outline"
-                  size="mini"
-                  @click.native="openUserDialog(row)"
-                  type="primary"
+                icon="el-icon-edit-outline"
+                size="mini"
+                @click.native="openUserDialog(row)"
+                type="primary"
               >
               </el-button>
             </el-tooltip>
             <el-tooltip
-                effect="dark"
-                :content="$t('m.Delete_User')"
-                placement="top"
+              effect="dark"
+              :content="$t('m.Delete_User')"
+              placement="top"
             >
               <el-button
-                  icon="el-icon-delete-solid"
-                  size="mini"
-                  @click.native="deleteUsers([row.uid])"
-                  type="danger"
+                icon="el-icon-delete-solid"
+                size="mini"
+                @click.native="deleteUsers([row.uid])"
+                type="danger"
               >
               </el-button>
             </el-tooltip>
@@ -183,116 +185,116 @@
       </vxe-table>
       <div class="panel-options">
         <el-pagination
-            class="page"
-            layout="prev, pager, next, sizes"
-            @current-change="currentChange"
-            :page-size="pageSize"
-            :total="total"
-            @size-change="onPageSizeChange"
-            :page-sizes="[10, 30, 50, 100]"
+          class="page"
+          layout="prev, pager, next, sizes"
+          @current-change="currentChange"
+          :page-size="pageSize"
+          :total="total"
+          @size-change="onPageSizeChange"
+          :page-sizes="[10, 30, 50, 100]"
         >
         </el-pagination>
       </div>
     </el-card>
 
     <!-- 导入csv用户数据 -->
-    <el-card style="margin-top:20px">
+    <el-card style="margin-top: 20px">
       <div slot="header">
-        <span class="panel-title home-title">{{ $t('m.Import_User') }}</span>
+        <span class="panel-title home-title">{{ $t("m.Import_User") }}</span>
       </div>
-      <p>1. {{ $t('m.Import_User_Tips1') }}</p>
-      <p>2. {{ $t('m.Import_User_Tips2') }}</p>
-      <p>3. {{ $t('m.Import_User_Tips3') }}</p>
-      <p>4. {{ $t('m.Import_User_Tips4') }}</p>
-      <p>5. {{ $t('m.Import_User_Tips5') }}</p>
+      <p>1. {{ $t("m.Import_User_Tips1") }}</p>
+      <p>2. {{ $t("m.Import_User_Tips2") }}</p>
+      <p>3. {{ $t("m.Import_User_Tips3") }}</p>
+      <p>4. {{ $t("m.Import_User_Tips4") }}</p>
+      <p>5. {{ $t("m.Import_User_Tips5") }}</p>
       <el-upload
-          v-if="!uploadUsers.length"
-          action=""
-          :show-file-list="false"
-          accept=".csv"
-          :before-upload="handleUsersCSV"
+        v-if="!uploadUsers.length"
+        action=""
+        :show-file-list="false"
+        accept=".csv"
+        :before-upload="handleUsersCSV"
       >
         <el-button size="small" icon="el-icon-folder-opened" type="primary">{{
-            $t('m.Choose_File')
-          }}</el-button>
+          $t("m.Choose_File")
+        }}</el-button>
       </el-upload>
       <template v-else>
         <vxe-table :data="uploadUsersPage" stripe auto-resize>
           <vxe-table-column
-              :title="$t('m.Username')"
-              field="username"
-              min-width="90"
-              show-overflow
+            :title="$t('m.Username')"
+            field="username"
+            min-width="90"
+            show-overflow
           >
             <template v-slot="{ row }">
               {{ row[0] }}
             </template>
           </vxe-table-column>
           <vxe-table-column
-              :title="$t('m.Password')"
-              field="password"
-              min-width="90"
-              show-overflow
+            :title="$t('m.Password')"
+            field="password"
+            min-width="90"
+            show-overflow
           >
             <template v-slot="{ row }">
               {{ row[1] }}
             </template>
           </vxe-table-column>
           <vxe-table-column
-              :title="$t('m.Email')"
-              field="email"
-              min-width="120"
-              show-overflow
+            :title="$t('m.Email')"
+            field="email"
+            min-width="120"
+            show-overflow
           >
             <template v-slot="{ row }">
               {{ row[2] }}
             </template>
           </vxe-table-column>
           <vxe-table-column
-              :title="$t('m.RealName')"
-              field="realname"
-              min-width="90"
-              show-overflow
+            :title="$t('m.RealName')"
+            field="realname"
+            min-width="90"
+            show-overflow
           >
             <template v-slot="{ row }">
               {{ row[3] }}
             </template>
           </vxe-table-column>
           <vxe-table-column
-              :title="$t('m.Gender')"
-              field="gender"
-              min-width="60"
-              show-overflow
+            :title="$t('m.Gender')"
+            field="gender"
+            min-width="60"
+            show-overflow
           >
             <template v-slot="{ row }">
               {{ row[4] }}
             </template>
           </vxe-table-column>
           <vxe-table-column
-              :title="$t('m.Nickname')"
-              field="nickname"
-              min-width="90"
-              show-overflow
+            :title="$t('m.Nickname')"
+            field="nickname"
+            min-width="90"
+            show-overflow
           >
             <template v-slot="{ row }">
               {{ row[5] }}
             </template>
           </vxe-table-column>
           <vxe-table-column
-              :title="$t('m.School')"
-              field="school"
-              min-width="100"
-              show-overflow
+            :title="$t('m.School')"
+            field="school"
+            min-width="100"
+            show-overflow
           >
             <template v-slot="{ row }">
               {{ row[6] }}
             </template>
           </vxe-table-column>
           <vxe-table-column
-              :title="$t('m.Class')"
-              field="number"
-              min-width="100"
-              show-overflow
+            :title="$t('m.Class')"
+            field="number"
+            min-width="100"
+            show-overflow
           >
             <template v-slot="{ row }">
               {{ row[7] }}
@@ -302,25 +304,25 @@
 
         <div class="panel-options">
           <el-button
-              type="primary"
-              size="small"
-              icon="el-icon-upload"
-              @click="handleUsersUpload"
-          >{{ $t('m.Upload_All') }}
+            type="primary"
+            size="small"
+            icon="el-icon-upload"
+            @click="handleUsersUpload"
+            >{{ $t("m.Upload_All") }}
           </el-button>
           <el-button
-              type="danger"
-              size="small"
-              icon="el-icon-delete"
-              @click="handleResetData"
-          >{{ $t('m.Clear_All') }}
+            type="danger"
+            size="small"
+            icon="el-icon-delete"
+            @click="handleResetData"
+            >{{ $t("m.Clear_All") }}
           </el-button>
           <el-pagination
-              class="page"
-              layout="prev, pager, next"
-              :page-size="uploadUsersPageSize"
-              :current-page.sync="uploadUsersCurrentPage"
-              :total="uploadUsers.length"
+            class="page"
+            layout="prev, pager, next"
+            :page-size="uploadUsersPageSize"
+            :current-page.sync="uploadUsersCurrentPage"
+            :total="uploadUsers.length"
           >
           </el-pagination>
         </div>
@@ -328,56 +330,56 @@
     </el-card>
 
     <!--生成用户数据-->
-    <el-card style="margin-top:20px">
+    <el-card style="margin-top: 20px">
       <div slot="header">
-        <span class="panel-title home-title">{{ $t('m.Generate_User') }}</span>
+        <span class="panel-title home-title">{{ $t("m.Generate_User") }}</span>
       </div>
       <el-form
-          :model="formGenerateUser"
-          ref="formGenerateUser"
-          :rules="formGenerateRules"
+        :model="formGenerateUser"
+        ref="formGenerateUser"
+        :rules="formGenerateRules"
       >
         <el-row :gutter="10">
           <el-col :md="5" :xs="24">
             <el-form-item :label="$t('m.Prefix')" prop="prefix">
               <el-input
-                  v-model="formGenerateUser.prefix"
-                  placeholder="Prefix"
+                v-model="formGenerateUser.prefix"
+                placeholder="Prefix"
               ></el-input>
             </el-form-item>
           </el-col>
           <el-col :md="5" :xs="24">
             <el-form-item :label="$t('m.Suffix')" prop="suffix">
               <el-input
-                  v-model="formGenerateUser.suffix"
-                  placeholder="Suffix"
+                v-model="formGenerateUser.suffix"
+                placeholder="Suffix"
               ></el-input>
             </el-form-item>
           </el-col>
           <el-col :md="5" :xs="24">
             <el-form-item :label="$t('m.Start_Number')" prop="number_from">
               <el-input-number
-                  v-model="formGenerateUser.number_from"
-                  style="width: 100%"
+                v-model="formGenerateUser.number_from"
+                style="width: 100%"
               ></el-input-number>
             </el-form-item>
           </el-col>
           <el-col :md="5" :xs="24">
             <el-form-item :label="$t('m.End_Number')" prop="number_to">
               <el-input-number
-                  v-model="formGenerateUser.number_to"
-                  style="width: 100%"
+                v-model="formGenerateUser.number_to"
+                style="width: 100%"
               ></el-input-number>
             </el-form-item>
           </el-col>
           <el-col :md="4" :xs="24">
             <el-form-item
-                :label="$t('m.Password_Length')"
-                prop="password_length"
+              :label="$t('m.Password_Length')"
+              prop="password_length"
             >
               <el-input
-                  v-model.number="formGenerateUser.password_length"
-                  :placeholder="$t('m.Password_Length')"
+                v-model.number="formGenerateUser.password_length"
+                :placeholder="$t('m.Password_Length')"
               ></el-input>
             </el-form-item>
           </el-col>
@@ -385,26 +387,26 @@
 
         <el-form-item>
           <el-button
-              type="primary"
-              @click="generateUser"
-              icon="fa fa-users"
-              :loading="loadingGenerate"
-              size="small"
+            type="primary"
+            @click="generateUser"
+            icon="fa fa-users"
+            :loading="loadingGenerate"
+            size="small"
           >
-            {{ $t('m.Generate_and_Export') }}
+            {{ $t("m.Generate_and_Export") }}
           </el-button>
           <span
-              class="userPreview"
-              v-if="formGenerateUser.number_from <= formGenerateUser.number_to"
+            class="userPreview"
+            v-if="formGenerateUser.number_from <= formGenerateUser.number_to"
           >
-            {{ $t('m.The_usernames_will_be') }}
+            {{ $t("m.The_usernames_will_be") }}
             {{
               formGenerateUser.prefix +
               formGenerateUser.number_from +
               formGenerateUser.suffix
             }},
             <span
-                v-if="
+              v-if="
                 formGenerateUser.number_from + 1 < formGenerateUser.number_to
               "
             >
@@ -412,11 +414,11 @@
                 formGenerateUser.prefix +
                 (formGenerateUser.number_from + 1) +
                 formGenerateUser.suffix +
-                '...'
+                "..."
               }}
             </span>
             <span
-                v-if="
+              v-if="
                 formGenerateUser.number_from + 1 <= formGenerateUser.number_to
               "
             >
@@ -433,16 +435,16 @@
 
     <!--编辑用户的对话框-->
     <el-dialog
-        :title="$t('m.User')"
-        :visible.sync="showUserDialog"
-        width="400px"
+      :title="$t('m.User')"
+      :visible.sync="showUserDialog"
+      width="400px"
     >
       <el-form
-          :model="selectUser"
-          label-width="100px"
-          label-position="left"
-          :rules="updateUserRules"
-          ref="updateUser"
+        :model="selectUser"
+        label-width="100px"
+        label-position="left"
+        :rules="updateUserRules"
+        ref="updateUser"
       >
         <el-row :gutter="10">
           <el-col :span="24">
@@ -462,7 +464,11 @@
           </el-col>
           <el-col :span="24">
             <el-form-item :label="$t('m.Class')">
-              <el-select v-model="selectUser.number" :placeholder="$t('m.Select_Class')" style="width:100%" >
+              <el-select
+                v-model="selectUser.number"
+                :placeholder="$t('m.Select_Class')"
+                style="width: 100%"
+              >
                 <el-option label="一年级" value="一年级"></el-option>
                 <el-option label="二年级" value="二年级"></el-option>
                 <el-option label="三年级" value="三年级"></el-option>
@@ -483,11 +489,11 @@
             <el-form-item :label="$t('m.Gender')">
               <el-radio-group v-model="selectUser.gender">
                 <el-radio label="male" border size="small">{{
-                    $t('m.Male')
-                  }}</el-radio>
+                  $t("m.Male")
+                }}</el-radio>
                 <el-radio label="female" border size="small">{{
-                    $t('m.Female')
-                  }}</el-radio>
+                  $t("m.Female")
+                }}</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
@@ -499,30 +505,32 @@
           <el-col :span="24">
             <el-form-item :label="$t('m.Set_New_PWD')">
               <el-switch
-                  :active-value="true"
-                  :inactive-value="false"
-                  v-model="selectUser.setNewPwd"
+                :active-value="true"
+                :inactive-value="false"
+                v-model="selectUser.setNewPwd"
               >
               </el-switch>
-              <span style="margin-left: 40px;margin-right: 30px"> {{$t('m.NavBar_Other')}}</span>
+              <span style="margin-left: 40px; margin-right: 30px">
+                {{ $t("m.NavBar_Other") }}</span
+              >
               <el-switch
-                  :active-value="true"
-                  :inactive-value="false"
-                  v-model="selectUser.setOther"
+                :active-value="true"
+                :inactive-value="false"
+                v-model="selectUser.setOther"
               >
               </el-switch>
             </el-form-item>
           </el-col>
           <el-col :span="24" v-if="selectUser.setNewPwd == 1">
             <el-form-item
-                :label="$t('m.General_New_Password')"
-                required
-                prop="password"
+              :label="$t('m.General_New_Password')"
+              required
+              prop="password"
             >
               <el-input
-                  v-model="selectUser.password"
-                  :placeholder="$t('m.General_New_Password')"
-                  size="small"
+                v-model="selectUser.password"
+                :placeholder="$t('m.General_New_Password')"
+                size="small"
               ></el-input>
             </el-form-item>
           </el-col>
@@ -530,49 +538,49 @@
             <el-form-item :label="$t('m.User_Type')">
               <el-select v-model="selectUser.type" size="small">
                 <el-option
-                    label="超级管理员"
-                    :value="1000"
-                    :key="1000"
+                  label="超级管理员"
+                  :value="1000"
+                  :key="1000"
                 ></el-option>
                 <el-option
-                    label="题目管理员"
-                    :value="1008"
-                    :key="1008"
+                  label="题目管理员"
+                  :value="1008"
+                  :key="1008"
                 ></el-option>
                 <el-option
-                    label="普通管理员"
-                    :value="1001"
-                    :key="1001"
+                  label="普通管理员"
+                  :value="1001"
+                  :key="1001"
                 ></el-option>
                 <el-option
-                    label="用户(默认)"
-                    :value="1002"
-                    :key="1002"
+                  label="用户(默认)"
+                  :value="1002"
+                  :key="1002"
                 ></el-option>
                 <el-option
-                    label="用户(禁止提交)"
-                    :value="1003"
-                    :key="1003"
+                  label="用户(禁止提交)"
+                  :value="1003"
+                  :key="1003"
                 ></el-option>
                 <el-option
-                    label="用户(禁止发讨论)"
-                    :value="1004"
-                    :key="1004"
+                  label="用户(禁止发讨论)"
+                  :value="1004"
+                  :key="1004"
                 ></el-option>
                 <el-option
-                    label="用户(禁言)"
-                    :value="1005"
-                    :key="1005"
+                  label="用户(禁言)"
+                  :value="1005"
+                  :key="1005"
                 ></el-option>
                 <el-option
-                    label="用户(禁止提交&禁止发讨论)"
-                    :value="1006"
-                    :key="1006"
+                  label="用户(禁止提交&禁止发讨论)"
+                  :value="1006"
+                  :key="1006"
                 ></el-option>
                 <el-option
-                    label="用户(禁止提交&禁言)"
-                    :value="1007"
-                    :key="1007"
+                  label="用户(禁止提交&禁言)"
+                  :value="1007"
+                  :key="1007"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -583,7 +591,7 @@
             </el-form-item>
             <el-form-item :label="$t('m.Title_Color')">
               <el-color-picker
-                  v-model="selectUser.titleColor"
+                v-model="selectUser.titleColor"
               ></el-color-picker>
             </el-form-item>
           </el-col>
@@ -591,33 +599,33 @@
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button type="danger" @click.native="showUserDialog = false">{{
-            $t('m.Cancel')
-          }}</el-button>
+          $t("m.Cancel")
+        }}</el-button>
         <el-button type="primary" @click.native="saveUser">{{
-            $t('m.OK')
-          }}</el-button>
+          $t("m.OK")
+        }}</el-button>
       </span>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import papa from 'papaparse'; // csv插件
-import api from '@/common/api';
-import utils from '@/common/utils';
-import myMessage from '@/common/message';
-import {addCodeBtn} from "@/common/codeblock";
+import papa from "papaparse"; // csv插件
+import api from "@/common/api";
+import utils from "@/common/utils";
+import myMessage from "@/common/message";
+import { addCodeBtn } from "@/common/codeblock";
 export default {
-  name: 'user',
+  name: "user",
   data() {
     const CheckTogtFrom = (rule, value, callback) => {
       if (value < this.formGenerateUser.number_from) {
         callback(
-            new Error(
-                this.$i18n.t(
-                    'm.The_end_number_cannot_be_less_than_the_start_number'
-                )
-            )
+          new Error(
+            this.$i18n.t(
+              "m.The_end_number_cannot_be_less_than_the_start_number",
+            ),
+          ),
         );
       }
       callback();
@@ -625,40 +633,40 @@ export default {
     const CheckPwdLength = (rule, value, callback) => {
       if (value < 6 || value > 25) {
         callback(
-            new Error(
-                this.$i18n.t(
-                    'm.Please_select_6_to_25_characters_for_password_length'
-                )
-            )
+          new Error(
+            this.$i18n.t(
+              "m.Please_select_6_to_25_characters_for_password_length",
+            ),
+          ),
         );
       }
       callback();
     };
     const CheckUsernameNotExist = (rule, value, callback) => {
       api.checkUsernameOrEmail(value, undefined).then(
-          (res) => {
-            if (
-                res.data.data.username === true &&
-                value != this.selectUser.username
-            ) {
-              callback(new Error(this.$i18n.t('m.The_username_already_exists')));
-            } else {
-              callback();
-            }
-          },
-          (_) => callback()
+        (res) => {
+          if (
+            res.data.data.username === true &&
+            value != this.selectUser.username
+          ) {
+            callback(new Error(this.$i18n.t("m.The_username_already_exists")));
+          } else {
+            callback();
+          }
+        },
+        (_) => callback(),
       );
     };
     const CheckEmailNotExist = (rule, value, callback) => {
       api.checkUsernameOrEmail(undefined, value).then(
-          (res) => {
-            if (res.data.data.email === true && value != this.selectUser.email) {
-              callback(new Error(this.$i18n.t('m.The_email_already_exists')));
-            } else {
-              callback();
-            }
-          },
-          (_) => callback()
+        (res) => {
+          if (res.data.data.email === true && value != this.selectUser.email) {
+            callback(new Error(this.$i18n.t("m.The_email_already_exists")));
+          } else {
+            callback();
+          }
+        },
+        (_) => callback(),
       );
     };
     return {
@@ -673,59 +681,59 @@ export default {
       uploadUsersCurrentPage: 1,
       uploadUsersPageSize: 15,
       // 搜索关键字
-      keyword: '',
+      keyword: "",
       // 是否显示用户对话框
       showUserDialog: false,
       onlyAdmin: false,
-      onlyStatus:false,
-      showLoginTime:false,
+      onlyStatus: false,
+      showLoginTime: false,
       // 当前用户model
       selectUser: {
-        uid: '',
-        username: '',
-        realname: '',
-        school:'',
-        number: '',
-        gender: '',
-        email: '',
-        password: '',
+        uid: "",
+        username: "",
+        realname: "",
+        school: "",
+        number: "",
+        gender: "",
+        email: "",
+        password: "",
         type: 1002,
         status: 0,
         setNewPwd: false,
-        setOther:false,
-        titleName: '',
-        titleColor: '',
+        setOther: false,
+        titleName: "",
+        titleColor: "",
       },
       updateUserRules: {
         username: [
-          { required: true, message: 'Username is required', trigger: 'blur' },
+          { required: true, message: "Username is required", trigger: "blur" },
           {
             validator: CheckUsernameNotExist,
-            trigger: 'blur',
-            message: this.$i18n.t('m.The_username_already_exists'),
+            trigger: "blur",
+            message: this.$i18n.t("m.The_username_already_exists"),
           },
           {
             max: 255,
-            message: this.$i18n.t('m.Username_Check_Max'),
-            trigger: 'blur',
+            message: this.$i18n.t("m.Username_Check_Max"),
+            trigger: "blur",
           },
         ],
         realname: [
           {
             max: 255,
-            trigger: 'blur',
+            trigger: "blur",
           },
         ],
         email: [
           {
-            type: 'email',
-            message: this.$i18n.t('m.Email_Check_Format'),
-            trigger: 'blur',
+            type: "email",
+            message: this.$i18n.t("m.Email_Check_Format"),
+            trigger: "blur",
           },
           {
             validator: CheckEmailNotExist,
-            message: this.$i18n.t('m.The_email_already_exists'),
-            trigger: 'blur',
+            message: this.$i18n.t("m.The_email_already_exists"),
+            trigger: "blur",
           },
         ],
       },
@@ -735,8 +743,8 @@ export default {
       currentPage: 1,
       selectedUsers: [],
       formGenerateUser: {
-        prefix: '',
-        suffix: '',
+        prefix: "",
+        suffix: "",
         number_from: 0,
         number_to: 10,
         password_length: 6,
@@ -745,30 +753,30 @@ export default {
         number_from: [
           {
             required: true,
-            message: this.$i18n.t('m.Start_Number_Required'),
-            trigger: 'blur',
+            message: this.$i18n.t("m.Start_Number_Required"),
+            trigger: "blur",
           },
         ],
         number_to: [
           {
             required: true,
-            message: this.$i18n.t('m.End_Number_Required'),
-            trigger: 'blur',
+            message: this.$i18n.t("m.End_Number_Required"),
+            trigger: "blur",
           },
-          { validator: CheckTogtFrom, trigger: 'blur' },
+          { validator: CheckTogtFrom, trigger: "blur" },
         ],
         password_length: [
           {
             required: true,
-            message: this.$i18n.t('m.Password_Check_Required'),
-            trigger: 'blur',
+            message: this.$i18n.t("m.Password_Check_Required"),
+            trigger: "blur",
           },
           {
-            type: 'number',
-            message: this.$i18n.t('m.Password_Length_Checked'),
-            trigger: 'blur',
+            type: "number",
+            message: this.$i18n.t("m.Password_Length_Checked"),
+            trigger: "blur",
           },
-          { validator: CheckPwdLength, trigger: 'blur' },
+          { validator: CheckPwdLength, trigger: "blur" },
         ],
       },
     };
@@ -788,39 +796,42 @@ export default {
     },
     // 提交修改用户的信息
     saveUser() {
-      this.$refs['updateUser'].validate((valid) => {
-        if(this.selectUser.setNewPwd && !this.selectUser.password.match(/^(?=.*\d)(?=.*[a-zA-Z]).{6,20}$/)){
-          myMessage.warning(this.$i18n.t('m.Pass_Strength'));
+      this.$refs["updateUser"].validate((valid) => {
+        if (
+          this.selectUser.setNewPwd &&
+          !this.selectUser.password.match(/^(?=.*\d)(?=.*[a-zA-Z]).{6,20}$/)
+        ) {
+          myMessage.warning(this.$i18n.t("m.Pass_Strength"));
           return;
         }
         if (valid) {
           api
-              .admin_editUser(this.selectUser)
-              .then((res) => {
-                // 更新列表
-                myMessage.success(this.$i18n.t('m.Update_Successfully'));
-                this.getUserList(this.currentPage);
-                console.log(this.selectUser)
-              })
-              .then(() => {
-                this.showUserDialog = false;
-              })
-              .catch(() => {});
+            .admin_editUser(this.selectUser)
+            .then((res) => {
+              // 更新列表
+              myMessage.success(this.$i18n.t("m.Update_Successfully"));
+              this.getUserList(this.currentPage);
+              console.log(this.selectUser);
+            })
+            .then(() => {
+              this.showUserDialog = false;
+            })
+            .catch(() => {});
         }
       });
     },
     // 修改用户的状态
     saveStatus(row) {
-      this.getUserData(row)
+      this.getUserData(row);
       api
-          .admin_editUser(this.selectUser)
-          .then((res) => {
-            myMessage.success(this.$i18n.t('m.Update_Successfully'));
-            this.getUserList(this.currentPage);
-          })
-          .catch(() => {
-            this.getUserList(this.currentPage);
-          });
+        .admin_editUser(this.selectUser)
+        .then((res) => {
+          myMessage.success(this.$i18n.t("m.Update_Successfully"));
+          this.getUserList(this.currentPage);
+        })
+        .catch(() => {
+          this.getUserList(this.currentPage);
+        });
     },
     filterByKeyword() {
       this.currentChange(1);
@@ -832,21 +843,21 @@ export default {
       this.currentChange(this.currentPage);
     },
     getRole(roles) {
-      return roles[0]['id'];
+      return roles[0]["id"];
     },
 
     // 获取用户数据
-    getUserData(row){
+    getUserData(row) {
       this.selectUser.uid = row.uid;
       this.selectUser.username = row.username;
       this.selectUser.realname = row.realname;
-      this.selectUser.school= row.school;
+      this.selectUser.school = row.school;
       this.selectUser.number = row.number;
       this.selectUser.gender = row.gender;
       this.selectUser.email = row.email;
       this.selectUser.setNewPwd = false;
       this.selectUser.setOther = false;
-      this.selectUser.password = '';
+      this.selectUser.password = "";
       this.selectUser.type = this.getRole(row.roles);
       this.selectUser.status = row.status;
       this.selectUser.titleName = row.titleName;
@@ -856,72 +867,81 @@ export default {
     // 打开用户对话框
     openUserDialog(row) {
       this.showUserDialog = true;
-      this.getUserData(row)
+      this.getUserData(row);
     },
     // 获取用户列表
     getUserList(page) {
       this.loadingTable = true;
       api
-          .admin_getUserList(page, this.pageSize, this.keyword, this.onlyAdmin,this.onlyStatus,this.showLoginTime)
-          .then(
-              (res) => {
-                this.loadingTable = false;
-                this.total = res.data.data.total;
-                this.userList = res.data.data.records;
-              },
-              (res) => {
-                this.loadingTable = false;
-              }
-          );
+        .admin_getUserList(
+          page,
+          this.pageSize,
+          this.keyword,
+          this.onlyAdmin,
+          this.onlyStatus,
+          this.showLoginTime,
+        )
+        .then(
+          (res) => {
+            this.loadingTable = false;
+            this.total = res.data.data.total;
+            this.userList = res.data.data.records;
+          },
+          (res) => {
+            this.loadingTable = false;
+          },
+        );
     },
-    ExportUser(){
-      this.$confirm('是否只下载最近登陆信息', '提示', {
+    ExportUser() {
+      this.$confirm("是否只下载最近登陆信息", "提示", {
         distinguishCancelAndClose: true,
-        confirmButtonText: '是',
-        cancelButtonText: '否',
-        type: 'warning'
-      }).then(() => {
-        let url = `/api/file/download-user-list?isRLTime=true`;
-        utils.downloadFile(url);
-      }).catch((action) => {
-        if (action === 'cancel'){
-          let url = `/api/file/download-user-list?isRLTime=false`;
+        confirmButtonText: "是",
+        cancelButtonText: "否",
+        type: "warning",
+      })
+        .then(() => {
+          let url = `/api/file/download-user-list?isRLTime=true`;
           utils.downloadFile(url);
-        }
-      });
+        })
+        .catch((action) => {
+          if (action === "cancel") {
+            let url = `/api/file/download-user-list?isRLTime=false`;
+            utils.downloadFile(url);
+          }
+        });
     },
     deleteUsers(ids) {
       if (!ids) {
         ids = this.selectedUsers;
       }
       if (ids.length > 0) {
-        this.$confirm(this.$i18n.t('m.Delete_User_Tips'), 'Tips', {
-          confirmButtonText: this.$i18n.t('m.OK'),
-          cancelButtonText: this.$i18n.t('m.Cancel'),
-          type: 'warning',
+        this.$confirm(this.$i18n.t("m.Delete_User_Tips"), "Tips", {
+          confirmButtonText: this.$i18n.t("m.OK"),
+          cancelButtonText: this.$i18n.t("m.Cancel"),
+          type: "warning",
         }).then(
-            () => {
-              api
-                  .admin_deleteUsers(ids)
-                  .then((res) => {
-                    myMessage.success(this.$i18n.$t('m.Delete_successfully'));
-                    this.selectedUsers = [];
-                    this.getUserList(this.currentPage);
-                  })
-                  .catch(() => {
-                    this.selectedUsers = [];
-                    this.getUserList(this.currentPage);
-                  });
-            },
-            () => {}
+          () => {
+            api
+              .admin_deleteUsers(ids)
+              .then((res) => {
+                myMessage.success(this.$i18n.$t("m.Delete_successfully"));
+                this.selectedUsers = [];
+                this.getUserList(this.currentPage);
+              })
+              .catch(() => {
+                this.selectedUsers = [];
+                this.getUserList(this.currentPage);
+              });
+          },
+          () => {},
         );
       } else {
         myMessage.warning(
-            this.$i18n.t('m.The_number_of_users_selected_cannot_be_empty')
+          this.$i18n.t("m.The_number_of_users_selected_cannot_be_empty"),
         );
       }
     },
-    checCheckboxkMethod({ row }){
+    checCheckboxkMethod({ row }) {
       return row.uid != this.userInfo.uid;
     },
     // 用户表部分勾选 改变选中的内容
@@ -940,34 +960,35 @@ export default {
       }
     },
     generateUser() {
-      this.$confirm('是否生成账号', '提示', {
+      this.$confirm("是否生成账号", "提示", {
         distinguishCancelAndClose: true,
-        confirmButtonText: '是',
-        cancelButtonText: '否',
-        type: 'warning'
+        confirmButtonText: "是",
+        cancelButtonText: "否",
+        type: "warning",
       }).then(() => {
-        this.$refs['formGenerateUser'].validate((valid) => {
+        this.$refs["formGenerateUser"].validate((valid) => {
           if (!valid) {
-            myMessage.error(this.$i18n.t('m.Error_Please_check_your_choice'));
+            myMessage.error(this.$i18n.t("m.Error_Please_check_your_choice"));
             return;
           }
           this.loadingGenerate = true;
           let data = Object.assign({}, this.formGenerateUser);
           api
-              .admin_generateUser(data)
-              .then((res) => {
-                this.loadingGenerate = false;
-                let url = '/api/file/generate-user-excel?key=' + res.data.data.key;
-                utils.downloadFile(url).then(() => {
-                  this.$alert(this.$i18n.t('m.Generate_User_Success'), 'Tips');
-                });
-                this.getUserList(1);
-              })
-              .catch(() => {
-                this.loadingGenerate = false;
+            .admin_generateUser(data)
+            .then((res) => {
+              this.loadingGenerate = false;
+              let url =
+                "/api/file/generate-user-excel?key=" + res.data.data.key;
+              utils.downloadFile(url).then(() => {
+                this.$alert(this.$i18n.t("m.Generate_User_Success"), "Tips");
               });
+              this.getUserList(1);
+            })
+            .catch(() => {
+              this.loadingGenerate = false;
+            });
         });
-      })
+      });
     },
     handleUsersCSV(file) {
       papa.parse(file, {
@@ -978,7 +999,7 @@ export default {
           let delta = results.data.length - data.length;
           if (delta > 0) {
             myMessage.warning(
-                delta + this.$i18n.t('m.Generate_Skipped_Reason')
+              delta + this.$i18n.t("m.Generate_Skipped_Reason"),
             );
           }
           this.uploadUsersCurrentPage = 1;
@@ -992,13 +1013,13 @@ export default {
     },
     handleUsersUpload() {
       api
-          .admin_importUsers(this.uploadUsers)
-          .then((res) => {
-            this.getUserList(1);
-            this.handleResetData();
-            myMessage.success(this.$i18n.t('m.Upload_Users_Successfully'));
-          })
-          .catch(() => {});
+        .admin_importUsers(this.uploadUsers)
+        .then((res) => {
+          this.getUserList(1);
+          this.handleResetData();
+          myMessage.success(this.$i18n.t("m.Upload_Users_Successfully"));
+        })
+        .catch(() => {});
     },
     handleResetData() {
       this.uploadUsers = [];
@@ -1019,8 +1040,8 @@ export default {
   watch: {
     uploadUsersCurrentPage(page) {
       this.uploadUsersPage = this.uploadUsers.slice(
-          (page - 1) * this.uploadUsersPageSize,
-          page * this.uploadUsersPageSize
+        (page - 1) * this.uploadUsersPageSize,
+        page * this.uploadUsersPageSize,
       );
     },
   },
