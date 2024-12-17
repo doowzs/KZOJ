@@ -134,10 +134,10 @@
                       '：' +
                       (contest.oiRankScoreType == 'Recent'
                         ? $t(
-                            'm.Based_on_The_Recent_Score_Submitted_Of_Each_Problem',
+                            'm.Based_on_The_Recent_Score_Submitted_Of_Each_Problem'
                           )
                         : $t(
-                            'm.Based_on_The_Highest_Score_Submitted_For_Each_Problem',
+                            'm.Based_on_The_Highest_Score_Submitted_For_Each_Problem'
                           ))
                     "
                     placement="top"
@@ -415,12 +415,14 @@ export default {
       this.loading.recentContests = true;
       api.getRecentContests().then(
         (res) => {
-          this.contests = res.data.data;
+          this.contests = res.data.data.sort(
+            (a, b) => new Date(a.startTime) - new Date(b.startTime)
+          );
           this.loading.recentContests = false;
         },
         (err) => {
           this.loading.recentContests = false;
-        },
+        }
       );
     },
     getRecent7ACRank() {
@@ -432,7 +434,7 @@ export default {
         },
         (err) => {
           this.loading.recent7ACRankLoading = false;
-        },
+        }
       );
     },
     goContest(cid) {
