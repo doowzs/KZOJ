@@ -902,7 +902,9 @@ export default {
       .catch(() => {});
     api.getLanguages(this.$route.params.problemId, false).then((res) => {
       let allLanguage = res.data.data;
-      this.allLanguage = allLanguage;
+      this.allLanguage = allLanguage.filter(
+        (lang) => ["C++ With O2", "Python3"].indexOf(lang.name) >= 0
+      );
       for (let i = 0; i < allLanguage.length; i++) {
         if (allLanguage[i].isSpj == true) {
           this.allSpjLanguage.push(allLanguage[i]);
@@ -1088,7 +1090,9 @@ export default {
         that.problemCodeTemplate = res.data.data;
       });
       api.getProblemLanguages(that.pid).then((res) => {
-        let Languages = res.data.data;
+        let Languages = res.data.data.filter(
+          (lang) => ["C++ With O2", "Python3"].indexOf(lang.name) >= 0
+        );
         for (let i = 0; i < Languages.length; i++) {
           that.problemLanguages.push(Languages[i].name);
         }
@@ -1111,13 +1115,13 @@ export default {
           h(
             "p",
             { style: "text-align: center;font-weight:bolder;color:red" },
-            this.$i18n.t("m.Change_Judge_Mode"),
+            this.$i18n.t("m.Change_Judge_Mode")
           ),
           h("br", null, null),
           h(
             "p",
             { style: "font-weight:bolder" },
-            this.$i18n.t("m." + modeTips),
+            this.$i18n.t("m." + modeTips)
           ),
         ]),
       });
@@ -1131,7 +1135,7 @@ export default {
       var results = queryString
         ? restaurants.filter(
             (item) =>
-              item.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0,
+              item.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0
           )
         : restaurants;
       cb(results);
@@ -1172,7 +1176,7 @@ export default {
     closeTag(tag) {
       this.problemTags.splice(
         this.problemTags.map((item) => item.name).indexOf(tag),
-        1,
+        1
       );
     },
     deleteFile(type, name) {
@@ -1321,7 +1325,7 @@ export default {
             closeOnClickModal: false,
             customClass: "dialog-compile-error",
           });
-        },
+        }
       );
     },
     sortTestCaseList() {
@@ -1361,7 +1365,7 @@ export default {
         mMessage.error(
           this.$i18n.t("m.Problem_Display_ID") +
             " " +
-            this.$i18n.t("m.is_required"),
+            this.$i18n.t("m.is_required")
         );
         return;
       }
@@ -1370,7 +1374,7 @@ export default {
           mMessage.error(
             this.$i18n.t("m.Contest_Display_ID") +
               " " +
-              this.$i18n.t("m.is_required"),
+              this.$i18n.t("m.is_required")
           );
           return;
         }
@@ -1378,7 +1382,7 @@ export default {
           mMessage.error(
             this.$i18n.t("m.Contest_Display_Title") +
               " " +
-              this.$i18n.t("m.is_required"),
+              this.$i18n.t("m.is_required")
           );
           return;
         }
@@ -1390,8 +1394,8 @@ export default {
       ) {
         mMessage.error(
           this.$i18n.t(
-            "m.When_the_read_write_mode_is_File_IO_the_input_file_name_or_output_file_name_cannot_be_empty",
-          ),
+            "m.When_the_read_write_mode_is_File_IO_the_input_file_name_or_output_file_name_cannot_be_empty"
+          )
         );
         return;
       }
@@ -1402,7 +1406,7 @@ export default {
             mMessage.error(
               this.$i18n.t("m.Judge_Samples") +
                 " " +
-                this.$i18n.t("m.is_required"),
+                this.$i18n.t("m.is_required")
             );
             return;
           }
@@ -1413,7 +1417,7 @@ export default {
                   " or " +
                   this.$i18n.t("m.Sample_Output") +
                   " " +
-                  this.$i18n.t("m.is_required"),
+                  this.$i18n.t("m.is_required")
               );
               return;
             }
@@ -1425,7 +1429,7 @@ export default {
                   this.$i18n.t("m.Problem_Sample") +
                     this.problemSamples[i].index +
                     " " +
-                    this.$i18n.t("m.Score_must_be_an_integer"),
+                    this.$i18n.t("m.Score_must_be_an_integer")
                 );
                 return;
               }
@@ -1435,9 +1439,7 @@ export default {
                     this.$i18n.t("m.Problem_Sample") +
                       this.problemSamples[i].index +
                       " " +
-                      this.$i18n.t(
-                        "m.Score_must_be_greater_than_or_equal_to_0",
-                      ),
+                      this.$i18n.t("m.Score_must_be_greater_than_or_equal_to_0")
                   );
                   return;
                 }
@@ -1457,8 +1459,8 @@ export default {
                     this.problemSamples[i].index +
                     "：" +
                     this.$i18n.t(
-                      "m.Non_Default_Judge_Case_Mode_And_Group_Num_IS_NULL",
-                    ),
+                      "m.Non_Default_Judge_Case_Mode_And_Group_Num_IS_NULL"
+                    )
                 );
                 return;
               }
@@ -1481,7 +1483,7 @@ export default {
                   this.$i18n.t("m.Problem_Sample") +
                     (i + 1) +
                     " " +
-                    this.$i18n.t("m.Score_must_be_an_integer"),
+                    this.$i18n.t("m.Score_must_be_an_integer")
                 );
                 return;
               }
@@ -1491,9 +1493,7 @@ export default {
                     this.$i18n.t("m.Problem_Sample") +
                       (i + 1) +
                       " " +
-                      this.$i18n.t(
-                        "m.Score_must_be_greater_than_or_equal_to_0",
-                      ),
+                      this.$i18n.t("m.Score_must_be_greater_than_or_equal_to_0")
                   );
                   return;
                 }
@@ -1513,8 +1513,8 @@ export default {
                     (i + 1) +
                     "：" +
                     this.$i18n.t(
-                      "m.Non_Default_Judge_Case_Mode_And_Group_Num_IS_NULL",
-                    ),
+                      "m.Non_Default_Judge_Case_Mode_And_Group_Num_IS_NULL"
+                    )
                 );
                 return;
               }
@@ -1542,7 +1542,7 @@ export default {
             mMessage.error(this.error.spj);
           } else if (!this.problem.spjCompileOk && isChangeModeCode) {
             this.error.spj = this.$i18n.t(
-              "m.Spj_Or_Interactive_Code_not_Compile_Success",
+              "m.Spj_Or_Interactive_Code_not_Compile_Success"
             );
           }
           if (this.error.spj) {
@@ -1601,8 +1601,8 @@ export default {
                   lang.name +
                     "：" +
                     this.$i18n.t(
-                      "m.Code_template_of_the_language_cannot_be_empty",
-                    ),
+                      "m.Code_template_of_the_language_cannot_be_empty"
+                    )
                 );
                 return;
               }
@@ -1642,7 +1642,7 @@ export default {
       }
       problemDto["problem"] = Object.assign({}, this.problem); // 深克隆
       problemDto.problem.examples = utils.examplesToString(
-        this.problem.examples,
+        this.problem.examples
       );
       problemDto["codeTemplates"] = this.problemCodeTemplate;
       problemDto["tags"] = problemTagList;
@@ -1699,15 +1699,19 @@ export default {
 /deep/.el-form-item__label {
   padding: 0 !important;
 }
+
 .el-form-item {
   margin-bottom: 10px !important;
 }
+
 .difficulty-select {
   width: 120px;
 }
+
 .input-new-tag {
   width: 120px;
 }
+
 .button-new-tag {
   height: 24px;
   line-height: 22px;
@@ -1729,14 +1733,17 @@ export default {
   height: 35px;
   font-size: 14px;
 }
+
 .add-examples i {
   margin-right: 10px;
 }
+
 .add-examples:hover {
   border: 0px;
   background-color: #2d8cf0 !important;
   color: #fff;
 }
+
 .add-example-btn {
   margin-bottom: 10px;
 }
@@ -1751,14 +1758,17 @@ export default {
   height: 35px;
   font-size: 14px;
 }
+
 .add-samples i {
   margin-right: 10px;
 }
+
 .add-samples:hover {
   border: 0px;
   background-color: #19be6b !important;
   color: #fff;
 }
+
 .add-sample-btn {
   margin-bottom: 10px;
 }
@@ -1768,6 +1778,7 @@ export default {
   max-width: 80%;
   overflow-x: scroll;
 }
+
 .textarea {
   font-family: "Inconsolata", monospace;
 }

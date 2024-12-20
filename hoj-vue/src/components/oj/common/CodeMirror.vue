@@ -1,7 +1,7 @@
 <template>
   <div style="margin: 0px 0px 15px 0px; font-size: 14px; position: relative">
     <el-row class="header" id="js-right-header">
-      <el-col :xs="24" :sm="16" :md="16" :lg="16">
+      <el-col :xs="24" :sm="24" :md="18" :lg="18">
         <!--        语言-->
         <div class="select-row">
           <span>{{ $t("m.Lang") }}:</span>
@@ -54,7 +54,7 @@
           </span>
         </div>
       </el-col>
-      <el-col :xs="24" :sm="8" :md="8" :lg="8">
+      <el-col :xs="24" :sm="24" :md="6" :lg="6">
         <div class="select-row fl-right">
           <!--          文件上传-->
           <span>
@@ -516,7 +516,7 @@ export default {
     languages: {
       type: Array,
       default: () => {
-        return ["C", "C++", "Java", "Python3", "Python2"];
+        return ["C++ With O2", "Python3"];
       },
     },
     language: {

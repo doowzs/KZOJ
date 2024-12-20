@@ -89,10 +89,10 @@ function downloadFile(url) {
         }
         let link = document.createElement("a");
         link.href = window.URL.createObjectURL(
-          new window.Blob([resp.data], { type: headers["content-type"] }),
+          new window.Blob([resp.data], { type: headers["content-type"] })
         );
         link.download = (headers["content-disposition"] || "").split(
-          "filename=",
+          "filename="
         )[1];
         document.body.appendChild(link);
         link.click();
@@ -110,7 +110,7 @@ function downloadFileByText(fileName, fileContent) {
   return new Promise((resolve, reject) => {
     let link = document.createElement("a");
     link.href = window.URL.createObjectURL(
-      new window.Blob([fileContent], { type: "text/plain;charset=utf-8" }),
+      new window.Blob([fileContent], { type: "text/plain;charset=utf-8" })
     );
     link.download = fileName;
     document.body.appendChild(link);
@@ -129,13 +129,15 @@ function getLanguages(all = true) {
     } else {
       api.getAllLanguages(all).then(
         (res) => {
-          let langs = res.data.data;
+          let langs = res.data.data.filter(
+            (lang) => ["C++ With O2", "Python3"].indexOf(lang.name) >= 0
+          );
           storage.set(STORAGE_KEY.languages, langs);
           resolve(langs);
         },
         (err) => {
           reject(err);
-        },
+        }
       );
     }
   });
