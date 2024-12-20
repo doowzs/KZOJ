@@ -132,7 +132,7 @@
           <vxe-table-column
             field="status"
             :title="$t('m.Status')"
-            min-width="200"
+            min-width="100"
           >
             <template v-slot="{ row }">
               <el-tooltip
