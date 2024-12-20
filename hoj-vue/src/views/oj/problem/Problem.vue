@@ -1774,8 +1774,14 @@ a {
   height: 100%;
 }
 
+/deep/ .problem-left > .el-tabs--border-card > .el-tabs__content {
+  padding: 0 !important;
+}
+
 /deep/ .el-tabs--border-card>.el-tabs__content {
-  padding: 0px;
+  padding-top: 0px;
+  padding-right: 0px;
+  padding-bottom: 0px;
 }
 
 .js-left {
