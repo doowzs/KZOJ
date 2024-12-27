@@ -50,7 +50,17 @@
           <el-tag
             size="medium"
             class="category-item"
-            v-for="(category, index) in categoryList"
+            v-for="(category, index) in categoryList1"
+            :style="getCategoryBlockColor(category)"
+            :key="index"
+            @click="filterByCategory(category.id)"
+            >{{ category.name }}</el-tag
+          >
+          <br />
+          <el-tag
+            size="medium"
+            class="category-item"
+            v-for="(category, index) in categoryList2"
             :style="getCategoryBlockColor(category)"
             :key="index"
             @click="filterByCategory(category.id)"
@@ -221,7 +231,8 @@ export default {
       total: 0,
       currentPage: 1,
       limit: 15,
-      categoryList: [],
+      categoryList1: [],
+      categoryList2: [],
       trainingList: [],
       TRAINING_TYPE: {},
       loading: false,
@@ -295,12 +306,14 @@ export default {
         },
         (err) => {
           this.loading = false;
-        },
+        }
       );
     },
     getTrainingCategoryList() {
       api.getTrainingCategoryList().then((res) => {
-        this.categoryList = res.data.data;
+        const all = res.data.data;
+        this.categoryList1 = all.filter((c) => c.id <= 11);
+        this.categoryList2 = all.filter((c) => c.id >= 17);
       });
     },
 
