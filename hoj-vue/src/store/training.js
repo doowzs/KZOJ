@@ -94,7 +94,7 @@ const actions = {
         },
         (err) => {
           reject(err);
-        },
+        }
       );
     });
   },
@@ -104,13 +104,16 @@ const actions = {
         (res) => {
           resolve(res);
           commit("changeTrainingProblemList", {
-            trainingProblemList: res.data.data,
+            trainingProblemList: res.data.data.map((prob) => ({
+              ...prob,
+              tags: prob.tags.sort((a, b) => a.id - b.id),
+            })),
           });
         },
         (err) => {
           commit("changeTrainingProblemList", { trainingProblemList: [] });
           reject(err);
-        },
+        }
       );
     });
   },

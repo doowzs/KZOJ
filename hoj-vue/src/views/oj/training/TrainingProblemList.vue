@@ -66,25 +66,9 @@
         </template>
       </vxe-table-column>
 
-      <vxe-table-column field="tag" min-width="100">
-        <template v-slot:header
-          ><el-link
-            type="primary"
-            v-if="!showTags"
-            :underline="false"
-            @click="showTags = !showTags"
-            >{{ $t("m.Show_Tags") }}</el-link
-          >
-          <el-link
-            type="danger"
-            v-else
-            @click="showTags = !showTags"
-            :underline="false"
-            >{{ $t("m.Hide_Tags") }}</el-link
-          >
-        </template>
+      <vxe-table-column field="tag" :title="$t('m.Tags')" min-width="100">
         <template v-slot="{ row }">
-          <div v-if="showTags">
+          <div>
             <span
               class="el-tag el-tag--small"
               :style="
@@ -96,24 +80,6 @@
               >{{ tag.name }}</span
             >
           </div>
-        </template>
-      </vxe-table-column>
-
-      <vxe-table-column field="ac" :title="$t('m.AC_Rate')" min-width="120">
-        <template v-slot="{ row }">
-          <span>
-            <el-tooltip
-              effect="dark"
-              :content="row.ac + '/' + row.total"
-              placement="top"
-            >
-              <el-progress
-                :text-inside="true"
-                :stroke-width="20"
-                :percentage="getPassingRate(row.ac, row.total)"
-              ></el-progress>
-            </el-tooltip>
-          </span>
         </template>
       </vxe-table-column>
     </vxe-table>
@@ -132,7 +98,6 @@ export default {
       JUDGE_STATUS: {},
       isGetStatusOk: false,
       testcolor: "rgba(0, 206, 209, 1)",
-      showTags: false,
       groupID: null,
     };
   },
