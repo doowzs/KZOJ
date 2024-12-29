@@ -687,6 +687,8 @@ public class JudgeManager {
         if (judgeCaseMode == Constants.JudgeCaseMode.SUBTASK_AVERAGE) {
             for (Map.Entry<Integer, List<JudgeCase>> entry : groupJudgeCaseMap.entrySet()) {
                 int sumScore = 0;
+                int maxTime = 0;
+                int maxMemory = 0;
                 boolean hasNotACJudgeCase = false;
                 int acCount = 0;
                 for (JudgeCase judgeCase : entry.getValue()) {
@@ -696,12 +698,20 @@ public class JudgeManager {
                     } else {
                         acCount++;
                     }
+                    if (judgeCase.getTime() > maxTime) {
+                        maxTime = judgeCase.getTime();
+                    }
+                    if (judgeCase.getMemory() > maxMemory) {
+                        maxMemory = judgeCase.getMemory();
+                    }
                 }
                 SubTaskJudgeCaseVO subTaskJudgeCaseVo = new SubTaskJudgeCaseVO();
                 subTaskJudgeCaseVo.setGroupNum(entry.getKey());
                 subTaskJudgeCaseVo.setSubtaskDetailList(entry.getValue());
                 subTaskJudgeCaseVo.setAc(acCount);
                 subTaskJudgeCaseVo.setTotal(entry.getValue().size());
+                subTaskJudgeCaseVo.setTime(maxTime);
+                subTaskJudgeCaseVo.setMemory(maxMemory);
                 int score = (int) Math.round(sumScore * 1.0 / entry.getValue().size());
                 subTaskJudgeCaseVo.setScore(score);
                 if (hasNotACJudgeCase) {
@@ -718,6 +728,8 @@ public class JudgeManager {
         } else {
             for (Map.Entry<Integer, List<JudgeCase>> entry : groupJudgeCaseMap.entrySet()) {
                 int minScore = 2147483647;
+                int maxTime = 0;
+                int maxMemory = 0;
                 JudgeCase finalResJudgeCase = null;
                 int acCount = 0;
                 for (JudgeCase judgeCase : entry.getValue()) {
@@ -725,6 +737,12 @@ public class JudgeManager {
                         if (judgeCase.getScore() < minScore) {
                             finalResJudgeCase = judgeCase;
                             minScore = judgeCase.getScore();
+                        }
+                        if (judgeCase.getTime() > maxTime) {
+                            maxTime = judgeCase.getTime();
+                        }
+                        if (judgeCase.getMemory() > maxMemory) {
+                            maxMemory = judgeCase.getMemory();
                         }
                         if (Objects.equals(Constants.Judge.STATUS_ACCEPTED.getStatus(), judgeCase.getStatus())) {
                             acCount++;
@@ -735,10 +753,10 @@ public class JudgeManager {
                 subTaskJudgeCaseVo.setGroupNum(entry.getKey());
                 subTaskJudgeCaseVo.setAc(acCount);
                 subTaskJudgeCaseVo.setTotal(entry.getValue().size());
+                subTaskJudgeCaseVo.setTime(maxTime);
+                subTaskJudgeCaseVo.setMemory(maxMemory);
                 if (finalResJudgeCase != null) {
-                    subTaskJudgeCaseVo.setMemory(finalResJudgeCase.getMemory());
                     subTaskJudgeCaseVo.setScore(finalResJudgeCase.getScore());
-                    subTaskJudgeCaseVo.setTime(finalResJudgeCase.getTime());
                     subTaskJudgeCaseVo.setStatus(finalResJudgeCase.getStatus());
                 }
                 subTaskJudgeCaseVo.setSubtaskDetailList(entry.getValue());
