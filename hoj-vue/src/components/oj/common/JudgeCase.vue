@@ -16,7 +16,7 @@
         :sm="8"
         :md="6"
         :lg="3"
-        v-for="(item, index) in judgeCaseList"
+        v-for="(item, index) in judgeCases"
         :key="index"
       >
         <el-tooltip placement="top">
@@ -89,8 +89,8 @@
 </template>
 
 <script>
-import utils from "@/common/utils";
 import { JUDGE_STATUS, JUDGE_STATUS_RESERVE } from "@/common/constants";
+import utils from "@/common/utils";
 export default {
   name: "judgeCase",
   props: {
@@ -108,6 +108,11 @@ export default {
       JUDGE_STATUS: {},
       JUDGE_STATUS_RESERVE: {},
     };
+  },
+  computed: {
+    judgeCases() {
+      return this.judgeCaseList.sort((a, b) => a.caseId - b.caseId);
+    },
   },
   created() {
     this.JUDGE_STATUS = Object.assign({}, JUDGE_STATUS);
