@@ -81,6 +81,10 @@
               <i class="fa fa-list navbar-icon"></i>
               {{ $t("m.Problem_List") }}
             </el-menu-item>
+            <el-menu-item :index="getTrainingRankPath()">
+              <i class="fa fa-bar-chart navbar-icon"></i>
+              {{ $t("m.Record_List") }}
+            </el-menu-item>
           </template>
           <template v-else-if="mode == 'contest'">
             <el-menu-item index="/home">
@@ -749,6 +753,15 @@ export default {
         return `/group/${gid}/training/${tid}/problems`;
       } else {
         return `/training/${tid}/problems`;
+      }
+    },
+    getTrainingRankPath() {
+      let tid = this.$route.params.trainingID;
+      let gid = this.$route.params.groupID;
+      if (gid) {
+        return `/group/${gid}/training/${tid}/rank`;
+      } else {
+        return `/training/${tid}/rank`;
       }
     },
   },
