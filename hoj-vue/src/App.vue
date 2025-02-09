@@ -74,10 +74,10 @@
 </template>
 
 <script>
-import NavBar from "@/components/oj/common/NavBar";
-import { mapActions, mapState, mapGetters } from "vuex";
 import storage from "@/common/storage";
 import utils from "@/common/utils";
+import NavBar from "@/components/oj/common/NavBar";
+import { mapActions, mapGetters, mapState } from "vuex";
 export default {
   name: "app-content",
   components: {
@@ -113,6 +113,9 @@ export default {
       /**
        * 语言自动转换优先级：路径参数 > 本地存储 > 浏览器自动识别
        */
+      this.$store.commit("changeWebLanguage", { language: "zh-CN" });
+      return;
+
       let lang = this.$route.query.l;
       if (lang) {
         lang = lang.toLowerCase();
@@ -574,9 +577,7 @@ a:hover {
 }
 
 .tex-formula {
-  font-family:
-    times new roman,
-    sans-serif;
+  font-family: times new roman, sans-serif;
   vertical-align: middle;
   margin: 0;
   border: medium none;
@@ -586,9 +587,7 @@ a:hover {
 
 .tex-span {
   font-size: 125%;
-  font-family:
-    times new roman,
-    sans-serif;
+  font-family: times new roman, sans-serif;
   white-space: nowrap;
 }
 
@@ -638,9 +637,7 @@ a:hover {
 
 .tex-font-style-tt {
   font-size: 110%;
-  font-family:
-    courier new,
-    monospace;
+  font-family: courier new, monospace;
 }
 
 .tex-font-style-bf {
@@ -695,20 +692,9 @@ footer a:hover {
   text-decoration: none;
 }
 footer h1 {
-  font-family:
-    -apple-system,
-    BlinkMacSystemFont,
-    Segoe UI,
-    PingFang SC,
-    Hiragino Sans GB,
-    Microsoft YaHei,
-    Helvetica Neue,
-    Helvetica,
-    Arial,
-    sans-serif,
-    Apple Color Emoji,
-    Segoe UI Emoji,
-    Segoe UI Symbol;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC,
+    Hiragino Sans GB, Microsoft YaHei, Helvetica Neue, Helvetica, Arial,
+    sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
   font-weight: 300;
   color: #3d3d3d;
   line-height: 1.1;
