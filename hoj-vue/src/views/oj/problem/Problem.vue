@@ -187,13 +187,15 @@
                         ></span
                       >
                     </template>
-                    <template v-if="problemData.problem.type == 1">
+                    <template
+                      v-if="problemData.problem.type == 1 && !contestID"
+                    >
                       <span style="margin-left: 1rem">
                         {{ $t("m.Problem_Score") }}：{{
                           problemData.problem.ioScore
                         }}
                       </span>
-                      <span v-if="!contestID" style="margin-left: 1rem">
+                      <span style="margin-left: 1rem">
                         {{ $t("m.OI_Rank_Score") }}：{{
                           calcOIRankScore(
                             problemData.problem.ioScore,
