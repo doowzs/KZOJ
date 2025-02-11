@@ -71,10 +71,13 @@
           </div>
           <div class="item">
             <p class="textcolor down">
-              2025年元旦倒计时 {{ this.countDown[0] }} 天
+              CSP 2025 笔试 倒计时 {{ this.countDown[0] }} 天
             </p>
             <p class="textcolor down">
-              2025年春节倒计时 {{ this.countDown[1] }} 天
+              CSP 2025 机试 倒计时 {{ this.countDown[1] }} 天
+            </p>
+            <p class="textcolor down">
+              NOIP 2025 倒计时 {{ this.countDown[2] }} 天
             </p>
           </div>
         </el-card>
@@ -298,16 +301,15 @@
 </template>
 
 <script>
-import time from "@/common/time";
 import api from "@/common/api";
-import axios from "axios";
 import {
   CONTEST_STATUS_REVERSE,
   CONTEST_TYPE_REVERSE,
 } from "@/common/constants";
-import { mapState, mapGetters } from "vuex";
-import Avatar from "vue-avatar";
 import myMessage from "@/common/message";
+import time from "@/common/time";
+import Avatar from "vue-avatar";
+import { mapGetters, mapState } from "vuex";
 const Announcements = () => import("@/components/oj/common/Announcements.vue");
 const SubmissionStatistic = () =>
   import("@/components/oj/home/SubmissionStatistic.vue");
@@ -400,15 +402,20 @@ export default {
     getCountDown() {
       const now = new Date();
       const day =
-        new Date("Wed Jan 01 2025 00:00:00 GMT+0800 (中国标准时间)").getTime() -
+        new Date("Sat Sep 20 2025 00:00:00 GMT+0800 (中国标准时间)").getTime() -
         new Date(now).getTime(); //日期转时间戳 ;
       this.countDown[0] = Math.floor(day / 86400000) + 1; //时间戳获取天数
       if (this.countDown[0] <= 0) this.countDown[0] = 0;
       const day2 =
-        new Date("Wed Jan 29 2025 00:00:00 GMT+0800 (中国标准时间)").getTime() -
+        new Date("Sat Nov 01 2025 00:00:00 GMT+0800 (中国标准时间)").getTime() -
         new Date(now).getTime(); //日期转时间戳 ;
       this.countDown[1] = Math.floor(day2 / 86400000) + 1; //时间戳获取天数
       if (this.countDown[1] <= 0) this.countDown[1] = 0;
+      const day3 =
+        new Date("Sat Nov 29 2025 00:00:00 GMT+0800 (中国标准时间)").getTime() -
+        new Date(now).getTime(); //日期转时间戳 ;
+      this.countDown[2] = Math.floor(day3 / 86400000) + 1; //时间戳获取天数
+      if (this.countDown[2] <= 0) this.countDown[2] = 0;
     },
 
     getRecentContests() {
