@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :style="{ position: 'sticky', top: 0, zIndex: 2000 }">
     <template v-if="!mobileNar">
       <div id="header">
         <el-menu
@@ -255,7 +255,6 @@
           </template>
         </el-menu>
       </div>
-      <div id="header-hidden" v-show="isScrolled"></div>
     </template>
     <template v-else>
       <div style="top: 0px; left: 0px">
@@ -544,49 +543,14 @@
 
             <mu-list-item
               button
-              :ripple="false"
-              nested
-              :open="openSideMenu === 'about'"
-              @toggle-nested="openSideMenu = arguments[0] ? 'about' : ''"
+              to="/training/134"
+              @click="opendrawer = !opendrawer"
+              active-class="mobile-menu-active"
             >
               <mu-list-item-action>
-                <mu-icon value=":el-icon-info" size="24"></mu-icon>
+                <mu-icon value=":el-icon-star-off" size="24"></mu-icon>
               </mu-list-item-action>
-              <mu-list-item-title>
-                {{ $t("m.NavBar_Other") }}
-              </mu-list-item-title>
-              <mu-list-item-action>
-                <mu-icon
-                  class="toggle-icon"
-                  size="24"
-                  value=":el-icon-arrow-down"
-                >
-                </mu-icon>
-              </mu-list-item-action>
-              <mu-list-item
-                button
-                :ripple="false"
-                slot="nested"
-                to="/introduction"
-                @click="opendrawer = !opendrawer"
-                active-class="mobile-menu-active"
-              >
-                <mu-list-item-title>
-                  {{ $t("m.NavBar_Introduction") }}
-                </mu-list-item-title>
-              </mu-list-item>
-              <mu-list-item
-                button
-                :ripple="false"
-                slot="nested"
-                to="/developer"
-                @click="opendrawer = !opendrawer"
-                active-class="mobile-menu-active"
-              >
-                <mu-list-item-title>
-                  {{ $t("m.NavBar_Developer") }}
-                </mu-list-item-title>
-              </mu-list-item>
+              <mu-list-item-title> 典型90题 </mu-list-item-title>
             </mu-list-item>
           </mu-list>
         </mu-drawer>
@@ -619,12 +583,10 @@ export default {
     this.page_width();
     window.onresize = () => {
       this.page_width();
-      this.setHiddenHeaderHeight();
     };
   },
   mounted() {
     this.switchMode();
-    this.setHiddenHeaderHeight();
     if (this.isAuthenticated) {
       this.getUnreadMsgCount();
       this.msgTimer = setInterval(() => {
@@ -719,16 +681,6 @@ export default {
       this.$store.commit("changeWebLanguage", {
         language: this.webLanguage == "zh-CN" ? "en-US" : "zh-CN",
       });
-    },
-    setHiddenHeaderHeight() {
-      if (!this.mobileNar) {
-        try {
-          let headerHeight = document.getElementById("header").offsetHeight;
-          document
-            .getElementById("header-hidden")
-            .setAttribute("style", "height:" + headerHeight + "px");
-        } catch (e) {}
-      }
     },
     switchMode() {
       if (this.$route.meta.fullScreenSource) {
@@ -834,12 +786,8 @@ export default {
 <style scoped>
 #header {
   min-width: 300px;
-  position: fixed;
-  top: 0;
-  left: 0;
   height: auto;
   width: 100%;
-  z-index: 2000;
   background-color: #fff;
   box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.1);
 }
