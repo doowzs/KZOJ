@@ -66,9 +66,25 @@
         </template>
       </vxe-table-column>
 
-      <vxe-table-column field="tag" :title="$t('m.Tags')" min-width="100">
+      <vxe-table-column field="tag" min-width="100">
+        <template v-slot:header
+          ><el-link
+            type="primary"
+            v-if="!showTags"
+            :underline="false"
+            @click="showTags = !showTags"
+            >{{ $t("m.Show_Tags") }}</el-link
+          >
+          <el-link
+            type="danger"
+            v-else
+            @click="showTags = !showTags"
+            :underline="false"
+            >{{ $t("m.Hide_Tags") }}</el-link
+          >
+        </template>
         <template v-slot="{ row }">
-          <div>
+          <div v-if="showTags">
             <span
               class="el-tag el-tag--small"
               :style="
@@ -98,6 +114,7 @@ export default {
       JUDGE_STATUS: {},
       isGetStatusOk: false,
       testcolor: "rgba(0, 206, 209, 1)",
+      showTags: false,
       groupID: null,
     };
   },
