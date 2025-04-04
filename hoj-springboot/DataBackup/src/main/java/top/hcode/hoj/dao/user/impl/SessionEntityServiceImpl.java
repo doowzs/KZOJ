@@ -41,44 +41,45 @@ public class SessionEntityServiceImpl extends ServiceImpl<SessionMapper, Session
     @Override
     @Async
     public void checkRemoteLogin(String uid) {
-        QueryWrapper<Session> sessionQueryWrapper = new QueryWrapper<>();
-        sessionQueryWrapper.eq("uid", uid)
-                .orderByDesc("gmt_create")
-                .last("limit 2");
-        List<Session> sessionList = sessionMapper.selectList(sessionQueryWrapper);
-        if (sessionList.size() < 2) {
-            return;
-        }
-        Session nowSession = sessionList.get(0);
-        Session lastSession = sessionList.get(1);
-        // 如果两次登录的ip不相同，需要发通知给用户
-        if (!nowSession.getIp().equals(lastSession.getIp())) {
-            String remoteLoginContent = getRemoteLoginContent(lastSession.getIp(), nowSession.getIp(), nowSession.getGmtCreate());
-            if (remoteLoginContent == null) {
-                return;
-            }
-            AdminSysNotice adminSysNotice = new AdminSysNotice();
-            adminSysNotice
-                    .setType("Single")
-                    .setContent(remoteLoginContent)
-                    .setTitle("账号异地登录通知(Account Remote Login Notice)")
-                    .setAdminId("1")
-                    .setState(false)
-                    .setRecipientId(uid);
-            boolean isSaveOk = adminSysNoticeEntityService.save(adminSysNotice);
-            if (isSaveOk) {
-                UserSysNotice userSysNotice = new UserSysNotice();
-                userSysNotice.setType("Sys")
-                        .setSysNoticeId(adminSysNotice.getId())
-                        .setRecipientId(uid)
-                        .setState(false);
-                boolean isOk = userSysNoticeEntityService.save(userSysNotice);
-                if (isOk) {
-                    adminSysNotice.setState(true);
-                    adminSysNoticeEntityService.saveOrUpdate(adminSysNotice);
-                }
-            }
-        }
+        return;
+        // QueryWrapper<Session> sessionQueryWrapper = new QueryWrapper<>();
+        // sessionQueryWrapper.eq("uid", uid)
+        //         .orderByDesc("gmt_create")
+        //         .last("limit 2");
+        // List<Session> sessionList = sessionMapper.selectList(sessionQueryWrapper);
+        // if (sessionList.size() < 2) {
+        //     return;
+        // }
+        // Session nowSession = sessionList.get(0);
+        // Session lastSession = sessionList.get(1);
+        // // 如果两次登录的ip不相同，需要发通知给用户
+        // if (!nowSession.getIp().equals(lastSession.getIp())) {
+        //     String remoteLoginContent = getRemoteLoginContent(lastSession.getIp(), nowSession.getIp(), nowSession.getGmtCreate());
+        //     if (remoteLoginContent == null) {
+        //         return;
+        //     }
+        //     AdminSysNotice adminSysNotice = new AdminSysNotice();
+        //     adminSysNotice
+        //             .setType("Single")
+        //             .setContent(remoteLoginContent)
+        //             .setTitle("账号异地登录通知(Account Remote Login Notice)")
+        //             .setAdminId("1")
+        //             .setState(false)
+        //             .setRecipientId(uid);
+        //     boolean isSaveOk = adminSysNoticeEntityService.save(adminSysNotice);
+        //     if (isSaveOk) {
+        //         UserSysNotice userSysNotice = new UserSysNotice();
+        //         userSysNotice.setType("Sys")
+        //                 .setSysNoticeId(adminSysNotice.getId())
+        //                 .setRecipientId(uid)
+        //                 .setState(false);
+        //         boolean isOk = userSysNoticeEntityService.save(userSysNotice);
+        //         if (isOk) {
+        //             adminSysNotice.setState(true);
+        //             adminSysNoticeEntityService.saveOrUpdate(adminSysNotice);
+        //         }
+        //     }
+        // }
     }
 
     private String getRemoteLoginContent(String oldIp, String newIp, Date loginDate) {
