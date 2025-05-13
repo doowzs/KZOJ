@@ -622,6 +622,19 @@
                       v-model="row.score"
                       :disabled="problem.type != 1"
                       type="number"
+                      @change="
+                        (value) => {
+                          if (
+                            (problem.judgeCaseMode ==
+                              JUDGE_CASE_MODE.SUBTASK_LOWEST ||
+                              problem.judgeCaseMode ==
+                                JUDGE_CASE_MODE.SUBTASK_AVERAGE) &&
+                            !!row.groupNum
+                          ) {
+                            updateSubtaskScore(row.groupNum, value);
+                          }
+                        }
+                      "
                     >
                     </el-input>
                   </template>
@@ -813,7 +826,7 @@ export default {
         output: "",
         timeLimit: 1000,
         memoryLimit: 256,
-        stackLimit: 128,
+        stackLimit: 256,
         difficulty: 0,
         auth: 1,
         codeShare: false,
@@ -1248,9 +1261,9 @@ export default {
           let add_1_num = 100 - aver * length;
           for (let i = 0; i < length; i++) {
             if (i >= length - add_1_num) {
-              this.problemSamples[i].score = aver + 1;
+              this.problemSamples[i].score = Math.max(aver + 1, 1);
             } else {
-              this.problemSamples[i].score = aver;
+              this.problemSamples[i].score = Math.max(aver, 1);
             }
           }
         } else {
@@ -1259,9 +1272,9 @@ export default {
           let add_1_num = 100 - aver * length;
           for (let i = 0; i < length; i++) {
             if (i >= length - add_1_num) {
-              this.problem.testCaseScore[i].score = aver + 1;
+              this.problem.testCaseScore[i].score = Math.max(aver + 1, 1);
             } else {
-              this.problem.testCaseScore[i].score = aver;
+              this.problem.testCaseScore[i].score = Math.max(aver, 1);
             }
           }
         }
@@ -1326,9 +1339,9 @@ export default {
       for (let i = 0; i < fileList.length; i++) {
         if (averSorce) {
           if (i >= fileList.length - add_1_num) {
-            fileList[i].score = averSorce + 1;
+            fileList[i].score = Math.max(averSorce + 1, 1);
           } else {
-            fileList[i].score = averSorce;
+            fileList[i].score = Math.max(averSorce, 1);
           }
         }
         if (!fileList[i].output) {
@@ -1385,6 +1398,12 @@ export default {
       this.$refs.xTable.clearSort();
       this.$refs.xTable.sort("groupNum", "asc");
     },
+    updateSubtaskScore(groupNum, newScore) {
+      this.problem.testCaseScore = this.problem.testCaseScore.map((item) => ({
+        ...item,
+        score: item.groupNum === groupNum ? Number(newScore) : item.score,
+      }));
+    },
     customSortMethod({ data, sortList }) {
       const sortItem = sortList[0];
       const { property, order } = sortItem;
@@ -1402,6 +1421,21 @@ export default {
         }
       });
       return list;
+    },
+    updateProblemSampleListSubtask() {
+      if (
+        this.problem.judgeCaseMode == JUDGE_CASE_MODE.SUBTASK_LOWEST ||
+        this.problem.judgeCaseMode == JUDGE_CASE_MODE.SUBTASK_AVERAGE
+      ) {
+        this.problemSamples = this.problemSamples.sort(function (a, b) {
+          var value1 = a.groupNum,
+            value2 = b.groupNum;
+          if (value1 === value2) {
+            return a.index - b.index;
+          }
+          return value1 - value2;
+        });
+      }
     },
     sortManualProblemSampleList() {
       this.problemSamples = this.problemSamples.sort(function (a, b) {
