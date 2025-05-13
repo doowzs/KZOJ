@@ -36,18 +36,6 @@
           :loading="btnLoginLoading"
           >{{ $t("m.Login_Btn") }}
         </el-button>
-        <el-link
-          v-if="websiteConfig.register"
-          type="primary"
-          @click="switchMode('Register')"
-          >{{ $t("m.Login_No_Account") }}</el-link
-        >
-        <el-link
-          type="primary"
-          @click="switchMode('ResetPwd')"
-          style="float: right"
-          >{{ $t("m.Login_Forget_Password") }}</el-link
-        >
       </el-form-item>
     </el-form>
     <!--    找回密码-->
@@ -182,10 +170,9 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
 import api from "@/common/api";
-import mMessage from "@/common/message";
-import myMessage from "@/common/message";
+import { default as mMessage, default as myMessage } from "@/common/message";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "LoginHome",
@@ -199,7 +186,7 @@ export default {
             callback();
           }
         },
-        (_) => callback(),
+        (_) => callback()
       );
     };
     const CheckUsernameNotExist = (rule, value, callback) => {
@@ -211,7 +198,7 @@ export default {
             callback();
           }
         },
-        (_) => callback(),
+        (_) => callback()
       );
     };
     const unCheckEmailNotExist = (rule, value, callback) => {
@@ -223,7 +210,7 @@ export default {
             callback();
           }
         },
-        (_) => callback(),
+        (_) => callback()
       );
     };
     const CheckPassword = (rule, value, callback) => {
@@ -432,7 +419,7 @@ export default {
             },
             (_) => {
               this.btnLoginLoading = false;
-            },
+            }
           );
         }
       });
@@ -462,7 +449,7 @@ export default {
         if (valid) {
           if (
             !this.formResetPassword.password.match(
-              /^(?=.*\d)(?=.*[a-zA-Z]).{6,20}$/,
+              /^(?=.*\d)(?=.*[a-zA-Z]).{6,20}$/
             )
           ) {
             myMessage.warning(this.$i18n.t("m.Pass_Strength"));
@@ -477,7 +464,7 @@ export default {
               mMessage.message(
                 "success",
                 this.$i18n.t("m.ResetPwd_Send_Email_Msg"),
-                10000,
+                10000
               );
               this.countDown();
               this.startTimeOut({ name: "resetTimeOut" });
@@ -493,7 +480,7 @@ export default {
               this.btnResetPwdDisabled = false;
               this.resetText = this.$i18n.t("m.Send_Password_Reset_Email");
               this.getCaptcha();
-            },
+            }
           );
         }
       });
@@ -529,7 +516,7 @@ export default {
               mMessage.message(
                 "success",
                 this.$i18n.t("m.Register_Send_Email_Msg"),
-                5000,
+                5000
               );
               this.$notify.success({
                 title: this.$i18n.t("m.Success"),
@@ -544,7 +531,7 @@ export default {
           (res) => {
             this.btnEmailLoading = false;
             this.countdownNum = null;
-          },
+          }
         );
       }
     },
@@ -570,7 +557,7 @@ export default {
             (res) => {
               this.registerForm.code = "";
               this.btnRegisterLoading = false;
-            },
+            }
           );
         }
       });
