@@ -511,19 +511,6 @@
           target="_blank"
           >{{ websiteConfig.projectName }}</a
         >
-        <span style="margin-left: 10px">
-          <el-dropdown @command="changeWebLanguage" placement="top">
-            <span class="el-dropdown-link" style="font-size: 14px">
-              <i class="fa fa-globe" aria-hidden="true">
-                {{ this.webLanguage == "zh-CN" ? "简体中文" : "English" }}</i
-              ><i class="el-icon-arrow-up el-icon--right"></i>
-            </span>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item command="zh-CN">简体中文</el-dropdown-item>
-              <el-dropdown-item command="en-US">English</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-        </span>
       </div>
     </div>
 
@@ -534,11 +521,11 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-const KatexEditor = () => import("@/components/admin/KatexEditor.vue");
 import api from "@/common/api";
 import mMessage from "@/common/message";
 import Avatar from "vue-avatar";
+import { mapGetters } from "vuex";
+const KatexEditor = () => import("@/components/admin/KatexEditor.vue");
 export default {
   name: "app",
   mounted() {
