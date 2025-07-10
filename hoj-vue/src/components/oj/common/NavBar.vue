@@ -1,5 +1,5 @@
 <template>
-  <div :style="{ position: 'sticky', top: 0, zIndex: 2000 }">
+  <div :style="{ position: 'sticky', top: 0, zIndex: 20241228 }">
     <template v-if="!mobileNar">
       <div id="header">
         <el-menu
