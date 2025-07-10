@@ -1667,6 +1667,9 @@ int main() {
     },
     goEdit() {
       let url = "/admin/problem/edit/" + this.PID;
+      if (this.contestID) {
+        url = `/admin/contest/${this.contestID}/problem/${this.PID}/edit`;
+      }
       this.$router.push({
         path: url,
       });
