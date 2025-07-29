@@ -23,40 +23,31 @@ const cdn = {
     katex: "katex",
     "muse-ui": "MuseUI",
     jquery: "$",
-    // 'vxe-table':'VXETable',
-    // "mavon-editor": "mavonEditor",
   },
   // cdn的css链接
   css: [
-    "https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/element-ui/2.14.0/theme-chalk/index.min.css",
-    "https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/github-markdown-css/4.0.0/github-markdown.min.css",
-    "https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/KaTeX/0.12.0/katex.min.css",
-    "https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/muse-ui/3.0.2/muse-ui.min.css",
-    // "https://unpkg.com/vxe-table@2.9.26/lib/style.min.css",
-    // "https://cdn.jsdelivr.net/npm/vxe-table@2.9.26/lib/style.min.css",
+    "https://kzoj.cn/cdn/element-ui/2.15.14/lib/theme-chalk/index.min.css",
+    "https://kzoj.cn/cdn/github-markdown-css/5.8.1/github-markdown-light.min.css",
+    "https://kzoj.cn/cdn/katex/0.16.22/dist/katex.min.css",
+    "https://kzoj.cn/cdn/muse-ui/3.0.2/dist/muse-ui.min.css",
   ],
   // cdn的js链接
   js: [
-    "https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/vue/2.6.11/vue.min.js",
-    "https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/vue-router/3.2.0/vue-router.min.js",
-    "https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/axios/0.26.0/axios.min.js",
-    "https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/element-ui/2.15.3/index.min.js",
-    "https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/highlight.js/10.3.2/highlight.min.js",
-    "https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/moment.js/2.29.1/moment.min.js",
-    "https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/moment.js/2.29.1/locale/zh-cn.min.js",
-    "https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/moment.js/2.29.1/locale/en-gb.min.js",
-    "https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/echarts/4.9.0-rc.1/echarts.min.js",
-    "https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/vue-echarts/5.0.0-beta.0/vue-echarts.min.js",
-    "https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/vuex/3.5.1/vuex.min.js",
-    "https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/KaTeX/0.12.0/katex.min.js",
-    "https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/KaTeX/0.12.0/contrib/auto-render.min.js",
-    "https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/muse-ui/3.0.2/muse-ui.min.js",
-    "https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/jquery/3.5.1/jquery.min.js",
-    // "https://unpkg.com/xe-utils@3.4.3/dist/xe-utils.umd.min.js",
-    // "https://unpkg.com/vxe-table@2.9.26/lib/index.umd.min.js",
-    // "https://cdn.jsdelivr.net/npm/xe-utils@3.4.3/dist/xe-utils.umd.min.js",
-    // "https://cdn.jsdelivr.net/npm/vxe-table@2.9.26/lib/index.umd.min.js"
-    // "https://unpkg.com/mavon-editor@2.9.1/dist/mavon-editor.js"
+    "https://kzoj.cn/cdn/axios/1.11.0/dist/axios.min.js",
+    "https://kzoj.cn/cdn/highlight.js/11.11.1/highlight.min.js",
+    "https://kzoj.cn/cdn/echarts/4.9.0/dist/echarts.min.js",
+    "https://kzoj.cn/cdn/jquery/3.7.1/dist/jquery.min.js",
+    "https://kzoj.cn/cdn/katex/0.16.22/dist/katex.min.js",
+    "https://kzoj.cn/cdn/katex/0.16.22/dist/contrib/auto-render.min.js",
+    "https://kzoj.cn/cdn/moment/2.30.1/dist/moment.min.js",
+    "https://kzoj.cn/cdn/moment/2.30.1/dist/locale/zh-cn.min.js",
+    "https://kzoj.cn/cdn/moment/2.30.1/dist/locale/en-gb.min.js",
+    "https://kzoj.cn/cdn/vue/2.7.16/dist/vue.min.js",
+    "https://kzoj.cn/cdn/vuex/3.6.2/dist/vuex.min.js",
+    "https://kzoj.cn/cdn/vue-echarts/5.0.0-beta.0/vue-echarts.min.js",
+    "https://kzoj.cn/cdn/vue-router/3.6.5/dist/vue-router.min.js",
+    "https://kzoj.cn/cdn/element-ui/2.15.14/lib/index.min.js", // must be after vue@2
+    "https://kzoj.cn/cdn/muse-ui/3.0.2/dist/muse-ui.min.js", // must be after vue@2
   ],
 };
 
@@ -115,7 +106,7 @@ module.exports = {
               // pure_funcs: ['console.log']//移除console
             },
           },
-        }),
+        })
       );
       // 服务器也要相应开启gzip
       config.plugins.push(
@@ -126,7 +117,7 @@ module.exports = {
           threshold: 10000, // 对超过10k的数据压缩
           deleteOriginalAssets: false, // 不删除源文件
           minRatio: 0.8, // 压缩比
-        }),
+        })
       );
     }
   },
