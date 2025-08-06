@@ -75,9 +75,6 @@
             <if test="uid!=null and uid!=''">
                 AND j.uid = #{uid}
             </if>
-            <if test="beforeContestSubmit!=null and beforeContestSubmit==true">
-                AND #{startTime} > j.submit_time
-            </if>
             <if test="beforeContestSubmit!=null and beforeContestSubmit==false">
                 AND j.submit_time >= #{startTime}
             </if>
