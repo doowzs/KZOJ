@@ -21,6 +21,21 @@
         window.location = "http://outdatedbrowser.com";
       }
     </script>
+    <script>
+      // Support for <LegacyLink> in kzoj-rect
+      const params = new URLSearchParams(window.location.search);
+      const raw = params.get("auth-data");
+      if (!!raw) {
+        params.delete("auth-data");
+        const json = decodeURIComponent(window.atob(raw));
+        const data = JSON.parse(json);
+        if (!!data.token && !!data.user) {
+          window.localStorage.setItem("token", data.token);
+          window.localStorage.setItem("userInfo", JSON.stringify(data.user));
+          window.history.replaceState({}, "", window.location.pathname + "?" + params.toString());
+        }
+      }
+    </script>
     <style>
       @-webkit-keyframes enter {
         0% {
